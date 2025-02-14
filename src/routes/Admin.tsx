@@ -1,10 +1,10 @@
 import { useRoutes, Navigate } from "react-router-dom"
 import AdminLayout from "@/layouts/AdminLayout"
-import BatteryPage from "@/pages/Admin/Battery/page"
-import PowerStation from "@/pages/Admin/PowerStation/page"
-import Invertor from "@/pages/Admin/Invertor/page"
-import Devices from "@/pages/Admin/Devices/page"
-import Generator from "@/pages/Admin/Generator/page"
+import BatteryPage from "@/pages/Admin/BatteryPage"
+import PowerStationPage from "@/pages/Admin/PowerStationPage"
+import InvertorPage from "@/pages/Admin/InvertorPage"
+import DevicesPage from "@/pages/Admin/DevicesPage"
+import GeneratorPage from "@/pages/Admin/GeneratorPage"
 
 
 export default function Admin() {
@@ -19,19 +19,19 @@ export default function Admin() {
             },
             {
                 path: "powerstation",
-                element: <PowerStation />
+                element: <PowerStationPage />
             },
             {
                 path: "devices",
-                element: <Devices />
+                element: <DevicesPage />
             },
             {
                 path: "generator",
-                element: <Generator />
+                element: <GeneratorPage />
             },
             {
                 path: "invertor",
-                element: <Invertor />
+                element: <InvertorPage />
             },
         ]
     },
