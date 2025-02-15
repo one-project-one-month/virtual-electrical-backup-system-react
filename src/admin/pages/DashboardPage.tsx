@@ -1,5 +1,11 @@
+import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
+
 const DashboardPage = () => {
-  return <div>DashboardPage</div>;
+  return (
+    <div>
+      <BreadcrumbDashboard />
+    </div>
+  );
 };
 
 export default DashboardPage;
