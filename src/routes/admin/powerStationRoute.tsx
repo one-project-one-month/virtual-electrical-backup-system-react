@@ -1,4 +1,4 @@
-import PowerStationPage from "@/admin/pages/PowerStationPage";
+import { PowerStationPage } from "@/constants/lazyloadElement";
 
 const powerStationRoute = [
   {

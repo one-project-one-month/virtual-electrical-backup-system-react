@@ -1,16 +1,16 @@
-import DashboardPage from "@/admin/pages/DashboardPage";
-import AdminLayout from "@/layouts/AdminLayout";
 import powerStationRoute from "./powerStationRoute";
+import LazyLoad from "@/components/LazyLoad";
+import { AdminLayout, DashboardPage } from "@/constants/lazyloadElement";
 
 const adminRoute = [
   {
     path: "admin",
-    element: <AdminLayout />,
+    element: <LazyLoad component={AdminLayout} />,
 
     children: [
       {
         index: true,
-        element: <DashboardPage />,
+        element: <LazyLoad component={DashboardPage} />,
       },
       ...powerStationRoute,
     ],
