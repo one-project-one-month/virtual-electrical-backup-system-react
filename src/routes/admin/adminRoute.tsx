@@ -1,5 +1,6 @@
 import DashboardPage from "@/admin/pages/DashboardPage";
 import AdminLayout from "@/layouts/AdminLayout";
+import powerStationRoute from "./powerStationRoute";
 
 const adminRoute = [
   {
@@ -11,6 +12,7 @@ const adminRoute = [
         index: true,
         element: <DashboardPage />,
       },
+      ...powerStationRoute,
     ],
   },
 ];

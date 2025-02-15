@@ -10,10 +10,8 @@ export default function AdminLayout() {
   }
 
   return (
-    <div>
-      AdminLayout
-      <Button> Click me </Button>
+    <>
       <Outlet />
-    </div>
+    </>
   );
 }
