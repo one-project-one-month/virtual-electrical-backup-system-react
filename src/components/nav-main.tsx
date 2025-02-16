@@ -1,6 +1,4 @@
-"use client";
-
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { ChevronRight, LucideHome, type LucideIcon } from "lucide-react";
 
 import {
   Collapsible,
@@ -16,6 +14,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { Link, NavLink } from "react-router-dom";
 
 export function NavMain({
   items,
@@ -32,8 +31,34 @@ export function NavMain({
   }[];
 }) {
   return (
-    <SidebarGroup>
+    <SidebarGroup className="space-y-2">
       {/* <SidebarGroupLabel>Platform</SidebarGroupLabel> */}
+
+      <SidebarMenu>
+        <Collapsible>
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton tooltip="Dashboard">
+                <NavLink to="/admin" end>
+                  {({ isActive }: { isActive: boolean }) => (
+                    <span
+                      className={`flex gap-2 items-center w-60 ${
+                        isActive ? "bg-electric-400 py-5 px-1 text-white" : ""
+                      }`}
+                    >
+                      <LucideHome className="size-4" />
+                      Dashboard
+                    </span>
+                  )}
+                </NavLink>
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+          </SidebarMenuItem>
+        </Collapsible>
+      </SidebarMenu>
+
+      {/* Product */}
+
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
@@ -55,9 +80,22 @@ export function NavMain({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
+                        <NavLink
+                          to={subItem.url}
+                          // end={subItem.url === "/admin"}
+                        >
+                          {({ isActive }: { isActive: boolean }) => (
+                            <span
+                              className={`w-full px-5 py-2.5 rounded-lg  duration-300 hover:text-white ${
+                                isActive
+                                  ? "bg-electric-400 text-white   hover:bg-electric-500"
+                                  : " hover:bg-electric-400 "
+                              } `}
+                            >
+                              {subItem.title}
+                            </span>
+                          )}
+                        </NavLink>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

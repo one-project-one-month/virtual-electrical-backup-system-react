@@ -22,7 +22,9 @@ const BreadcrumbDashboard = ({
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem className="hidden md:block">
-            <BreadcrumbLink href="/admin">Dashboard</BreadcrumbLink>
+            <BreadcrumbLink>
+              <Link to="/admin">Dashboard</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
 
           {currentPageTitle && (

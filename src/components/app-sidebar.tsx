@@ -9,6 +9,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 
 // This is sample data.
 const data = {
@@ -25,23 +26,23 @@ const data = {
         },
         {
           title: "PowerStation",
-          url: "#",
+          url: "/admin/powerStation",
         },
         {
           title: "Inverter",
-          url: "#",
+          url: "/admin/inverter",
         },
         {
           title: "Generator",
-          url: "#",
+          url: "/admin/generator",
         },
         {
           title: "Device",
-          url: "#",
+          url: "/admin/device",
         },
         {
           title: "Setup",
-          url: "#",
+          url: "/admin/setup",
         },
       ],
     },
@@ -52,7 +53,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <h1 className="text-lg font-semibold"> VEBS </h1>
+        <Link to="/admin" className="text-lg font-semibold">
+          VEBS
+        </Link>
         {/* <TeamSwitcher teams={data.teams} /> */}
       </SidebarHeader>
 
