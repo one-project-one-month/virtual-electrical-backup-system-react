@@ -1,5 +1,6 @@
+import SideBar from "@/components/SideBar";
 import useAuth from "@/hooks/useAuth";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 export default function AdminLayout() {
   const { user } = useAuth();
@@ -10,7 +11,7 @@ export default function AdminLayout() {
 
   return (
     <>
-      <Outlet />
+      <SideBar />
     </>
   );
 }
