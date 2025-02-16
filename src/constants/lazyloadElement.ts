@@ -14,3 +14,12 @@ export const CreateBatteryPage = lazy(
 export const EditBatteryPage = lazy(
   () => import("@/admin/pages/EditBatteryPage")
 );
+
+//Inverter
+export const InverterPage = lazy(() => import("@/admin/pages/InverterPage"));
+export const CreateInverterPage = lazy(
+  () => import("@/admin/pages/CreateInverterPage")
+);
+export const EditInverterPage = lazy(
+  () => import("@/admin/pages/EditInverterPage")
+);
