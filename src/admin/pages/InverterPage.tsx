@@ -1,6 +1,6 @@
 import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
 import InverterTable from "../components/inverter/InverterTable";
-import Header from "../components/battery/Header";
+import Header from "../components/inverter/Header";
 import PaginationComponent from "@/components/PaginationComponent";
 
 export default function InverterPage() {

@@ -1,12 +1,12 @@
 export type Inverters = {
     id: number;
     type:string;
-    watt: string;
+    watt: number;
     waveType: string;
     model: string;
     brand: string;
     compatibleBattery: string;
-    inputVolt: string;
-    outputVolt: string;
+    inputVolt: number;
+    outputVolt: number;
     price: number;
 };

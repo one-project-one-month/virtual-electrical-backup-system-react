@@ -12,20 +12,18 @@ const InverterRow = ({
 }: InverterRowProps) => {
   return (
     <>
-      <TableRow>
+      <TableRow className="overflow-scroll">
         <TableCell className="font-medium">{id}</TableCell>
-        
         <TableCell className=""> {type} </TableCell>
-        <TableCell className="text-right"> {watt} </TableCell>
+        <TableCell className="text-right"> {watt} W </TableCell>
         <TableCell className=""> {waveType} </TableCell>
         <TableCell className=""> {model} </TableCell>
         <TableCell className=""> {brand} </TableCell>
         <TableCell className=""> {compatibleBattery} </TableCell>
-        <TableCell className=""> {inputVolt} </TableCell>
-        <TableCell className=""> {outputVolt} </TableCell>
-
-        <TableCell className=""> {price} </TableCell>
-        <TableCell className="text-right flex">
+        <TableCell className="text-center"> {inputVolt} V</TableCell>
+        <TableCell className="text-center"> {outputVolt} V</TableCell>
+        <TableCell className="text-right"> {price} $</TableCell>
+        <TableCell className="text-right flex gap-1">
           <Button variant="outline" size="sm">
             <LucidePencil className="size-3" />
           </Button>

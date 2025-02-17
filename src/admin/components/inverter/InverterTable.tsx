@@ -19,19 +19,19 @@ const InverterTable = () => {
 
   return (
     <section className="px-5 mt-5">
-      <Table className="bg-white rounded-lg shadow-lg">
+      <Table className="bg-white rounded-lg shadow-lg overflow-scroll overscroll-x-auto min-w-fit">
         <TableHeader>
-          <TableRow>
+          <TableRow  >
             <TableHead className="w-[100px]">ID</TableHead>
             <TableHead>Type</TableHead>
-            <TableHead>Watt</TableHead>
-            <TableHead className="">Wave Type</TableHead>
+            <TableHead className="text-right min-w-[6rem]">Watt</TableHead>
+            <TableHead className="text-nowrap">Wave Type</TableHead>
             <TableHead className="">Model</TableHead>
             <TableHead className="">Brand</TableHead>
-            <TableHead className="">Compatible Battery</TableHead>
-            <TableHead className="">Input Volt</TableHead>
-            <TableHead className="">Output Volt</TableHead>
-            <TableHead className="">Price</TableHead>
+            <TableHead className="text-nowrap">Compatible Battery</TableHead>
+            <TableHead className="text-center text-nowrap">Input Volt</TableHead>
+            <TableHead className="text-center text-nowrap">Output Volt</TableHead>
+            <TableHead className="text-right min-w-[6rem]">Price</TableHead>
             <TableHead className="text-center">Action</TableHead>
           </TableRow>
         </TableHeader>
