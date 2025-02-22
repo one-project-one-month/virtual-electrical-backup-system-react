@@ -2,6 +2,7 @@ import powerStationRoute from "./powerStationRoute";
 import LazyLoad from "@/components/LazyLoad";
 import { AdminLayout, DashboardPage } from "@/constants/lazyloadElement";
 import batteryRoute from "./batteryRoute";
+import generatorRoute from "./generatorRoute";
 
 import solarRoute from "./solarRoute";
 
@@ -24,11 +25,15 @@ const adminRoute = [
       },
       ...batteryRoute,
       ...powerStationRoute,
+<<<<<<< HEAD
       ...solarRoute,
       ...brandRoute,
       ...deviceRoute,
       ...inverterRoute,
 
+=======
+      ...generatorRoute
+>>>>>>> cc95115 (add generator table)
     ],
   },
 ];

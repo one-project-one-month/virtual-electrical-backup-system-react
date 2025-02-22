@@ -1,0 +1,57 @@
+ export const generators = [
+    {
+        id: 1,
+        name: "EcoPower 3000",
+        brand: 101,
+        model: "EP-3000X",
+        watt: 3000,
+        price: 499.99,
+        fuelType: "Gasoline",
+        description: "A compact, efficient generator perfect for camping and small appliances.",
+        image: "https://example.com/eco_power_3000.jpg"
+    },
+    {
+        id: 2,
+        name: "ThunderPro 5000",
+        brand: 102,
+        model: "TP-5000",
+        watt: 5000,
+        price: 799.99,
+        fuelType: "Diesel",
+        description: "Heavy-duty generator suitable for construction sites and large equipment.",
+        image: "https://example.com/thunder_pro_5000.jpg"
+    },
+    {
+        id: 3,
+        name: "PowerMate 1500",
+        brand: 103,
+        model: "PM-1500A",
+        watt: 1500,
+        price: 299.99,
+        fuelType: "Gasoline",
+        description: "Affordable, portable generator ideal for home backup power.",
+        image: "https://example.com/power_mate_1500.jpg"
+    },
+    {
+        id: 4,
+        name: "MaxVolt X2000",
+        brand: 104,
+        model: "MX-2000",
+        watt: 2000,
+        price: 399.99,
+        fuelType: "Gasoline",
+        description: "Quiet operation, compact generator for recreational activities.",
+        image: "https://example.com/maxvolt_x2000.jpg"
+    },
+    {
+        id: 5,
+        name: "UltraGen 7000",
+        brand: 105,
+        model: "UG-7000T",
+        watt: 7000,
+        price: 999.99,
+        fuelType: "Diesel",
+        description: "High power output, designed for industrial use and backup power.",
+        image: "https://example.com/ultragen_7000.jpg"
+    }
+];
