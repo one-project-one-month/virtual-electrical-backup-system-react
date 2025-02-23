@@ -14,3 +14,11 @@ export const CreateBatteryPage = lazy(
 export const EditBatteryPage = lazy(
   () => import("@/admin/pages/EditBatteryPage")
 );
+
+//Solar
+
+export const SolarPage = lazy(() => import("@/admin/pages/SolarPage"));
+export const CreateSolarPage = lazy(
+  () => import("@/admin/pages/CreateSolarPage")
+);
+export const EditSolarPage = lazy(() => import("@/admin/pages/EditSolarPage"));

@@ -44,6 +44,10 @@ const data = {
           title: "Setup",
           url: "/admin/setup",
         },
+        {
+          title: "Solar",
+          url: "/admin/solar",
+        },
       ],
     },
   ],

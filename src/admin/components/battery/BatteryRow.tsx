@@ -1,12 +1,12 @@
 import { Batteries } from "@/types/batteries";
 
+import { TableCell, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { LucidePencil, LucideTrash2 } from "lucide-react";
 type BatteryRowProps = {
   battery: Batteries;
 };
 
-import { TableCell, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { LucidePencil, LucideTrash2 } from "lucide-react";
 const BatteryRow = ({
   battery: { id, name, capacity, voltage, brand, modelNo, price },
 }: BatteryRowProps) => {
