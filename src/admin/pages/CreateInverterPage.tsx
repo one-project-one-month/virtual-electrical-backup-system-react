@@ -1,45 +1,260 @@
+import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
+import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
+import { brands } from "../data/brands";
+import { inverterTypes, waveTypes } from "../data/inverters";
+import { DialogCloseButton } from "../components/inverter/Dialog";
+import { Button } from "@/components/ui/button";
+import { Combobox } from "@/admin/components/inverter/ComboBox";
+import SelectEl from "@/admin/components/inverter/SelectEl";
+import { z } from "zod";
+import { Inverters } from "@/types/inverters";
+import { useState } from "react";
+const formSchema = z.object({
+  inverterType: z.number().min(1, { message: "Inverter type is required" }),
+  model: z.string().min(1, { message: "Model is required" }),
+  brandId: z.number().min(1, { message: "Brand is required" }),
+  inverterPrice: z.number().min(1, { message: "Price is required" }),
+  waveType: z.string().min(1, { message: "Wave type is required" }),
+  compatibleBattery: z
+    .string()
+    .min(1, { message: "Compatible battery is required" }),
+  watt: z.number().min(1, { message: "Power is required" }),
+  inverterVolt: z.number().min(1, { message: "Volt is required" }),
+  image: z.instanceof(File),
+  description: z.string(),
+});
+
 const CreateInverterPage = () => {
-  // interface formValue  {
-  //       type: FormDataEntryValue | null,
-  //       watt: FormDataEntryValue | null,
-  //       wave_type: FormDataEntryValue | null,
-  //       model: FormDataEntryValue | null,
-  //       brand: FormDataEntryValue | null,
-  //       compatible_battery: FormDataEntryValue | null,
-  //       input_volt: FormDataEntryValue | null,
-  //       output_volt: FormDataEntryValue | null,
-  //       price:FormDataEntryValue | null,
-  //   }
-    return (
-        <>
-            <form onSubmit={(e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.currentTarget)
-                    const formValues = {
-                        type: formData.get("type"),
-                        watt: formData.get("watt"),
-                        wave_type: formData.get("waveType"),
-                        model: formData.get("model"),
-                        brand: formData.get("brand"),
-                        compatible_battery: formData.get("compatibleBattery"),
-                        input_volt: formData.get("inputVolt"),
-                        output_volt: formData.get("outputVolt"),
-                        price:formData.get("price"),
-                    }
-                    console.log(formValues)
-                }}>
-                <input type="text" name="type" />
-                <input type="text" name="watt" />
-                <input type="text" name="waveType" />
-                <input type="text" name="model" />
-                <input type="text" name="brand" />
-                <input type="text" name="compatibleBattery" />
-                <input type="text" name="inputVolt" />
-                <input type="text" name="outputVolt" />
-                <input type="text" name="price" />
-                <button>Create</button>
-        </form>
-        </>)
+  const navigate = useNavigate();
+  const [errors, setErrors] =
+    useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
+  const [redirectToList, setRedirectToList] = useState(false);
+  const previousPage = () => {
+    navigate(-1);
+  };
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const formValues: Partial<Inverters> = Object.fromEntries(
+      formData.entries()
+    );
+    formValues.inverterPrice = Number(formValues.inverterPrice);
+    formValues.inverterVolt = Number(formValues.inverterVolt);
+    formValues.watt = Number(formValues.watt);
+    formValues.brandId = Number(formValues.brandId);
+    formValues.inverterType = Number(formValues.inverterType);
+    formValues.image = formValues.image as File;
+    const parsedValues = formSchema.safeParse(formValues);
+    if (!parsedValues.success) {
+      setErrors(parsedValues.error.format());
+    }
+    if (parsedValues.success && redirectToList) {
+      navigate("../inverter");
+    }
+    console.log(parsedValues);
+  };
+  return (
+    <>
+      <BreadcrumbDashboard
+        currentPageTitle="Create Inverter"
+        links={[{ name: "Manage Inverter", path: "../inverter" }]}
+      />
+      <form
+        className="grid grid-cols-12 gap-6 p-4 pl-10 pt-5 "
+        onSubmit={submitHandler}
+      >
+        <div className="col-span-3 grid gap-2 relative">
+          <label
+            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            htmlFor="name"
+          >
+            Inverter Type
+          </label>
+          <div className="flex items-center gap-2">
+            <Combobox
+              data={inverterTypes}
+              name="inverterType"
+              defaultValue=""
+            />
+            <DialogCloseButton isBrand={false} />
+          </div>
+          {errors?.inverterType && errors.inverterType._errors?.length > 0 && (
+            <p className="text-red-700 text-xs absolute -bottom-4 left-0">
+              {errors.inverterType._errors[0]}
+            </p>
+          )}
+        </div>
+        <div className="col-span-3 grid gap-2 relative">
+          <label
+            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            htmlFor="model"
+          >
+            Model
+          </label>
+          <Input type="text" id="model" placeholder="model" name="model" />
+          {errors?.model && errors.model._errors?.length > 0 && (
+            <p className="text-red-700 text-xs absolute -bottom-4 left-0">
+              {errors.model._errors[0]}
+            </p>
+          )}
+        </div>
+        <div className="row-start-2 col-span-3 grid gap-2 relative">
+          <label
+            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            htmlFor="brand"
+          >
+            Brand
+          </label>
+          <div className="flex items-center gap-2">
+            <Combobox data={brands} name="brandId" defaultValue="" />
+            <DialogCloseButton isBrand={true} />
+          </div>
+          {errors?.brandId && errors.brandId._errors?.length > 0 && (
+            <p className="text-red-700 text-xs absolute -bottom-4 left-0">
+              {errors.brandId._errors[0]}
+            </p>
+          )}
+        </div>
+        <div className=" row-start-2 col-span-3 grid gap-2 relative">
+          <label
+            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            htmlFor="price"
+          >
+            Price
+          </label>
+          <Input
+            type="number"
+            id="price"
+            placeholder="price"
+            name="inverterPrice"
+          />
+          {errors?.inverterPrice &&
+            errors.inverterPrice._errors?.length > 0 && (
+              <p className="text-red-700 text-xs absolute -bottom-4 left-0">
+                {errors.inverterPrice._errors[0]}
+              </p>
+            )}
+        </div>
+        <div className="row-start-3 col-span-6 grid gap-2 relative">
+          <label
+            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            htmlFor="waveType"
+          >
+            Wave Type
+          </label>
+          <SelectEl data={waveTypes} name="waveType" defaultValue={undefined} />
+          {errors?.waveType && errors.waveType._errors?.length > 0 && (
+            <p className="text-red-700 text-xs absolute -bottom-4 left-0">
+              {errors.waveType._errors[0]}
+            </p>
+          )}
+        </div>
+        <div className="row-start-4 col-span-2 grid gap-2 align-top relative">
+          <label
+            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            htmlFor="compatibleBattery"
+          >
+            Compatible Battery
+          </label>
+          <Input
+            type="compatibleBattery"
+            id="compatibleBattery"
+            placeholder="eg. Lithium-Ion Battery"
+            name="compatibleBattery"
+          />
+          {errors?.compatibleBattery &&
+            errors.compatibleBattery._errors?.length > 0 && (
+              <p className="text-red-700 text-xs absolute text-nowrap -bottom-4 left-0">
+                {errors.compatibleBattery._errors[0]}
+              </p>
+            )}
+        </div>
+        <div className="row-start-4 col-span-2 grid gap-2 relative">
+          <label
+            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            htmlFor="watt"
+          >
+            Power
+          </label>
+          <Input type="number" id="watt" placeholder="2000 watt" name="watt" />
+          {errors?.watt && errors.watt._errors?.length > 0 && (
+            <p className="text-red-700 text-xs absolute -bottom-4 left-0">
+              {errors.watt._errors[0]}
+            </p>
+          )}
+        </div>
+        <div className="row-start-4 col-span-2 grid gap-2 relative">
+          <label
+            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            htmlFor="inverterVolt"
+          >
+            Volt
+          </label>
+          <Input
+            type="number"
+            id="inverterVolt"
+            placeholder="inverterVolt"
+            name="inverterVolt"
+          />
+          {errors?.inverterVolt && errors.inverterVolt._errors?.length > 0 && (
+            <p className="text-red-700 text-xs absolute -bottom-4 left-0">
+              {errors.inverterVolt._errors[0]}
+            </p>
+          )}
+        </div>
+        <div className="row-start-5 col-span-6 grid gap-2">
+          <label className="text-xs text-gray-600" htmlFor="compatibleBattery">
+            Image
+          </label>
+          <Input
+            type="file"
+            className="text-sm placeholder:text-xs"
+            id="image"
+            placeholder="image"
+            name="image"
+          />
+        </div>
+        <div className="row-start-6 col-span-6 grid gap-2">
+          <label className="text-xs text-gray-600" htmlFor="description">
+            Description
+          </label>
+          <textarea
+            className="text-sm"
+            id="description"
+            placeholder="eg. eco-friendly inverter "
+            name="description"
+          />
+        </div>
+        <div className="row-start-7 col-span-6 flex items-center gap-4">
+          <input
+            className="size-4 inline"
+            type="checkbox"
+            id="email"
+            onChange={(e) => {
+              setRedirectToList(e.target.checked);
+            }}
+          />
+          <label className="text-gray-500 text-sm" htmlFor="email">
+            Redirect to manage inverter
+          </label>
+        </div>
+        <Button
+          className="row-start-8 col-span-2 py-2 bg-electric-400 text-white rounded-lg hover:bg-electric-500"
+          type="submit"
+        >
+          Create
+        </Button>
+        <Button
+          className="row-start-8 text-black col-span-2 py-2 bg-white border border-black rounded-lg hover:bg-gray-100"
+          type="button"
+          onClick={previousPage}
+        >
+          Cancel
+        </Button>
+      </form>
+    </>
+  );
 };
 
 export default CreateInverterPage;

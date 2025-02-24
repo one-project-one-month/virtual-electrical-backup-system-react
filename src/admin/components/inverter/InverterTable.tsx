@@ -11,7 +11,7 @@ import { Inverters } from "@/types/inverters";
 import { useState } from "react";
 import InverterRow from "./InverterRow";
 
-const InverterTable = () => {                             
+const InverterTable = () => {
   const [invertersData, setInverterData] = useState<ApiResponse<Inverters[]>>({
     message: "Data has been successfully",
     data: inverters,
@@ -21,16 +21,15 @@ const InverterTable = () => {
     <section className="px-5 mt-5">
       <Table className="bg-white rounded-lg shadow-lg overflow-scroll overscroll-x-auto min-w-fit">
         <TableHeader>
-          <TableRow  >
+          <TableRow>
             <TableHead className="w-[100px]">ID</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead className="text-right min-w-[6rem]">Watt</TableHead>
+            <TableHead className="">Type</TableHead>
             <TableHead className="text-nowrap">Wave Type</TableHead>
             <TableHead className="">Model</TableHead>
             <TableHead className="">Brand</TableHead>
-            <TableHead className="text-nowrap">Compatible Battery</TableHead>
-            <TableHead className="text-center text-nowrap">Input Volt</TableHead>
-            <TableHead className="text-center text-nowrap">Output Volt</TableHead>
+            <TableHead className="">Compatible Battery</TableHead>
+            <TableHead className="text-center min-w-[4rem]">Volt</TableHead>
+            <TableHead className="text-center min-w-[6rem]">Power</TableHead>
             <TableHead className="text-right min-w-[6rem]">Price</TableHead>
             <TableHead className="text-center">Action</TableHead>
           </TableRow>

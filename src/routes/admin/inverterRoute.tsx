@@ -2,6 +2,7 @@ import {
   CreateInverterPage,
   EditInverterPage,
   InverterPage,
+  InverterDetailPage,
 } from "@/constants/lazyloadElement";
 
 const inverterRoute = [
@@ -16,6 +17,10 @@ const inverterRoute = [
   {
     path: "inverter/edit/:slug",
     element: <EditInverterPage />,
+  },
+  {
+    path: "inverter/detail/:slug",
+    element: <InverterDetailPage />,
   },
 ];
 export default inverterRoute;

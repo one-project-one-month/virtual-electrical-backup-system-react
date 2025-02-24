@@ -23,3 +23,6 @@ export const CreateInverterPage = lazy(
 export const EditInverterPage = lazy(
   () => import("@/admin/pages/EditInverterPage")
 );
+export const InverterDetailPage = lazy(
+  () => import("@/admin/pages/InverterDetialPage")
+);

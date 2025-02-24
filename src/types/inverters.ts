@@ -1,12 +1,19 @@
 export type Inverters = {
-    id: number;
-    type:string;
-    watt: number;
+    id: number | null;
+    inverterType: number;
     waveType: string;
     model: string;
-    brand: string;
+    brandId: number;
     compatibleBattery: string;
-    inputVolt: number;
-    outputVolt: number;
-    price: number;
+    inverterVolt: number;
+    inverterPrice: number;
+    image: string | File;
+    description: string;
+    watt: number;
 };
+
+export type InverterType = {
+    id: number;
+    name: string;
+    efficiency: number;
+}

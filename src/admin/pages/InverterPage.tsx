@@ -11,5 +11,5 @@ export default function InverterPage() {
       <InverterTable />
       <PaginationComponent />
     </section>
-  )
+  );
 }
