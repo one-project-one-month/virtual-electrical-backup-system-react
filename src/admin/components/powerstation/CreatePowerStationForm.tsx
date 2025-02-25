@@ -32,8 +32,6 @@ const formSchema = z.object({
 });
 
 export default function CreatePowerStationForm() {
-  const [chargingType, setChargingType] = useState<string>("");
-  const [waveType, setWaveType] = useState<string>("");
   const [redirect, setRedirect] = useState<boolean>(false);
   const [error, setError] = useState<z.ZodFormattedError<typeof formSchema>["_output"] | undefined>(undefined);
 
@@ -43,8 +41,6 @@ export default function CreatePowerStationForm() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    formData.set("chargingType", chargingType);
-    formData.set("waveType", waveType);
 
     let formValues = Object.fromEntries(formData) as Record<string, any>;
 
@@ -143,7 +139,7 @@ export default function CreatePowerStationForm() {
 
           <div className="flex flex-col justify-start gap-4 col-span-6">
             <Label htmlFor="chargingType">Charging Type<span className="ms-2 text-red-500">*</span></Label>
-            <Select onValueChange={setChargingType}>
+            <Select name="chargingType">
               <SelectTrigger>
                 <SelectValue placeholder="Select Charging Type" />
               </SelectTrigger>
@@ -180,7 +176,7 @@ export default function CreatePowerStationForm() {
 
           <div className="flex flex-col justify-start gap-4 col-span-6">
             <Label htmlFor="waveType">Wave Type<span className="ms-2 text-red-500">*</span></Label>
-            <Select onValueChange={setWaveType}>
+            <Select name="waveType">
               <SelectTrigger>
                 <SelectValue placeholder="Select Wave Type" />
               </SelectTrigger>

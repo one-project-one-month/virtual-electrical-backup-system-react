@@ -38,11 +38,6 @@ export default function EditPowerStationForm() {
   const data = powerstations.find(
     (powerstation) => powerstation.id === Number(id)
   );
-
-  const [chargingType, setChargingType] = useState<string>(
-    data ? data?.chargingType : ""
-  );
-  const [waveType, setWaveType] = useState<string>(data ? data?.waveType : "");
   const [redirect, setRedirect] = useState<boolean>(false);
   const [error, setError] = useState<z.ZodFormattedError<typeof formSchema>["_output"] | undefined>(undefined);
 
@@ -52,8 +47,6 @@ export default function EditPowerStationForm() {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    formData.set("chargingType", chargingType);
-    formData.set("waveType", waveType);
 
     let formValues = Object.fromEntries(formData) as Record<string, any>;
 
@@ -162,7 +155,7 @@ export default function EditPowerStationForm() {
 
           <div className="flex flex-col justify-start gap-4 col-span-6">
             <Label htmlFor="chargingType">Charging Type<span className="ms-2 text-red-500">*</span></Label>
-            <Select value={chargingType} onValueChange={setChargingType}>
+            <Select defaultValue={data?.chargingType} name="chargingType">
               <SelectTrigger>
             <SelectValue placeholder="Select Charging Type" />
               </SelectTrigger>
@@ -202,7 +195,7 @@ export default function EditPowerStationForm() {
 
           <div className="flex flex-col justify-start gap-4 col-span-6">
             <Label htmlFor="waveType">Wave Type<span className="ms-2 text-red-500">*</span></Label>
-            <Select value={waveType} onValueChange={setWaveType}>
+            <Select defaultValue={data?.waveType} name="waveType">
               <SelectTrigger>
             <SelectValue placeholder="Select Wave Type" />
               </SelectTrigger>
