@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { inverters } from "../../data/inverters";
 import { inverterTypes } from "../../data/inverters";
 import { brands } from "../../data/brands";
-import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 function InverterDetailPage() {
@@ -14,10 +13,6 @@ function InverterDetailPage() {
   };
   return (
     <>
-      <BreadcrumbDashboard
-        currentPageTitle="Inverter Detail"
-        links={[{ name: "Manage Inverter", path: "../inverter" }]}
-      />
       <div className="grid grid-cols-12 gap-6 p-4 pl-10 pt-5">
         <div className="col-span-3">
           <img

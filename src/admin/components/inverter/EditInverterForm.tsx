@@ -1,14 +1,15 @@
-import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
-import { brands } from "../../data/brands";
-import { inverterTypes, waveTypes } from "../../data/inverters";
-import { DialogCloseButton } from "./Dialog";
-import { Button } from "@/components/ui/button";
-import { Combobox } from "@/admin/components/inverter/ComboBox";
-import SelectEl from "@/admin/components/inverter/SelectEl";
-import { z } from "zod";
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { inverters, inverterTypes } from "../../data/inverters";
+import { DialogCloseButton } from "./Dialog";
+import { brands } from "../../data/brands";
+import { waveTypes } from "../../data/inverters";
+import { Combobox } from "@/admin/components/inverter/ComboBox";
+import SelectEl from "./SelectEl";
+import { Button } from "@/components/ui/button";
+import { z } from "zod";
+
 const formSchema = z.object({
   inverterType: z.number().min(1, { message: "Inverter type is required" }),
   model: z.string().min(1, { message: "Model is required" }),
@@ -25,10 +26,18 @@ const formSchema = z.object({
   redirect_to_list: z.boolean(),
 });
 
-const CreateInverterPage = () => {
+const EditInverterPage = () => {
   const navigate = useNavigate();
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
+  const { slug: id } = useParams();
+  const currentInverter = inverters.find(
+    (inverter) => inverter.id === Number(id)
+  );
+  const currentBrand = brands.find(
+    (brand) => brand.id === currentInverter?.brandId
+  );
+
   const previousPage = () => {
     navigate(-1);
   };
@@ -36,7 +45,7 @@ const CreateInverterPage = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const formValues = Object.fromEntries(formData.entries());
-    formValues.image = formValues.image as File;
+
     const parsedValues = {
       ...formValues,
       inverterPrice: Number(formValues.inverterPrice),
@@ -58,12 +67,9 @@ const CreateInverterPage = () => {
       navigate("../inverter");
     }
   };
+
   return (
     <>
-      <BreadcrumbDashboard
-        currentPageTitle="Create Inverter"
-        links={[{ name: "Manage Inverter", path: "../inverter" }]}
-      />
       <form
         className="grid grid-cols-12 gap-6 p-4 pl-10 pt-5 "
         onSubmit={submitHandler}
@@ -79,7 +85,7 @@ const CreateInverterPage = () => {
             <Combobox
               data={inverterTypes}
               name="inverterType"
-              defaultValue=""
+              defaultValue={currentInverter?.inverterType?.toString() || ""}
             />
             <DialogCloseButton isBrand={false} />
           </div>
@@ -96,7 +102,13 @@ const CreateInverterPage = () => {
           >
             Model
           </label>
-          <Input type="text" id="model" placeholder="model" name="model" />
+          <Input
+            type="model"
+            id="model"
+            placeholder="model"
+            name="model"
+            defaultValue={currentInverter?.model || ""}
+          />
           {errors?.model && errors.model._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
               {errors.model._errors[0]}
@@ -111,7 +123,11 @@ const CreateInverterPage = () => {
             Brand
           </label>
           <div className="flex items-center gap-2">
-            <Combobox data={brands} name="brandId" defaultValue="" />
+            <Combobox
+              data={brands}
+              name="brandId"
+              defaultValue={currentBrand?.id.toString() || ""}
+            />
             <DialogCloseButton isBrand={true} />
           </div>
           {errors?.brandId && errors.brandId._errors?.length > 0 && (
@@ -132,6 +148,7 @@ const CreateInverterPage = () => {
             id="price"
             placeholder="price"
             name="inverterPrice"
+            defaultValue={currentInverter?.inverterPrice?.toString() || ""}
           />
           {errors?.inverterPrice &&
             errors.inverterPrice._errors?.length > 0 && (
@@ -147,18 +164,19 @@ const CreateInverterPage = () => {
           >
             Wave Type
           </label>
-          <SelectEl data={waveTypes} name="waveType" defaultValue={undefined} />
+          <SelectEl
+            data={waveTypes}
+            name="waveType"
+            defaultValue={currentInverter?.waveType || ""}
+          />
           {errors?.waveType && errors.waveType._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
               {errors.waveType._errors[0]}
             </p>
           )}
         </div>
-        <div className="row-start-4 col-span-2 grid gap-2 align-top relative">
-          <label
-            className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
-            htmlFor="compatibleBattery"
-          >
+        <div className="row-start-4 col-span-2 grid gap-2 relative">
+          <label className="text-xs text-gray-600" htmlFor="compatibleBattery">
             Compatible Battery
           </label>
           <Input
@@ -166,10 +184,11 @@ const CreateInverterPage = () => {
             id="compatibleBattery"
             placeholder="eg. Lithium-Ion Battery"
             name="compatibleBattery"
+            defaultValue={currentInverter?.compatibleBattery || ""}
           />
           {errors?.compatibleBattery &&
             errors.compatibleBattery._errors?.length > 0 && (
-              <p className="text-red-700 text-xs absolute text-nowrap -bottom-4 left-0">
+              <p className="text-red-700 text-nowrap text-xs absolute -bottom-4 left-0">
                 {errors.compatibleBattery._errors[0]}
               </p>
             )}
@@ -181,7 +200,13 @@ const CreateInverterPage = () => {
           >
             Power
           </label>
-          <Input type="number" id="watt" placeholder="2000 watt" name="watt" />
+          <Input
+            type="number"
+            id="watt"
+            placeholder="2000 watt"
+            name="watt"
+            defaultValue={currentInverter?.watt?.toString() || ""}
+          />
           {errors?.watt && errors.watt._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
               {errors.watt._errors[0]}
@@ -200,6 +225,7 @@ const CreateInverterPage = () => {
             id="inverterVolt"
             placeholder="inverterVolt"
             name="inverterVolt"
+            defaultValue={currentInverter?.inverterVolt?.toString() || ""}
           />
           {errors?.inverterVolt && errors.inverterVolt._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -228,14 +254,16 @@ const CreateInverterPage = () => {
             id="description"
             placeholder="eg. eco-friendly inverter "
             name="description"
+            defaultValue={currentInverter?.description || ""}
           />
         </div>
         <div className="row-start-7 col-span-6 flex items-center gap-4">
-          <input
+          <Input
             className="size-4 inline"
             type="checkbox"
             id="redirect_to_inverter"
             name="redirect_to_list"
+            checked
           />
           <label
             className="text-gray-500 text-sm"
@@ -248,7 +276,7 @@ const CreateInverterPage = () => {
           className="row-start-8 col-span-2 py-2 bg-electric-400 text-white rounded-lg hover:bg-electric-500"
           type="submit"
         >
-          Create
+          Edit
         </Button>
         <Button
           className="row-start-8 text-black col-span-2 py-2 bg-white border border-black rounded-lg hover:bg-gray-100"
@@ -262,4 +290,4 @@ const CreateInverterPage = () => {
   );
 };
 
-export default CreateInverterPage;
+export default EditInverterPage;
