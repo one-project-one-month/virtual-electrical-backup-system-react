@@ -10,7 +10,7 @@ const powerStationRoute = [
     element: <CreatePowerStationPage />,
   },
   {
-    path: "powerStation/edit/:slug",
+    path: "powerStation/edit/:id",
     element: <EditPowerStationPage />
   }
 

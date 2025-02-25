@@ -1,4 +1,6 @@
 import { PowerStations } from "@/types/powerstations";
+import { useFormat } from "@/hooks/useFormat";
+import { Link } from "react-router-dom";
 
 type PowerStationRowProps = {
     powerstation: PowerStations;
@@ -8,22 +10,45 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { LucidePencil, LucideTrash2 } from "lucide-react";
 
-const PowerStationRow = ({powerstation: {id, name, watt, wave_type, solar_support, battery_ah, brand, price}}: PowerStationRowProps) => {
+const PowerStationRow = ({powerstation: {
+  id,  
+  model,  
+  watt,  
+  brandId,  
+  waveType,  
+  usableWatt,  
+  chargingTime,  
+  chargingType,  
+  inputWatt,  
+  inputAmp,  
+  outputAmp,  
+  powerStationPrice,  
+  image,  
+  description 
+}}: PowerStationRowProps) => {
+
+    const {formatTime} = useFormat();
 
     return (
         <>
         <TableRow>
             <TableCell >{id}</TableCell>
-            <TableCell >{name}</TableCell>
-            <TableCell >{brand}</TableCell>
-            <TableCell className="text-center">{wave_type}</TableCell>
-            <TableCell className="text-center">{solar_support? <span className="text-green-500">yes</span>: <span className="text-gray-500">no</span>}</TableCell>
-            <TableCell className="text-right">{battery_ah}</TableCell>
-            <TableCell className="text-right">{watt}</TableCell>
-            <TableCell className="text-right"><span className="me-2">{price}.00</span>$</TableCell>
+            <TableCell >{model}</TableCell>
+            <TableCell >{brandId}</TableCell>
+            <TableCell >{watt}<span className="ms-2">W</span></TableCell>
+            <TableCell className="text-center">{waveType}</TableCell>
+            <TableCell className="text-center">{usableWatt}<span className="ms-2">W</span></TableCell>
+            <TableCell className="text-center">{chargingType}</TableCell>
+            <TableCell className="text-center">{formatTime(chargingTime)}</TableCell>
+            <TableCell className="text-right">{inputWatt}<span className="ms-2">W</span></TableCell>
+            <TableCell className="text-right">{inputAmp}<span className="ms-2">Amp</span></TableCell>
+            <TableCell className="text-right">{outputAmp}<span className="ms-2">Amp</span></TableCell>
+            <TableCell className="text-right"><span className="me-2">{powerStationPrice}</span>$</TableCell>
             <TableCell className="text-right flex gap-1 justify-end">
                 <Button variant="outline" size="sm">
-                    <LucidePencil />
+                    <Link to={`/admin/powerstation/edit/${id}`}>
+                        <LucidePencil />
+                    </Link>
                 </Button>
                 <Button variant="outline" size="sm">
                     <LucideTrash2 />

@@ -1,10 +1,16 @@
 export type PowerStations = {
     id: number;
-    name: string;
-    watt: string;
-    wave_type: string;
-    solar_support: boolean;
-    battery_ah: string;
-    brand: string;
-    price: number;
-}
+    model: string;
+    watt: number;
+    brandId: number;
+    waveType: string;
+    usableWatt: number;
+    chargingTime: number;
+    chargingType: string;
+    inputWatt: number;
+    inputAmp: number;
+    outputAmp: number;
+    powerStationPrice: number;
+    image: string;
+    description: string;
+  };

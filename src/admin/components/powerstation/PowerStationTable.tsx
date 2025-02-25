@@ -19,12 +19,16 @@ export default function PowerStationTable() {
             <TableHeader>
                 <TableRow>
                     <TableHead className="w-[100px]">ID</TableHead>
-                    <TableHead>Name</TableHead>
+                    <TableHead>Model</TableHead>
                     <TableHead>Brand</TableHead>
+                    <TableHead>Watt</TableHead>
                     <TableHead className="text-center">Wave Type</TableHead>
-                    <TableHead className="text-center">Solar Support</TableHead>
-                    <TableHead className="text-right">Battery Ah</TableHead>
-                    <TableHead className="text-right">Watt</TableHead>
+                    <TableHead className="text-center">Usable Watt</TableHead>
+                    <TableHead className="text-center">Charging Type</TableHead>
+                    <TableHead className="text-center">Charging Time</TableHead>
+                    <TableHead className="text-right">Input Watt</TableHead>
+                    <TableHead className="text-right">Input Amp</TableHead>
+                    <TableHead className="text-right">Output Amp</TableHead>
                     <TableHead className="text-right">Price</TableHead>
                     <TableHead className="text-right">Action</TableHead>
                 </TableRow>
