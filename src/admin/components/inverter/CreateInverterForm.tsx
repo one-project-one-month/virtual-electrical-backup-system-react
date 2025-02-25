@@ -34,7 +34,7 @@ const CreateInverterPage = () => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const formValues = Object.fromEntries(formData.entries());
+    const formValues = Object.fromEntries(formData);
     formValues.image = formValues.image as File;
     const parsedValues = {
       ...formValues,

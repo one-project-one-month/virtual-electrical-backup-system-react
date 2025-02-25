@@ -44,7 +44,7 @@ const EditInverterPage = () => {
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const formValues = Object.fromEntries(formData.entries());
+    const formValues = Object.fromEntries(formData);
 
     const parsedValues = {
       ...formValues,
