@@ -14,3 +14,12 @@ export const CreateBatteryPage = lazy(
 export const EditBatteryPage = lazy(
   () => import("@/admin/pages/EditBatteryPage")
 );
+
+// Device
+export const DevicePage = lazy(() => import("@/admin/pages/DevicesPage"));
+export const CreateDevicePage = lazy(
+  () => import("@/admin/components/device/CreateDeviceForm")
+);
+export const EditDevicePage = lazy(
+  () => import("@/admin/components/device/EditDeviceForm")
+);
