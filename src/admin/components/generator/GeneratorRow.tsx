@@ -2,6 +2,7 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { LucidePencil, LucideTrash2 } from "lucide-react";
 import type { Generator } from "@/types/generator";
+import { Link } from "react-router-dom";
 
 type GeneratorRowProps = {
     generator : Generator
@@ -20,9 +21,11 @@ const GeneratorRow = ({
     <TableCell className="text-right"> {fuelType} </TableCell>
     <TableCell className="text-right">$ {price} </TableCell>
     <TableCell className="text-right">
+        <Link to={`/admin/generator/edit/${id}`}>
       <Button variant="outline" size="sm">
         <LucidePencil className="size-3" />
       </Button>
+      </Link>
       <Button variant="outline" size="sm">
         <LucideTrash2 />
       </Button>

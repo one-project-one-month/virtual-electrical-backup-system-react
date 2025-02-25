@@ -1,8 +1,15 @@
-import React from 'react'
+import BreadcrumbDashboard from '@/components/BreadcrumbDashboard'
 
-const EditGeneratorPage = () => {
+import EditForm from '../components/generator/EditForm'
+
+
+const EditGeneratorPage : React.FC = () => {
+
   return (
-    <div>EditGeneratorPage</div>
+    <>
+    <BreadcrumbDashboard currentPageTitle='Edit Generator' links={[{name: 'Manage Generator',path: '../generator'}]}/>
+    <EditForm/>
+    </>
   )
 }
 

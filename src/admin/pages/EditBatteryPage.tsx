@@ -1,5 +1,11 @@
 const EditBatteryPage = () => {
-  return <div>EditBatteryPage</div>;
+  return (
+    <>
+    <form action="">
+      <input type="text" />
+    </form>
+    </>
+  );
 };
 
 export default EditBatteryPage;

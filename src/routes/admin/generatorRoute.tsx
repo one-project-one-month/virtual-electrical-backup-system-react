@@ -14,7 +14,7 @@ const generatorRoute = [
     element: <CreateGeneratorPage />,
   },
   {
-    path: "generator/edit/:slug",
+    path: "generator/edit/:id",
     element: <EditGeneratorPage />,
   },
 ];

@@ -1,8 +1,15 @@
-import React from 'react'
+import BreadcrumbDashboard from '@/components/BreadcrumbDashboard'
+import CreateForm from '../components/generator/CreateForm'
+
+
 
 const CreateGeneratorPage = () => {
+
   return (
-    <div>CreateGeneratorPage</div>
+    <>
+    <BreadcrumbDashboard currentPageTitle='Create Generator' links={[{name: 'Manage Generator',path: '../generator'}]}/>
+    <CreateForm/>
+    </>
   )
 }
 
