@@ -3,8 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { useState, useEffect } from "react";
-import { Devices } from "@/types/devices";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { devices } from "@/admin/data/devices";
 
@@ -18,7 +17,7 @@ const formSchema = z.object({
 
 function EditDeviceForm() {
   const { id } = useParams();
-  const [deviceData, setDeviceData] = useState<Devices | null>(null);
+  const currentDevice = devices.find((device) => device.id === Number(id));
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
   const navigate = useNavigate();
@@ -48,16 +47,10 @@ function EditDeviceForm() {
       navigate("../device");
     }
   };
-  useEffect(() => {
-    const device = devices.find((device) => device.id === Number(id));
-    if (device) {
-      setDeviceData(device);
-    }
-  }, [id]);
   return (
     <>
       <BreadcrumbDashboard
-        currentPageTitle="Create Device"
+        currentPageTitle="Edit Device"
         links={[{ name: "Manage Device", path: "../device" }]}
       />
       <form
@@ -72,7 +65,7 @@ function EditDeviceForm() {
             type="text"
             placeholder="Enter Device Name"
             name="deviceName"
-            defaultValue={deviceData?.deviceName}
+            defaultValue={currentDevice?.deviceName}
           />
           {errors?.deviceName && errors.deviceName._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -88,7 +81,7 @@ function EditDeviceForm() {
             type="number"
             placeholder="Enter Device Name"
             name="watt"
-            defaultValue={deviceData?.watt}
+            defaultValue={currentDevice?.watt}
           />
           {errors?.watt && errors.watt._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -113,7 +106,7 @@ function EditDeviceForm() {
             type="checkbox"
             id="pureSineWave"
             name="pureSineWave"
-            defaultChecked={deviceData?.pureSineWave}
+            defaultChecked={currentDevice?.pureSineWave}
           />
           <label className="text-gray-500 text-sm" htmlFor="pureSineWave">
             Pure Sine Wave
