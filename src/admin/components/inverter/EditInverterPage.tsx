@@ -1,14 +1,13 @@
 import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { inverters, inverterTypes } from "../data/inverters";
-import { Inverters } from "@/types/inverters";
-import { DialogCloseButton } from "../components/inverter/Dialog";
-import { brands } from "../data/brands";
-import { waveTypes } from "../data/inverters";
+import { inverters, inverterTypes } from "../../data/inverters";
+import { DialogCloseButton } from "./Dialog";
+import { brands } from "../../data/brands";
+import { waveTypes } from "../../data/inverters";
 import { Combobox } from "@/admin/components/inverter/ComboBox";
-import SelectEl from "../components/inverter/SelectEl";
+import SelectEl from "./SelectEl";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 
@@ -25,48 +24,51 @@ const formSchema = z.object({
   inverterVolt: z.number().min(1, { message: "Volt is required" }),
   image: z.instanceof(File),
   description: z.string(),
+  redirect_to_list: z.boolean(),
 });
 
 const EditInverterPage = () => {
   const navigate = useNavigate();
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
-  const [redirectToList, setRedirectToList] = useState(false);
   const { slug: id } = useParams();
-  const [inverterData, setInverterData] = useState<
-    Partial<Inverters> | undefined
-  >(undefined);
-  const [brandData, setBrandData] = useState<string | undefined>(undefined);
+  const currentInverter = inverters.find(
+    (inverter) => inverter.id === Number(id)
+  );
+  const currentBrand = brands.find(
+    (brand) => brand.id === currentInverter?.brandId
+  );
+
   const previousPage = () => {
     navigate(-1);
   };
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const formValues: Partial<Inverters> = Object.fromEntries(
-      formData.entries()
-    );
-    formValues.inverterPrice = Number(formValues.inverterPrice);
-    formValues.inverterVolt = Number(formValues.inverterVolt);
-    formValues.watt = Number(formValues.watt);
-    formValues.brandId = Number(formValues.brandId);
-    formValues.inverterType = Number(formValues.inverterType);
-    formValues.image = formValues.image as File;
-    const parsedValues = formSchema.safeParse(formValues);
-    if (!parsedValues.success) {
-      setErrors(parsedValues.error.format());
+    const formValues = Object.fromEntries(formData.entries());
+
+    const parsedValues = {
+      ...formValues,
+      inverterPrice: Number(formValues.inverterPrice),
+      inverterVolt: Number(formValues.inverterVolt),
+      watt: Number(formValues.watt),
+      brandId: Number(formValues.brandId),
+      inverterType: Number(formValues.inverterType),
+      image: formValues.image as File,
+      redirect_to_list: formValues.redirect_to_list ? true : false,
+    };
+    const result = formSchema.safeParse(parsedValues);
+    if (result.success) {
+      setErrors(undefined);
+      console.log(result);
+    } else if (!result.success) {
+      setErrors(result.error.format());
     }
-    if (parsedValues.success && redirectToList) {
+    if (result.success && result.data.redirect_to_list) {
       navigate("../inverter");
     }
-    console.log(parsedValues);
   };
-  useEffect(() => {
-    const inverter = inverters.find((inverter) => inverter.id === Number(id));
-    setInverterData(inverter);
-    const brand = brands.find((brand) => brand.id === inverter?.brandId);
-    setBrandData(brand?.id.toString() || "");
-  }, [id]);
+
   return (
     <>
       <BreadcrumbDashboard
@@ -88,7 +90,7 @@ const EditInverterPage = () => {
             <Combobox
               data={inverterTypes}
               name="inverterType"
-              defaultValue={inverterData?.inverterType?.toString() || ""}
+              defaultValue={currentInverter?.inverterType?.toString() || ""}
             />
             <DialogCloseButton isBrand={false} />
           </div>
@@ -110,7 +112,7 @@ const EditInverterPage = () => {
             id="model"
             placeholder="model"
             name="model"
-            defaultValue={inverterData?.model || ""}
+            defaultValue={currentInverter?.model || ""}
           />
           {errors?.model && errors.model._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -129,7 +131,7 @@ const EditInverterPage = () => {
             <Combobox
               data={brands}
               name="brandId"
-              defaultValue={brandData || ""}
+              defaultValue={currentBrand?.id.toString() || ""}
             />
             <DialogCloseButton isBrand={true} />
           </div>
@@ -151,7 +153,7 @@ const EditInverterPage = () => {
             id="price"
             placeholder="price"
             name="inverterPrice"
-            defaultValue={inverterData?.inverterPrice?.toString() || ""}
+            defaultValue={currentInverter?.inverterPrice?.toString() || ""}
           />
           {errors?.inverterPrice &&
             errors.inverterPrice._errors?.length > 0 && (
@@ -170,7 +172,7 @@ const EditInverterPage = () => {
           <SelectEl
             data={waveTypes}
             name="waveType"
-            defaultValue={inverterData?.waveType || ""}
+            defaultValue={currentInverter?.waveType || ""}
           />
           {errors?.waveType && errors.waveType._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -187,7 +189,7 @@ const EditInverterPage = () => {
             id="compatibleBattery"
             placeholder="eg. Lithium-Ion Battery"
             name="compatibleBattery"
-            defaultValue={inverterData?.compatibleBattery || ""}
+            defaultValue={currentInverter?.compatibleBattery || ""}
           />
           {errors?.compatibleBattery &&
             errors.compatibleBattery._errors?.length > 0 && (
@@ -208,7 +210,7 @@ const EditInverterPage = () => {
             id="watt"
             placeholder="2000 watt"
             name="watt"
-            defaultValue={inverterData?.watt?.toString() || ""}
+            defaultValue={currentInverter?.watt?.toString() || ""}
           />
           {errors?.watt && errors.watt._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -228,7 +230,7 @@ const EditInverterPage = () => {
             id="inverterVolt"
             placeholder="inverterVolt"
             name="inverterVolt"
-            defaultValue={inverterData?.inverterVolt?.toString() || ""}
+            defaultValue={currentInverter?.inverterVolt?.toString() || ""}
           />
           {errors?.inverterVolt && errors.inverterVolt._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -246,7 +248,6 @@ const EditInverterPage = () => {
             id="image"
             placeholder="image"
             name="image"
-            defaultValue={inverterData?.image?.toString() || ""}
           />
         </div>
         <div className="row-start-6 col-span-6 grid gap-2">
@@ -258,19 +259,21 @@ const EditInverterPage = () => {
             id="description"
             placeholder="eg. eco-friendly inverter "
             name="description"
-            defaultValue={inverterData?.description || ""}
+            defaultValue={currentInverter?.description || ""}
           />
         </div>
         <div className="row-start-7 col-span-6 flex items-center gap-4">
           <Input
             className="size-4 inline"
             type="checkbox"
-            id="email"
-            onChange={(e) => {
-              setRedirectToList(e.target.checked);
-            }}
+            id="redirect_to_inverter"
+            name="redirect_to_list"
+            checked
           />
-          <label className="text-gray-500 text-sm" htmlFor="email">
+          <label
+            className="text-gray-500 text-sm"
+            htmlFor="redirect_to_inverter"
+          >
             Redirect to manage inverter
           </label>
         </div>

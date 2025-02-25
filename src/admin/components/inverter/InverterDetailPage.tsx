@@ -1,11 +1,11 @@
-import { Link, useParams } from "react-router-dom";
-import { inverters } from "../data/inverters";
-import { inverterTypes } from "../data/inverters";
-import { brands } from "../data/brands";
+import { useParams } from "react-router-dom";
+import { inverters } from "../../data/inverters";
+import { inverterTypes } from "../../data/inverters";
+import { brands } from "../../data/brands";
 import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-function InverterDetialPage() {
+function InverterDetailPage() {
   const { slug: id } = useParams();
   const inverter = inverters.find((inverter) => inverter.id === Number(id));
   const navigate = useNavigate();
@@ -73,28 +73,17 @@ function InverterDetialPage() {
           </p>
           <p className="text-sm font-normal">{inverter?.description}</p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-11 col-span-9 mt-4">
-          <Link
-            className="bg-electric-400 text-white rounded-md text-center hover:bg-electric-500"
-            to={`/admin/inverter/edit/${inverter?.id}`}
-          >
-            <Button
-              className="bg-transparent text-white border-none hover:bg-transparent hover:text-white"
-              variant="outline"
-            >
-              Edit
-            </Button>
-          </Link>
+        <div className="grid grid-cols-5 gap-2 row-start-11 col-span-9 mt-4 ">
           <Button
             onClick={previousPage}
-            className=" border-2 border-black"
+            className="bg-electric-400 col-span-2 text-white rounded-lg hover:bg-electric-500 hover:text-white"
             variant="outline"
           >
-            Cancel
+            Manage Inverter
           </Button>
         </div>
       </div>
     </>
   );
 }
-export default InverterDetialPage;
+export default InverterDetailPage;

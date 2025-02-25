@@ -18,11 +18,11 @@ export const EditBatteryPage = lazy(
 //Inverter
 export const InverterPage = lazy(() => import("@/admin/pages/InverterPage"));
 export const CreateInverterPage = lazy(
-  () => import("@/admin/pages/CreateInverterPage")
+  () => import("@/admin/components/inverter/CreateInverterPage")
 );
 export const EditInverterPage = lazy(
-  () => import("@/admin/pages/EditInverterPage")
+  () => import("@/admin/components/inverter/EditInverterPage")
 );
 export const InverterDetailPage = lazy(
-  () => import("@/admin/pages/InverterDetialPage")
+  () => import("@/admin/components/inverter/InverterDetailPage")
 );

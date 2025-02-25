@@ -1,14 +1,13 @@
 import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { brands } from "../data/brands";
-import { inverterTypes, waveTypes } from "../data/inverters";
-import { DialogCloseButton } from "../components/inverter/Dialog";
+import { brands } from "../../data/brands";
+import { inverterTypes, waveTypes } from "../../data/inverters";
+import { DialogCloseButton } from "./Dialog";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/admin/components/inverter/ComboBox";
 import SelectEl from "@/admin/components/inverter/SelectEl";
 import { z } from "zod";
-import { Inverters } from "@/types/inverters";
 import { useState } from "react";
 const formSchema = z.object({
   inverterType: z.number().min(1, { message: "Inverter type is required" }),
@@ -23,36 +22,41 @@ const formSchema = z.object({
   inverterVolt: z.number().min(1, { message: "Volt is required" }),
   image: z.instanceof(File),
   description: z.string(),
+  redirect_to_list: z.boolean(),
 });
 
 const CreateInverterPage = () => {
   const navigate = useNavigate();
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
-  const [redirectToList, setRedirectToList] = useState(false);
   const previousPage = () => {
     navigate(-1);
   };
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const formValues: Partial<Inverters> = Object.fromEntries(
-      formData.entries()
-    );
-    formValues.inverterPrice = Number(formValues.inverterPrice);
-    formValues.inverterVolt = Number(formValues.inverterVolt);
-    formValues.watt = Number(formValues.watt);
-    formValues.brandId = Number(formValues.brandId);
-    formValues.inverterType = Number(formValues.inverterType);
+    const formValues = Object.fromEntries(formData.entries());
     formValues.image = formValues.image as File;
-    const parsedValues = formSchema.safeParse(formValues);
-    if (!parsedValues.success) {
-      setErrors(parsedValues.error.format());
+    const parsedValues = {
+      ...formValues,
+      inverterPrice: Number(formValues.inverterPrice),
+      inverterVolt: Number(formValues.inverterVolt),
+      watt: Number(formValues.watt),
+      brandId: Number(formValues.brandId),
+      inverterType: Number(formValues.inverterType),
+      image: formValues.image as File,
+      redirect_to_list: formValues.redirect_to_list ? true : false,
+    };
+    const result = formSchema.safeParse(parsedValues);
+    if (result.success) {
+      setErrors(undefined);
+      console.log(result);
+    } else if (!result.success) {
+      setErrors(result.error.format());
     }
-    if (parsedValues.success && redirectToList) {
+    if (result.success && result.data.redirect_to_list) {
       navigate("../inverter");
     }
-    console.log(parsedValues);
   };
   return (
     <>
@@ -230,12 +234,13 @@ const CreateInverterPage = () => {
           <input
             className="size-4 inline"
             type="checkbox"
-            id="email"
-            onChange={(e) => {
-              setRedirectToList(e.target.checked);
-            }}
+            id="redirect_to_inverter"
+            name="redirect_to_list"
           />
-          <label className="text-gray-500 text-sm" htmlFor="email">
+          <label
+            className="text-gray-500 text-sm"
+            htmlFor="redirect_to_inverter"
+          >
             Redirect to manage inverter
           </label>
         </div>
