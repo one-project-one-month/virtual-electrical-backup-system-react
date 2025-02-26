@@ -2,6 +2,7 @@ import powerStationRoute from "./powerStationRoute";
 import LazyLoad from "@/components/LazyLoad";
 import { AdminLayout, DashboardPage } from "@/constants/lazyloadElement";
 import batteryRoute from "./batteryRoute";
+import brandRoute from "./brandRoute";
 
 const adminRoute = [
   {
@@ -15,6 +16,7 @@ const adminRoute = [
       },
       ...batteryRoute,
       ...powerStationRoute,
+      ...brandRoute,
     ],
   },
 ];

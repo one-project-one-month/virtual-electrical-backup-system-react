@@ -14,3 +14,10 @@ export const CreateBatteryPage = lazy(
 export const EditBatteryPage = lazy(
   () => import("@/admin/pages/EditBatteryPage")
 );
+
+//brand
+export const BrandPage = lazy(() => import("@/admin/pages/BrandPage"));
+export const CreateBrandPage = lazy(
+  () => import("@/admin/pages/CreateBrandPage")
+);
+export const EditBrandPage = lazy(() => import("@/admin/pages/EditBrandPage"));
