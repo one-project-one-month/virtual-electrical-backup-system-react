@@ -37,7 +37,7 @@ const CreateSolarForm = () => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const formValues = Object.fromEntries(formData);
+    const formValues = Object.fromEntries(formData.entries());
 
     const parseValues = {
       ...formValues,
@@ -46,7 +46,17 @@ const CreateSolarForm = () => {
 
     const result = formSchema.safeParse(parseValues);
 
-    console.log(result);
+    if (!result.success) {
+      return;
+    }
+    const data = {
+      type: result.data?.type,
+      controller: result.data?.controller,
+      outputWatt: Number(result.data?.outputWatt),
+      outputVolt: Number(result.data?.outputVolt),
+      length: Number(result.data?.length),
+      width: Number(result.data?.width),
+    };
   };
 
   return (
