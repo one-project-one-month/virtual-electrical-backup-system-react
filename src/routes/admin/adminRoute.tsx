@@ -4,6 +4,10 @@ import { AdminLayout, DashboardPage } from "@/constants/lazyloadElement";
 import batteryRoute from "./batteryRoute";
 import brandRoute from "./brandRoute";
 
+import deviceRoute from "./deviceRoute";
+
+import inverterRoute from "./inverterRoute";
+
 const adminRoute = [
   {
     path: "admin",
@@ -17,6 +21,9 @@ const adminRoute = [
       ...batteryRoute,
       ...powerStationRoute,
       ...brandRoute,
+      ...deviceRoute,
+      ...inverterRoute,
+
     ],
   },
 ];
