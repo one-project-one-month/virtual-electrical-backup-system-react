@@ -1,0 +1,163 @@
+import { solarPanels } from "@/admin/data/solar";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { FormEvent } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { z } from "zod";
+
+const formSchema = z.object({
+  type: z
+    .string({ message: "Type must be a string" })
+    .min(3, { message: "Type must be at least 3 characters" }),
+  controller: z
+    .string({ message: "Controller must be a string" })
+    .min(3, { message: "Controller must be at least 3 characters" }),
+
+  outputWatt: z
+    .string({ message: "Output Watt must be a number" })
+    .min(1, { message: "Output Watt must be at least 1 watt" }),
+  outputVolt: z
+    .string({ message: "Output Volt must be a number" })
+    .min(1, { message: "Output Volt must be at least 1 Volt" }),
+  length: z
+    .string({ message: "Length must be number" })
+    .min(1, { message: "Length must be at least 1" }),
+
+  width: z
+    .string({ message: "Width must be number" })
+    .min(1, { message: "Width must be number at least 1" }),
+
+  redirect_to_list: z.boolean(),
+});
+
+const EditSolarForm = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const currentSolar = solarPanels.find((solar) => solar.id === Number(id));
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const formValues = Object.fromEntries(formData);
+
+    const parseValues = {
+      ...formValues,
+      redirect_to_list: formData.has("redirect_to_list"),
+    };
+
+    const result = formSchema.safeParse(parseValues);
+
+    console.log(result);
+  };
+
+  return (
+    <section className="px-5">
+      <h1 className="mt-5 text-2xl font-semibold"> Edit Solar </h1>
+
+      <div className="w-1/2 mt-5">
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <Label htmlFor="type" className="mb-3">
+                Type
+              </Label>
+              <span className="text-red-500">*</span>
+              <Input
+                placeholder="Monocrystalline"
+                name="type"
+                defaultValue={currentSolar?.type}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="controller" className="mb-3">
+                Controller
+              </Label>
+              <span className="text-red-500">*</span>
+              <Input
+                placeholder="MPPT"
+                name="controller"
+                defaultValue={currentSolar?.controller}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="outputWatt" className="mb-3">
+                Output Watt
+              </Label>
+              <span className="text-red-500">*</span>
+              <Input
+                type="number"
+                placeholder="300"
+                name="outputWatt"
+                defaultValue={currentSolar?.outputWatt}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="outputVolt" className="mb-3">
+                Output Volt
+              </Label>
+              <span className="text-red-500">*</span>
+              <Input
+                type="number"
+                placeholder="12"
+                name="outputVolt"
+                defaultValue={currentSolar?.outputVolt}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="length" className="mb-3">
+                Length
+              </Label>
+              <span className="text-red-500">*</span>
+              <Input
+                type="number"
+                placeholder="1650"
+                name="length"
+                defaultValue={currentSolar?.length}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="width" className="mb-3">
+                Width
+              </Label>
+              <span className="text-red-500">*</span>
+              <Input
+                type="number"
+                placeholder="670"
+                name="width"
+                defaultValue={currentSolar?.width}
+              />
+            </div>
+
+            <div className="flex items-center col-span-2 gap-x-2">
+              <Checkbox
+                id="redirect_to_solar"
+                name="redirect_to_list"
+                checked
+              />
+              <Label htmlFor="redirect_to_solar">Go to manage solar</Label>
+            </div>
+
+            <div className="flex items-center gap-x-5">
+              <Button onClick={() => navigate(-1)} variant="outline">
+                Cancel
+              </Button>
+              <Button className="bg-electric-500 hover:bg-electric-600">
+                Update
+              </Button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
+};
+
+export default EditSolarForm;
