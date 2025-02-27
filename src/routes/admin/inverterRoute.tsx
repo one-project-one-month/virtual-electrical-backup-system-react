@@ -4,23 +4,24 @@ import {
   InverterPage,
   InverterDetailPage,
 } from "@/constants/lazyloadElement";
+import LazyLoad from "@/components/LazyLoad";
 
 const inverterRoute = [
   {
     path: "inverter",
-    element: <InverterPage />,
+    element: <LazyLoad component={InverterPage} />,
   },
   {
     path: "inverter/create",
-    element: <CreateInverterPage />,
+    element: <LazyLoad component={CreateInverterPage} />,
   },
   {
-    path: "inverter/edit/:slug",
-    element: <EditInverterPage />,
+    path: "inverter/edit/:id",
+    element: <LazyLoad component={EditInverterPage} />,
   },
   {
-    path: "inverter/detail/:slug",
-    element: <InverterDetailPage />,
+    path: "inverter/detail/:id",
+    element: <LazyLoad component={InverterDetailPage} />,
   },
 ];
 export default inverterRoute;

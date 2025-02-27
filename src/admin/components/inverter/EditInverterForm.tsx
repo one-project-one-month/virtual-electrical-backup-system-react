@@ -30,7 +30,7 @@ const EditInverterPage = () => {
   const navigate = useNavigate();
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
-  const { slug: id } = useParams();
+  const { id } = useParams();
   const currentInverter = inverters.find(
     (inverter) => inverter.id === Number(id)
   );

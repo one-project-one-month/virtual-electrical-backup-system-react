@@ -5,7 +5,7 @@ import { brands } from "../../data/brands";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 function InverterDetailPage() {
-  const { slug: id } = useParams();
+  const { id } = useParams();
   const inverter = inverters.find((inverter) => inverter.id === Number(id));
   const navigate = useNavigate();
   const previousPage = () => {
