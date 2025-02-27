@@ -16,6 +16,15 @@ export const EditBatteryPage = lazy(
 );
 
 
+//Solar
+
+export const SolarPage = lazy(() => import("@/admin/pages/SolarPage"));
+export const CreateSolarPage = lazy(
+  () => import("@/admin/pages/CreateSolarPage")
+);
+export const EditSolarPage = lazy(() => import("@/admin/pages/EditSolarPage"));
+
+
 //brand
 export const BrandPage = lazy(() => import("@/admin/pages/BrandPage"));
 export const CreateBrandPage = lazy(
@@ -44,4 +53,3 @@ export const InverterDetailPage = lazy(
   () => import("@/admin/pages/InverterDetailPage")
 
 );
-
