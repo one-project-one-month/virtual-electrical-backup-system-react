@@ -31,6 +31,10 @@ const data = {
           url: "/admin/battery",
         },
         {
+          title: "Brand",
+          url: "/admin/brand",
+        },
+        {
           title: "PowerStation",
           url: "/admin/powerStation",
         },
