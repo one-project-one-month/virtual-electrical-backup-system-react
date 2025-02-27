@@ -1,3 +1,4 @@
+import LazyLoad from "@/components/LazyLoad";
 import {
   CreateSolarPage,
   EditSolarPage,
@@ -7,15 +8,15 @@ import {
 const solarRoute = [
   {
     path: "solar",
-    element: <SolarPage />,
+    element: <LazyLoad component={SolarPage} />,
   },
   {
     path: "solar/create",
-    element: <CreateSolarPage />,
+    element: <LazyLoad component={CreateSolarPage} />,
   },
   {
     path: "solar/edit/:id",
-    element: <EditSolarPage />,
+    element: <LazyLoad component={EditSolarPage} />,
   },
 ];
 
