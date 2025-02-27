@@ -48,7 +48,6 @@ const CreateSolarForm = () => {
 
     const result = formSchema.safeParse(parseValues);
 
-    console.log(typeof result.error);
     if (!result.success) {
       setError(result.error.format());
       return;
@@ -61,6 +60,7 @@ const CreateSolarForm = () => {
       length: Number(result.data?.length),
       width: Number(result.data?.width),
     };
+    console.log(result);
   };
 
   return (
