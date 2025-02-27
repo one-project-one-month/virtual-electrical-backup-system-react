@@ -1,0 +1,106 @@
+export const powerstations = [
+  {
+    id: 1,
+    model: "EcoPower 500",
+    watt: 500,
+    brandId: 2,
+    waveType: "Pure Sine",
+    usableWatt: 450,
+    chargingTime: 6.5,
+    chargingType: "Solar/AC", 
+    inputWatt: 100,
+    inputAmp: 10,
+    outputAmp: 15,
+    powerStationPrice: 399.99,
+    image: "ecopower_500.jpg",
+    description: "A compact and reliable power station suitable for camping and emergency use."
+  },
+  {
+    id: 2,
+    model: "SolarMax 1000",
+    watt: 1000,
+    brandId: 3,
+    waveType: "Modified Sine",
+    usableWatt: 900,
+    chargingTime: 4.0,
+    chargingType: "AC", 
+    inputWatt: 200,
+    inputAmp: 20,
+    outputAmp: 25,
+    powerStationPrice: 699.50,
+    image: "solarmax_1000.png",
+    description: "A high-performance power station designed for off-grid solar installations."
+  },
+  {
+    id: 3,
+    model: "PowerPlus 1500",
+    watt: 1500,
+    brandId: 1,
+    waveType: "Pure Sine",
+    usableWatt: 1400,
+    chargingTime: 7.0,
+    chargingType: "Solar", 
+    inputWatt: 300,
+    inputAmp: 25,
+    outputAmp: 30,
+    powerStationPrice: 899.99,
+    image: "powerplus_1500.jpg",
+    description: "A reliable and powerful energy source for large off-grid setups."
+  },
+  {
+    id: 4,
+    model: "MaxVolt 1200",
+    watt: 1200,
+    brandId: 4,
+    waveType: "Modified Sine",
+    usableWatt: 1000,
+    chargingTime: 5.5,
+    chargingType: "AC", 
+    inputWatt: 250,
+    inputAmp: 22,
+    outputAmp: 28,
+    powerStationPrice: 549.99,
+    image: "maxvolt_1200.png",
+    description: "An affordable power station perfect for small devices and camping."
+  },
+  {
+    id: 5,
+    model: "UltraPower 2000",
+    watt: 2000,
+    brandId: 5,
+    waveType: "Pure Sine",
+    usableWatt: 1800,
+    chargingTime: 8.0,
+    chargingType: "Solar/AC", 
+    inputWatt: 400,
+    inputAmp: 35,
+    outputAmp: 40,
+    powerStationPrice: 1199.99,
+    image: "ultrapower_2000.png",
+    description: "A top-tier power station for serious off-grid living and heavy-duty equipment."
+  }
+]
+
+
+export const powerStationBrands = [
+  {
+    id: 1,
+    name: "Tesla Powerwall",
+  },
+  {
+    id: 2,
+    name: "Generac",
+  },
+  {
+    id: 3,
+    name: "Goal Zero",
+  },
+  {
+    id: 4,
+    name: "Jackery",
+  },
+  {
+    id: 5,
+    name: "Bluetti",
+  },
+];
