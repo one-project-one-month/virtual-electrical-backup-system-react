@@ -15,6 +15,7 @@ export const EditBatteryPage = lazy(
   () => import("@/admin/pages/EditBatteryPage")
 );
 
+
 // Device
 export const DevicePage = lazy(() => import("@/admin/pages/DevicesPage"));
 export const CreateDevicePage = lazy(
@@ -22,4 +23,16 @@ export const CreateDevicePage = lazy(
 );
 export const EditDevicePage = lazy(
   () => import("@/admin/components/device/EditDeviceForm")
+=======
+//Inverter
+export const InverterPage = lazy(() => import("@/admin/pages/InverterPage"));
+export const CreateInverterPage = lazy(
+  () => import("@/admin/pages/CreateInverterPage")
+);
+export const EditInverterPage = lazy(
+  () => import("@/admin/pages/EditInverterPage")
+);
+export const InverterDetailPage = lazy(
+  () => import("@/admin/pages/InverterDetailPage")
+
 );
