@@ -13,6 +13,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Link, NavLink } from "react-router-dom";
 
@@ -29,14 +30,15 @@ export function NavMain({
       url: string;
     }[];
   }[];
-}) {
+  }) {
+  const {setOpen} = useSidebar();
   return (
     <SidebarGroup className="space-y-2">
       {/* <SidebarGroupLabel>Platform</SidebarGroupLabel> */}
 
       <SidebarMenu>
         <Collapsible>
-          <SidebarMenuItem>
+          <SidebarMenuItem onClick={() => setOpen(true)}>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip="Dashboard">
                 <NavLink to="/admin" end>
@@ -67,7 +69,7 @@ export function NavMain({
             defaultOpen={item.isActive}
             className="group/collapsible"
           >
-            <SidebarMenuItem>
+            <SidebarMenuItem onClick={()=>setOpen(true)}>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
