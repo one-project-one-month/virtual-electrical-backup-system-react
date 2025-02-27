@@ -8,7 +8,7 @@ import { inverterTypes } from "@/admin/data/inverters";
 import { brands } from "@/admin/data/brands";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { LucidePencil, LucideTrash2, LucideCircleEllipsis } from "lucide-react";
+import { LucidePencil, LucideTrash2, LucideNotepadText } from "lucide-react";
 const InverterRow = ({
   inverter: {
     id,
@@ -49,7 +49,7 @@ const InverterRow = ({
           </Button>
           <Link to={`/admin/inverter/detail/${id}`}>
             <Button variant="outline" size="sm">
-              <LucideCircleEllipsis />
+              <LucideNotepadText />
             </Button>
           </Link>
         </TableCell>

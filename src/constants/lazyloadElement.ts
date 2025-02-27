@@ -25,7 +25,7 @@ export const EditPowerStationPage = lazy(
 );
 export const PowerStationDetailPage = lazy(
   () => import("@/admin/pages/PowerStationDetailPage")
-
+)
 
 //Solar
 
@@ -51,7 +51,7 @@ export const CreateDevicePage = lazy(
 );
 export const EditDevicePage = lazy(
   () => import("@/admin/components/device/EditDeviceForm")
-
+)
 //Inverter
 export const InverterPage = lazy(() => import("@/admin/pages/InverterPage"));
 export const CreateInverterPage = lazy(
