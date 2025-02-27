@@ -80,3 +80,27 @@ export const powerstations = [
     description: "A top-tier power station for serious off-grid living and heavy-duty equipment."
   }
 ]
+
+
+export const powerStationBrands = [
+  {
+    id: 1,
+    name: "Tesla Powerwall",
+  },
+  {
+    id: 2,
+    name: "Generac",
+  },
+  {
+    id: 3,
+    name: "Goal Zero",
+  },
+  {
+    id: 4,
+    name: "Jackery",
+  },
+  {
+    id: 5,
+    name: "Bluetti",
+  },
+];

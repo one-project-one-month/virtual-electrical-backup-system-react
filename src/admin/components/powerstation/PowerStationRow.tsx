@@ -9,6 +9,7 @@ type PowerStationRowProps = {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { LucidePencil, LucideTrash2 } from "lucide-react";
+import { LucideNotepadText } from "lucide-react";
 
 const PowerStationRow = ({powerstation: {
   id,  
@@ -48,6 +49,11 @@ const PowerStationRow = ({powerstation: {
                 <Button variant="outline" size="sm">
                     <Link to={`/admin/powerstation/edit/${id}`}>
                         <LucidePencil />
+                    </Link>
+                </Button>
+                <Button variant="outline" size="sm">
+                    <Link to={`/admin/powerstation/detail/${id}`}>
+                        <LucideNotepadText />
                     </Link>
                 </Button>
                 <Button variant="outline" size="sm">

@@ -11,9 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { PowerStationBrandSelectBox } from "./BrandSelectBox";
-import { AddBrandBox } from "./AddBrandBox";
-import { Link, useNavigate,  } from "react-router-dom";
+import { Link, redirect, useNavigate,  } from "react-router-dom";
+import { powerStationBrands } from "@/admin/data/powerstations";
 
 const formSchema = z.object({
     model: z.string().nonempty("Model is required"),
@@ -29,10 +28,10 @@ const formSchema = z.object({
     powerStationPrice: z.number().nonnegative("Price must be a positive number").min(1, "Price must be greater than 0"),
     image: z.instanceof(File),
     description: z.string().nonempty("Description is required"),
+    redirect: z.boolean(),
 });
 
 export default function CreatePowerStationForm() {
-  const [redirect, setRedirect] = useState<boolean>(false);
   const [error, setError] = useState<z.ZodFormattedError<typeof formSchema>["_output"] | undefined>(undefined);
 
   const navigate = useNavigate();
@@ -54,6 +53,7 @@ export default function CreatePowerStationForm() {
       inputAmp: Number(formValues.inputAmp),
       outputAmp: Number(formValues.outputAmp),
       powerStationPrice: Number(formValues.powerStationPrice),
+      redirect: formValues.redirect ? true : false,
     };
 
     const result = formSchema.safeParse(formValues);
@@ -61,7 +61,7 @@ export default function CreatePowerStationForm() {
 
     if (result.success) {
       console.log(result.data);
-      if (redirect) {
+      if (result.data.redirect) {
         navigate("/admin/powerStation");
       }
     } else {
@@ -87,8 +87,16 @@ export default function CreatePowerStationForm() {
           <div className="flex flex-col justify-start gap-4 col-span-6">
             <Label htmlFor="brandId">Brand<span className="ms-2 text-red-500">*</span></Label>
             <div className="flex gap-3">
-              <PowerStationBrandSelectBox />
-              <AddBrandBox />
+            <Select name="brandId">
+              <SelectTrigger>
+                <SelectValue placeholder="Select Charging Type" />
+              </SelectTrigger>
+              <SelectContent>
+                {powerStationBrands.map((brand) => {
+                  return <SelectItem key={brand.id} value={String(brand.id)}>{brand.name}</SelectItem>
+                })}
+              </SelectContent>
+            </Select>
             </div>
             {error?.brandId && error.brandId._errors.length > 0 && <p className="text-red-500 text-sm">{error.brandId._errors[0]}</p>}
           </div>
@@ -223,7 +231,7 @@ export default function CreatePowerStationForm() {
 
           <div className="flex flex-col justify-start gap-4 col-span-12">
             <div className="flex items-center space-x-2">
-              <Checkbox onCheckedChange={(checked: boolean) => setRedirect(checked)} id="redirect" />
+              <Checkbox name="redirect" id="redirect" />
               <label
                 htmlFor="redirect"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

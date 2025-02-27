@@ -22,3 +22,6 @@ export const CreatePowerStationPage = lazy(
 export const EditPowerStationPage = lazy(
   () => import("@/admin/pages/EditPowerStationPage")
 );
+export const PowerStationDetailPage = lazy(
+  () => import("@/admin/pages/PowerStationDetailPage")
+);
