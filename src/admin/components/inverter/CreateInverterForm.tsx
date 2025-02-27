@@ -49,7 +49,7 @@ const CreateInverterPage = () => {
     const result = formSchema.safeParse(parsedValues);
     if (result.success) {
       setErrors(undefined);
-      console.log(result);
+      e.currentTarget.reset();
     } else if (!result.success) {
       setErrors(result.error.format());
     }
