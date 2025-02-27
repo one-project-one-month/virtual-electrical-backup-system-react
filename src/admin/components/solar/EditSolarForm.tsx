@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { z } from "zod";
+import { z, ZodFormattedError } from "zod";
 
 const formSchema = z.object({
   type: z
@@ -35,6 +35,8 @@ const formSchema = z.object({
 const EditSolarForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [error, setError] =
+    useState<ZodFormattedError<typeof formSchema>["_output"]>();
   const currentSolar = solarPanels.find((solar) => solar.id === Number(id));
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -49,6 +51,10 @@ const EditSolarForm = () => {
     };
 
     const result = formSchema.safeParse(parseValues);
+    if (!result.success) {
+      setError(result.error.format());
+      return;
+    }
 
     console.log(result);
   };
@@ -70,6 +76,11 @@ const EditSolarForm = () => {
                 name="type"
                 defaultValue={currentSolar?.type}
               />
+              {error?.type?._errors && error?.type?._errors?.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error?.type?._errors[0]}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -82,6 +93,12 @@ const EditSolarForm = () => {
                 name="controller"
                 defaultValue={currentSolar?.controller}
               />
+              {error?.controller?._errors &&
+                error?.controller?._errors?.length > 0 && (
+                  <p className="text-red-500 text-sm">
+                    {error?.controller?._errors[0]}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-2">
@@ -95,6 +112,12 @@ const EditSolarForm = () => {
                 name="outputWatt"
                 defaultValue={currentSolar?.outputWatt}
               />
+              {error?.outputWatt?._errors &&
+                error?.outputWatt?._errors?.length > 0 && (
+                  <p className="text-red-500 text-sm">
+                    {error?.outputWatt?._errors[0]}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-2">
@@ -108,6 +131,12 @@ const EditSolarForm = () => {
                 name="outputVolt"
                 defaultValue={currentSolar?.outputVolt}
               />
+              {error?.outputVolt?._errors &&
+                error?.outputVolt?._errors?.length > 0 && (
+                  <p className="text-red-500 text-sm">
+                    {error?.outputVolt?._errors[0]}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-2">
@@ -121,6 +150,11 @@ const EditSolarForm = () => {
                 name="length"
                 defaultValue={currentSolar?.length}
               />
+              {error?.length?._errors && error?.length?._errors?.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error?.length?._errors[0]}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -134,6 +168,11 @@ const EditSolarForm = () => {
                 name="width"
                 defaultValue={currentSolar?.width}
               />
+              {error?.width?._errors && error?.width?._errors?.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error?.width?._errors[0]}
+                </p>
+              )}
             </div>
 
             <div className="flex items-center col-span-2 gap-x-2">
