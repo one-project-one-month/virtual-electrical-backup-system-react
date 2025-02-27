@@ -1,5 +1,5 @@
 import { PowerStations } from "@/types/powerstations";
-import { useFormat } from "@/hooks/useFormat";
+import { formatTime } from "@/util/format";
 import { Link } from "react-router-dom";
 
 type PowerStationRowProps = {
@@ -27,8 +27,6 @@ const PowerStationRow = ({powerstation: {
   image,  
   description 
 }}: PowerStationRowProps) => {
-
-    const {formatTime} = useFormat();
 
     return (
         <>
