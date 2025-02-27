@@ -34,6 +34,7 @@ function CreateDeviceForm() {
 
     if (result.success) {
       setErrors(undefined);
+      e.currentTarget.reset();
       console.log(result);
     } else if (!result.success) {
       setErrors(result.error.format());
