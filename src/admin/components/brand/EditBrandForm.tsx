@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { z } from "zod";
+import { z, ZodFormattedError } from "zod";
 import brands from "@/admin/data/brand";
 
 const formSchema = z.object({
@@ -18,6 +18,8 @@ const formSchema = z.object({
 const EditBrandForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [error, setError] =
+    useState<ZodFormattedError<typeof formSchema>["_output"]>();
 
   const currentBrand = brands.find((brand) => brand.id === Number(id));
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -30,6 +32,10 @@ const EditBrandForm = () => {
     };
 
     const result = formSchema.safeParse(parseValues);
+    if (!result.success) {
+      setError(result.error.format());
+      return;
+    }
 
     console.log(result);
   };
@@ -49,6 +55,9 @@ const EditBrandForm = () => {
               name="name"
               defaultValue={currentBrand?.name}
             />
+            {error?.name?._errors && error?.name?._errors?.length > 0 && (
+              <p className="text-red-500 text-sm">{error?.name?._errors[0]}</p>
+            )}
           </div>
 
           <div className="flex items-center col-span-2 gap-x-2">
