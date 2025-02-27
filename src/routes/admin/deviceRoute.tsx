@@ -3,19 +3,20 @@ import {
   EditDevicePage,
   DevicePage,
 } from "@/constants/lazyloadElement";
+import LazyLoad from "@/components/LazyLoad";
 
 const deviceRoute = [
   {
     path: "device",
-    element: <DevicePage />,
+    element: <LazyLoad component={DevicePage} />,
   },
   {
     path: "device/create",
-    element: <CreateDevicePage />,
+    element: <LazyLoad component={CreateDevicePage} />,
   },
   {
     path: "device/edit/:id",
-    element: <EditDevicePage />,
+    element: <LazyLoad component={EditDevicePage} />,
   },
 ];
 
