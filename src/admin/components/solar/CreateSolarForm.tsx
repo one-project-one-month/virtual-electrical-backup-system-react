@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FormEvent } from "react";
-import { z } from "zod";
+import { FormEvent, useState } from "react";
+import { z, ZodFormattedError } from "zod";
 import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
@@ -33,6 +33,8 @@ const formSchema = z.object({
 
 const CreateSolarForm = () => {
   const navigate = useNavigate();
+  const [error, setError] =
+    useState<ZodFormattedError<typeof formSchema>["_output"]>();
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -46,7 +48,9 @@ const CreateSolarForm = () => {
 
     const result = formSchema.safeParse(parseValues);
 
+    console.log(typeof result.error);
     if (!result.success) {
+      setError(result.error.format());
       return;
     }
     const data = {
@@ -72,6 +76,12 @@ const CreateSolarForm = () => {
               </Label>
               <span className="text-red-500">*</span>
               <Input placeholder="Monocrystalline" name="type" />
+
+              {error?.type?._errors && error?.type?._errors?.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error?.type?._errors[0]}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -80,6 +90,12 @@ const CreateSolarForm = () => {
               </Label>
               <span className="text-red-500">*</span>
               <Input placeholder="MPPT" name="controller" />
+              {error?.controller?._errors &&
+                error?.controller?._errors?.length > 0 && (
+                  <p className="text-red-500 text-sm">
+                    {error?.controller?._errors[0]}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-2">
@@ -88,6 +104,12 @@ const CreateSolarForm = () => {
               </Label>
               <span className="text-red-500">*</span>
               <Input type="number" placeholder="300" name="outputWatt" />
+              {error?.outputWatt?._errors &&
+                error?.outputWatt?._errors?.length > 0 && (
+                  <p className="text-red-500 text-sm">
+                    {error?.outputWatt?._errors[0]}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-2">
@@ -96,6 +118,12 @@ const CreateSolarForm = () => {
               </Label>
               <span className="text-red-500">*</span>
               <Input type="number" placeholder="12" name="outputVolt" />
+              {error?.outputVolt?._errors &&
+                error?.outputVolt?._errors?.length > 0 && (
+                  <p className="text-red-500 text-sm">
+                    {error?.outputVolt?._errors[0]}
+                  </p>
+                )}
             </div>
 
             <div className="space-y-2">
@@ -104,6 +132,12 @@ const CreateSolarForm = () => {
               </Label>
               <span className="text-red-500">*</span>
               <Input type="number" placeholder="1650" name="length" />
+
+              {error?.length?._errors && error?.length?._errors?.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error?.length?._errors[0]}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -112,11 +146,22 @@ const CreateSolarForm = () => {
               </Label>
               <span className="text-red-500">*</span>
               <Input type="number" placeholder="670" name="width" />
+              {error?.width?._errors && error?.width?._errors?.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error?.width?._errors[0]}
+                </p>
+              )}
             </div>
 
             <div className="flex items-center col-span-2 gap-x-2">
               <Checkbox id="redirect_to_solar" name="redirect_to_list" />
               <Label htmlFor="redirect_to_solar">Go to manage solar</Label>
+              {error?.redirect_to_list?._errors &&
+                error?.redirect_to_list?._errors?.length > 0 && (
+                  <p className="text-red-500 text-sm">
+                    {error?.redirect_to_list?._errors[0]}
+                  </p>
+                )}
             </div>
 
             <div className="flex items-center gap-x-5">
