@@ -1,11 +1,10 @@
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
-import { z } from "zod";
-import { FormEvent } from "react";
+import { z, ZodFormattedError } from "zod";
+import { FormEvent, useState } from "react";
 
 const formSchema = z.object({
   name: z
@@ -18,6 +17,8 @@ const formSchema = z.object({
 
 const CreateBrandForm = () => {
   const navigate = useNavigate();
+  const [error, setError] =
+    useState<ZodFormattedError<typeof formSchema>["_output"]>();
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -28,6 +29,11 @@ const CreateBrandForm = () => {
     };
 
     const result = formSchema.safeParse(parseValues);
+
+    if (!result.success) {
+      setError(result.error.format());
+      return;
+    }
 
     console.log(result);
   };
@@ -44,12 +50,22 @@ const CreateBrandForm = () => {
               </Label>
               <span className="text-red-500">*</span>
               <Input placeholder="Exide" name="name" />
+              {error?.name?._errors && error?.name?._errors?.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error?.name?._errors[0]}
+                </p>
+              )}
             </div>
 
-        
             <div className="flex items-center col-span-2 gap-x-2">
               <Checkbox id="redirect_to_brand" name="redirect_to_list" />
               <Label htmlFor="redirect_to_brand">Go to manage brand</Label>
+              {error?.redirect_to_list?._errors &&
+                error?.redirect_to_list?._errors?.length > 0 && (
+                  <p className="text-red-500 text-sm">
+                    {error?.redirect_to_list?._errors[0]}
+                  </p>
+                )}
             </div>
 
             <div className="flex items-center gap-x-5">
