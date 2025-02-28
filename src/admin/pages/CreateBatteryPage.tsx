@@ -106,7 +106,7 @@ const CreateBatteryPage = () => {
               <Controller
                 name="brand"
                 control={control}
-                rules={{ required: "Brand is required" }}
+                rules={{ required: "*Brand is required" }}
                 render={({ field }) => (
                   <BatteryBrandCombo
                     {...field}
@@ -140,7 +140,7 @@ const CreateBatteryPage = () => {
               <Controller
                 name="type"
                 control={control}
-                rules={{ required: "Type is required" }}
+                rules={{ required: "* Type is required" }}
                 render={({ field }) => (
                   <BatteryTypeCombo
                     {...field}
@@ -151,8 +151,8 @@ const CreateBatteryPage = () => {
                   />
                 )}
               />
-              {errors.brand && (
-                <p className="text-red-500 text-sm">{errors.brand.message}</p>
+              {errors.type && (
+                <p className="text-red-500 text-sm">{errors.type?.message}</p>
               )}
             </div>
             {/* <Dialog>

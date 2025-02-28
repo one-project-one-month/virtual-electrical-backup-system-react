@@ -18,9 +18,9 @@ import {
 } from "@/components/ui/popover";
 
 interface BatteryTypeComboProps {
-  value: string; // Selected brand value
+  value: string; // Selected type value
   onChange: (value: string) => void; // Function to update value
-  selected?: string; // Optional selected brand
+  selected?: string; // Optional selected type
 }
 
 const BatteryTypeCombo: React.FC<BatteryTypeComboProps> = ({
