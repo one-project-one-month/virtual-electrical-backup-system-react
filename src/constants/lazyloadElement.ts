@@ -12,7 +12,6 @@ export const EditBatteryPage = lazy(
   () => import("@/admin/pages/EditBatteryPage")
 );
 
-<<<<<<< HEAD
 
 //PowerStation
 export const PowerStationPage = lazy(
@@ -66,9 +65,3 @@ export const InverterDetailPage = lazy(
 
 
 );
-=======
-//Generator
-export const GeneratorPage = lazy(() => import("@/admin/pages/GeneratorPage"));
-export const CreateGeneratorPage = lazy(()=> import("@/admin/pages/CreateGeneratorPage"));
-export const EditGeneratorPage = lazy(()=> import("@/admin/pages/EditGeneratorPage"));
->>>>>>> cc95115 (add generator table)

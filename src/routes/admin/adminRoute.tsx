@@ -25,15 +25,11 @@ const adminRoute = [
       },
       ...batteryRoute,
       ...powerStationRoute,
-<<<<<<< HEAD
       ...solarRoute,
       ...brandRoute,
       ...deviceRoute,
       ...inverterRoute,
 
-=======
-      ...generatorRoute
->>>>>>> cc95115 (add generator table)
     ],
   },
 ];
