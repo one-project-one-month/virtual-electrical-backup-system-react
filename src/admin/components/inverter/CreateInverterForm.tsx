@@ -63,7 +63,7 @@ const CreateInverterPage = () => {
         className="grid grid-cols-12 gap-6 p-4 pl-10 pt-5 "
         onSubmit={submitHandler}
       >
-        <div className="col-span-3 grid gap-2 relative">
+        <div className="row-start-1 col-span-3 grid gap-2 relative">
           <label
             className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
             htmlFor="name"
@@ -84,7 +84,7 @@ const CreateInverterPage = () => {
             </p>
           )}
         </div>
-        <div className="col-span-3 grid gap-2 relative">
+        <div className="row-start-1 col-span-3 grid gap-2 relative">
           <label
             className="text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
             htmlFor="model"
@@ -214,12 +214,12 @@ const CreateInverterPage = () => {
             name="image"
           />
         </div>
-        <div className="row-start-6 col-span-6 grid gap-2">
-          <label className="text-xs text-gray-600" htmlFor="description">
+        <div className="row-start-1 col-span-6 gap-2 row-span-2 flex flex-col">
+          <label className="text-xs text-gray-600 flex" htmlFor="description">
             Description
           </label>
           <textarea
-            className="text-sm"
+            className="text-sm flex-1 p-3 border rounded-lg"
             id="description"
             placeholder="eg. eco-friendly inverter "
             name="description"
