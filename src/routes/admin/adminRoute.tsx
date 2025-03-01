@@ -29,7 +29,7 @@ const adminRoute = [
       ...brandRoute,
       ...deviceRoute,
       ...inverterRoute,
-
+      ...generatorRoute
     ],
   },
 ];

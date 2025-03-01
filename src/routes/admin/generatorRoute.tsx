@@ -1,21 +1,27 @@
+import LazyLoad from "@/components/LazyLoad";
 import {
     GeneratorPage,
   CreateGeneratorPage,
   EditGeneratorPage,
+  GeneratorDetailPage,
 } from "@/constants/lazyloadElement";
 
 const generatorRoute = [
   {
     path: "generator",
-    element: <GeneratorPage />,
+    element: <LazyLoad component ={GeneratorPage}/>,
   },
   {
     path: "generator/create",
-    element: <CreateGeneratorPage />,
+    element: <LazyLoad component ={CreateGeneratorPage}/>,
   },
   {
     path: "generator/edit/:id",
-    element: <EditGeneratorPage />,
+    element: <LazyLoad component ={EditGeneratorPage}/>,
+  },
+  {
+    path: "generator/detail/:id",
+    element: <LazyLoad component ={GeneratorDetailPage}/>,
   },
 ];
 export default generatorRoute;

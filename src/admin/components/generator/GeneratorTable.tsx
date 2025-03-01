@@ -4,6 +4,7 @@ import type { ApiResponse } from '@/types/apiResponse'
 import { generators } from '@/admin/data/generator'
 import type { Generator } from '@/types/generator'
 import GeneratorRow from './GeneratorRow'
+import { Link } from 'react-router-dom'
 
 const GeneratorTable = () => {
   const [generatorData, setGeneratorData] = useState<ApiResponse<Generator[]>>({
@@ -29,7 +30,7 @@ const GeneratorTable = () => {
         </TableHeader>
         <TableBody>
           {generatorData?.data?.map((generator)=> (
-            <GeneratorRow key={generator.id} generator={generator}/>
+                <GeneratorRow key={generator.id} generator={generator}/>
           ))}
         </TableBody>
       </Table>

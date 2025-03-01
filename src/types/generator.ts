@@ -1,7 +1,7 @@
  export type Generator = {
     id : number,
     name : string,
-    brand : number,
+    brandId : number,
     model : string,
     watt : number,
     price : number,
