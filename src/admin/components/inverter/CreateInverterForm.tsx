@@ -9,18 +9,16 @@ import SelectEl from "@/admin/components/inverter/SelectEl";
 import { z } from "zod";
 import { useState } from "react";
 const formSchema = z.object({
-  inverterType: z.number().min(1, { message: "Inverter type is required" }),
+  inverterType: z.string().min(1, { message: "Inverter type is required" }),
   model: z.string().min(1, { message: "Model is required" }),
-  brandId: z.number().min(1, { message: "Brand is required" }),
-  inverterPrice: z.number().min(1, { message: "Price is required" }),
+  brandId: z.string().min(1, { message: "Brand is required" }),
+  inverterPrice: z.string().min(1, { message: "Price is required" }),
   waveType: z.string().min(1, { message: "Wave type is required" }),
   compatibleBattery: z
     .string()
     .min(1, { message: "Compatible battery is required" }),
-  watt: z.number().min(1, { message: "Power is required" }),
-  inverterVolt: z.number().min(1, { message: "Volt is required" }),
-  image: z.instanceof(File),
-  description: z.string(),
+  watt: z.string().min(1, { message: "Power is required" }),
+  inverterVolt: z.string().min(1, { message: "Volt is required" }),
   redirect_to_list: z.boolean(),
 });
 
@@ -38,12 +36,6 @@ const CreateInverterPage = () => {
     formValues.image = formValues.image as File;
     const parsedValues = {
       ...formValues,
-      inverterPrice: Number(formValues.inverterPrice),
-      inverterVolt: Number(formValues.inverterVolt),
-      watt: Number(formValues.watt),
-      brandId: Number(formValues.brandId),
-      inverterType: Number(formValues.inverterType),
-      image: formValues.image as File,
       redirect_to_list: formValues.redirect_to_list ? true : false,
     };
     const result = formSchema.safeParse(parsedValues);
@@ -52,7 +44,9 @@ const CreateInverterPage = () => {
       e.currentTarget.reset();
     } else if (!result.success) {
       setErrors(result.error.format());
+      console.log(result.error.format());
     }
+    console.log(result.data);
     if (result.success && result.data.redirect_to_list) {
       navigate("../inverter");
     }
@@ -91,7 +85,12 @@ const CreateInverterPage = () => {
           >
             Model
           </label>
-          <Input type="text" id="model" placeholder="model" name="model" />
+          <Input
+            type="text"
+            id="model"
+            placeholder="Enter model"
+            name="model"
+          />
           {errors?.model && errors.model._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
               {errors.model._errors[0]}
@@ -123,9 +122,9 @@ const CreateInverterPage = () => {
             Price
           </label>
           <Input
-            type="number"
+            type="text"
             id="price"
-            placeholder="price"
+            placeholder="Enter price"
             name="inverterPrice"
           />
           {errors?.inverterPrice &&
@@ -157,7 +156,7 @@ const CreateInverterPage = () => {
             Compatible Battery
           </label>
           <Input
-            type="compatibleBattery"
+            type="text"
             id="compatibleBattery"
             placeholder="eg. Lithium-Ion Battery"
             name="compatibleBattery"
@@ -176,7 +175,7 @@ const CreateInverterPage = () => {
           >
             Power
           </label>
-          <Input type="number" id="watt" placeholder="2000 watt" name="watt" />
+          <Input type="text" id="watt" placeholder="Enter power" name="watt" />
           {errors?.watt && errors.watt._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
               {errors.watt._errors[0]}
@@ -191,9 +190,9 @@ const CreateInverterPage = () => {
             Volt
           </label>
           <Input
-            type="number"
+            type="text"
             id="inverterVolt"
-            placeholder="inverterVolt"
+            placeholder="Enter volt"
             name="inverterVolt"
           />
           {errors?.inverterVolt && errors.inverterVolt._errors?.length > 0 && (
@@ -240,17 +239,17 @@ const CreateInverterPage = () => {
           </label>
         </div>
         <Button
-          className="row-start-8 col-span-2 py-2 bg-electric-400 text-white rounded-lg hover:bg-electric-500"
-          type="submit"
-        >
-          Create
-        </Button>
-        <Button
           className="row-start-8 text-black col-span-2 py-2 bg-white border border-black rounded-lg hover:bg-gray-100"
           type="button"
           onClick={previousPage}
         >
           Cancel
+        </Button>
+        <Button
+          className="row-start-8 col-span-2 py-2 bg-electric-400 text-white rounded-lg hover:bg-electric-500"
+          type="submit"
+        >
+          Create
         </Button>
       </form>
     </>
