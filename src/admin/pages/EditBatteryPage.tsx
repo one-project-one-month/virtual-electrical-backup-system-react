@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import BatteryBrandCombo from "../components/battery/BatteryBrandCombo";
 import BatteryTypeCombo from "../components/battery/BatteryTypeCombo";
-// import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 // import DialogBrand from "../components/battery/DialogBrand";
 // import DialogType from "../components/battery/DialogType";
 
@@ -13,6 +13,7 @@ import { batteries } from "../data/batteries";
 import { useState } from "react";
 import { updateBattery } from "../data/batteries";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { Input } from "@/components/ui/input";
 
 const EditBatteryPage = () => {
   const navigate = useNavigate();
@@ -128,6 +129,8 @@ const EditBatteryPage = () => {
   //   },
   // });
 
+  const [checked, setChecked] = useState(false);
+
   const onSubmit: SubmitHandler<FormFeilds> = (data) => {
     console.log("update data", data);
     updateBattery(Number(formData.id), {
@@ -138,7 +141,12 @@ const EditBatteryPage = () => {
       price: data.price,
       description: data.description,
     });
-    navigate(`/admin/battery/`);
+    if (checked) {
+      console.log("Redirecting to manage battery...");
+      navigate(`/admin/battery/`);
+    } else {
+      console.log("Checkbox not checked. Staying on the same page.");
+    }
   };
 
   return (
@@ -148,8 +156,8 @@ const EditBatteryPage = () => {
         links={[{ name: "Manage Battery", path: "../battery" }]}
       />
 
-      <div className="container w-1/2 mt-10 mx-10 p-5 ">
-        <form onSubmit={handleSubmit(onSubmit)} className="">
+      <div className="container w-1/2 mt-5 mx-5 ">
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/* //For handling ID  */}
           <input
             type="hidden"
@@ -160,156 +168,193 @@ const EditBatteryPage = () => {
             className="text-xl border border-grey-700"
           />
 
-          {/* Battery Brand */}
-          <div className="container mx-5 flex col-span-4 gap-3 ">
-            <label htmlFor="">Brand Name</label>
-            <div>
-              <Controller
-                name="brand"
-                control={control}
-                // rules={{ required: "Brand is required" }}
-                render={({ field }) => (
-                  <BatteryBrandCombo
-                    {...field}
-                    value={selectedBrand}
-                    onChange={(value) => {
-                      field.onChange(value);
-                      setSelectedBrand(value);
-                    }}
-                    selected={selectedBrand}
-                  />
-                )}
-              />
+          {/* For aligning brand and type  */}
+          <div className="flex justify-between ">
+            {/* Battery Brand */}
+            <div className=" text-xs text-gray-600 ">
+              <label htmlFor="">Brand Name</label>
+              <div className="flex gap-2 text-sm py-1">
+                <Controller
+                  name="brand"
+                  control={control}
+                  // rules={{ required: "Brand is required" }}
+                  render={({ field }) => (
+                    <BatteryBrandCombo
+                      {...field}
+                      value={selectedBrand}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        setSelectedBrand(value);
+                      }}
+                      selected={selectedBrand}
+                    />
+                  )}
+                />
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      className="h-10 w-10 text-lg rounded-full"
+                      variant="outline"
+                    >
+                      +
+                    </Button>
+                  </DialogTrigger>
+                  {/* <DialogBrand /> */}
+                </Dialog>
+              </div>
+              <p className="text-red-500 text-xs min-h-[30px]">
+                {errors.brand?.message || ""}
+              </p>
             </div>
 
-            {/* <Dialog>
-              <DialogTrigger asChild>
-                <Button className="w-2" variant="outline">
-                  +
-                </Button>
-              </DialogTrigger>
-              <DialogBrand />
-            </Dialog> */}
-          </div>
-          <br />
-
-          {/* /Battery Type */}
-          <div className="container flex mx-5 col-span-4 gap-3 ">
-            <label htmlFor="">Type Name</label>
-            <div>
-              <Controller
-                name="type"
-                control={control}
-                defaultValue={formData.typeName}
-                // rules={{ required: "Brand is required" }}
-                render={({ field }) => (
-                  <BatteryTypeCombo
-                    {...field}
-                    value={selectedType}
-                    onChange={(value) => {
-                      field.onChange(value);
-                      setSelectedType(value);
-                    }}
-                    selected={selectedType}
-                  />
-                )}
-              />
+            {/* /Battery Type */}
+            <div className=" gap-5 text-xs text-gray-600">
+              <label htmlFor="">Type Name</label>
+              <div className="flex gap-2 text-sm py-1">
+                <Controller
+                  name="type"
+                  control={control}
+                  defaultValue={formData.typeName}
+                  // rules={{ required: "Brand is required" }}
+                  render={({ field }) => (
+                    <BatteryTypeCombo
+                      {...field}
+                      value={selectedType}
+                      onChange={(value) => {
+                        field.onChange(value);
+                        setSelectedType(value);
+                      }}
+                      selected={selectedType}
+                    />
+                  )}
+                />
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      className="h-10 w-10 text-lg rounded-full"
+                      variant="outline"
+                    >
+                      +
+                    </Button>
+                  </DialogTrigger>
+                  {/* <DialogType /> */}
+                </Dialog>
+              </div>
+              <p className="text-red-500 text-xs min-h-[30px]">
+                {errors.brand?.message || ""}
+              </p>
             </div>
-            {/* <Dialog>
-              <DialogTrigger asChild>
-                <Button className="w-2" variant="outline">
-                  +
-                </Button>
-              </DialogTrigger>
-              <DialogType />
-            </Dialog> */}
           </div>
-          <br />
 
           {/* Storage AMP */}
-          <div className="container flex mx-5 col-span-4 gap-3 ">
-            <label htmlFor="">Storage AMP</label>
-            <input
+          <div className="w-full text-sm text-gray-600 ">
+            <label
+              htmlFor=""
+              className="after:ml-0.5 after:text-red-700 after:content-['*']"
+            >
+              Storage AMP
+            </label>
+            <Input
               type="number"
-              // id="storageAMP"
+              id="storageAMP"
               {...register("storageAMP", { required: "* Storage required" })}
               placeholder=""
-              className="text-base py-1 border border-grey-700"
-              value={formData.storageAMP}
               // value={formData.storageAMP}
               onChange={handleChange}
             />
-            {errors.storageAMP && (
+            <p className="text-red-500 text-xs min-h-[30px]">
+              {errors.storageAMP?.message || ""}
+            </p>
+            {/* {errors.storageAMP && (
               <p className="text-red-500 text-sm">
                 {errors.storageAMP?.message}
               </p>
-            )}
+            )} */}
           </div>
-          <br />
 
           {/* Battery Voltage */}
-          <div className="container flex mx-5 col-span-4 gap-3  ">
-            <label htmlFor="" className="mx-1">
+          <div className="w-full text-sm text-gray-600 ">
+            <label
+              htmlFor=""
+              className="after:ml-0.5 after:text-red-700 after:content-['*']"
+            >
               Battery Volt
             </label>
-            <input
+            <Input
               type="number"
               id="voltage"
               {...register("voltage", { required: "* Voltage required" })}
               // value={formData.voltage}
-              className="text-base py-1 border border-grey-700"
               onChange={handleChange}
             />
-            {errors.voltage && (
-              <p className="text-red-500 text-sm">{errors.voltage.message}</p>
-            )}
+            <p className="text-red-500 text-xs min-h-[30px]">
+              {errors.type?.message || ""}
+            </p>
           </div>
-          <br />
 
           {/* Battery Price */}
-          <div className="container flex mx-5 col-span-4 gap-3  ">
-            <label htmlFor="" className="">
+          <div className="w-full text-sm text-gray-600 ">
+            <label
+              htmlFor=""
+              className="after:ml-0.5 after:text-red-700 after:content-['*']"
+            >
               Battery Price
             </label>
-            <input
-              type="text"
+            <Input
+              type="number"
               id="price"
               {...register("price", { required: "price required" })}
-              className="text-base py-1 border border-grey-700"
               // value={formData.price}
               onChange={handleChange}
             />
-            {errors.price && (
-              <p className="text-red-500 text-sm">{errors.price?.message}</p>
-            )}
+            <p className="text-red-500 text-xs min-h-[30px]">
+              {errors.price?.message || ""}
+            </p>
           </div>
-          <br />
 
           {/* Description */}
-          <div className="container flex mx-5 col-span-4 gap-3  ">
-            <label htmlFor="" className="mx-1">
+          <div className="w-full text-sm text-gray-600 ">
+            <label
+              htmlFor=""
+              className="text-sm text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
+            >
               Description
             </label>
             <textarea
               id="description"
               {...register("description", { required: "Description required" })}
-              className="text-base p-2 w-1/2 border border-grey-700"
+              className="text-sm w-full text-gray-600 p-1"
               rows={3}
             />
-            {errors.description && (
-              <p className="text-red-500 text-sm">
-                {errors.description?.message}
-              </p>
-            )}
+            <p className="text-red-500 text-xs min-h-[20px]">
+              {errors.description?.message || ""}
+            </p>
+          </div>
+
+          
+          <div className="flex items-center gap-4">
+            <input
+              className="size-4 inline"
+              type="checkbox"
+              id="redirect_to_battery"
+              name="redirect_to_list"
+              checked={checked}
+              onChange={(e) => setChecked(e.target.checked)}
+            />
+            <label
+              className="text-gray-500 text-sm"
+              htmlFor="redirect_to_battery"
+            >
+              Redirect to manage battery
+            </label>
           </div>
           <br />
-
-          <div className="container mx-5 flex justify-between col-span-6 gap-3 ">
+          <div className="container mx-5 flex col-span-6 gap-3 ">
             <Button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 mx-5 rounded-sm"
             >
-              Update
+              Save
             </Button>
             <Button
               onClick={() => navigate(`/admin/battery/`)}
