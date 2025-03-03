@@ -60,14 +60,18 @@ export default function CreatePowerStationForm() {
     const result = formSchema.safeParse(parsedValues);
     
 
-    if (result.success) {
-      setError(undefined);
-      e.currentTarget.reset();
-      if (result.data.redirect) {
-        navigate("/admin/powerStation");
-      }
-    } else {
+    if (!result.success) {
       setError(result.error.format());
+      console.log(result.error.format());
+      return;
+    }
+
+    setError(undefined);
+    console.log(result);
+    e.currentTarget.reset();
+
+    if (result.data.redirect) {
+      navigate("../powerStation");
     }
   }
 

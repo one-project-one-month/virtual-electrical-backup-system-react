@@ -86,21 +86,24 @@ export default function EditPowerStationForm() {
       outputAmp: Number(formValues.outputAmp),
       powerStationPrice: Number(formValues.powerStationPrice),
       image: formValues.image as File,
-      redirect: formValues.redirect? true : false,
+      redirect: formValues.redirect ? true : false,
     };
 
     const result = formSchema.safeParse(parsedValues);
-    if (result.success) {
-      console.log(result);
-      setError(undefined);
-      e.currentTarget.reset();
 
-      if (result.data.redirect) {
-        navigate("../powerStation");
-      }
-    } else {
+    
+    if (!result.success) {
       setError(result.error.format());
       console.log(result.error.format());
+      return;
+    }
+
+    setError(undefined);
+    console.log(result);
+    e.currentTarget.reset();
+
+    if (result.data.redirect) {
+      navigate("../powerStation");
     }
   }
 
@@ -334,10 +337,7 @@ export default function EditPowerStationForm() {
 
           <div className="flex flex-col justify-start gap-4 col-span-12">
             <div className="flex items-center space-x-2">
-              <Checkbox
-                id="redirect"
-                name="redirect"
-              />
+              <Checkbox id="redirect" name="redirect" checked />
               <label
                 htmlFor="redirect"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
