@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Link, redirect, useNavigate,  } from "react-router-dom";
+import { Link, useNavigate,  } from "react-router-dom";
 import { powerStationBrands } from "@/admin/data/powerstations";
 
 const formSchema = z.object({

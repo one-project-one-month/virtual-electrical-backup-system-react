@@ -73,7 +73,7 @@ export default function EditPowerStationForm() {
 
     const formData = new FormData(e.currentTarget);
 
-    const formValues = Object.fromEntries(formData) as Record<string, any>;
+    const formValues = Object.fromEntries(formData);
 
     const parsedValues = {
       ...formValues,
