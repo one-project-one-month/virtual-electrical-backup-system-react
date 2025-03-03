@@ -1,13 +1,13 @@
 import { Batteries } from "@/types/batteries";
 import { useNavigate } from "react-router-dom";
 
+import { TableCell, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { LucidePencil, LucideTrash2 } from "lucide-react";
 type BatteryRowProps = {
   battery: Batteries;
 };
 
-import { TableCell, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { LucidePencil, LucideTrash2 } from "lucide-react";
 const BatteryRow = ({
   battery: {
     id,

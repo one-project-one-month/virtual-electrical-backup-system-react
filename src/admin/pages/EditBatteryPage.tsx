@@ -16,6 +16,7 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 
 const EditBatteryPage = () => {
+
   const navigate = useNavigate();
   const pathname = window.location.pathname;
   const parts = pathname.split("/");
@@ -128,6 +129,7 @@ const EditBatteryPage = () => {
   //     description: "",
   //   },
   // });
+
 
   const [checked, setChecked] = useState(false);
 

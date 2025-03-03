@@ -17,7 +17,7 @@ const BatteryTable = () => {
     message: "Data has been successfully",
     data: batteries,
   });
-
+  
   return (
     <section className="px-5 mt-5">
       <Table className="bg-white rounded-lg shadow-lg">

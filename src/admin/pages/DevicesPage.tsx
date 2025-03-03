@@ -1,7 +1,15 @@
+import BreadcrumbDashboard from "@/components/BreadcrumbDashboard";
+import DeviceTable from "../components/device/DeviceTable";
+import Header from "../components/device/Header";
+import PaginationComponent from "@/components/PaginationComponent";
 
-
-export default function DevicesPage() {
+export default function BatteryPage() {
   return (
-    <div>DevicesPage</div>
-  )
+    <section>
+      <BreadcrumbDashboard currentPageTitle="Manage Device" />
+      <Header />
+      <DeviceTable />
+      <PaginationComponent />
+    </section>
+  );
 }
