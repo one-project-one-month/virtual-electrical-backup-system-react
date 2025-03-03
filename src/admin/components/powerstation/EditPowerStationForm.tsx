@@ -73,9 +73,9 @@ export default function EditPowerStationForm() {
 
     const formData = new FormData(e.currentTarget);
 
-    let formValues = Object.fromEntries(formData) as Record<string, any>;
+    const formValues = Object.fromEntries(formData) as Record<string, any>;
 
-    formValues = {
+    const parsedValues = {
       ...formValues,
       brandId: Number(formValues.brandId),
       watt: Number(formValues.watt),
@@ -85,13 +85,15 @@ export default function EditPowerStationForm() {
       inputAmp: Number(formValues.inputAmp),
       outputAmp: Number(formValues.outputAmp),
       powerStationPrice: Number(formValues.powerStationPrice),
+      image: formValues.image as File,
       redirect: formValues.redirect? true : false,
     };
 
-    const result = formSchema.safeParse(formValues);
+    const result = formSchema.safeParse(parsedValues);
     if (result.success) {
       console.log(result);
       setError(undefined);
+      e.currentTarget.reset();
 
       if (result.data.redirect) {
         navigate("../powerStation");
@@ -351,7 +353,7 @@ export default function EditPowerStationForm() {
               type="submit"
               className="duration-500 bg-electric-500 hover:bg-electric-600 active:scale-95 px-10"
             >
-              Create
+              Edit
             </Button>
             <Button className="duration-500 bg-gray-50 hover:bg-gray-200 border border-black text-black active:scale-95 px-10">
               <Link to="/admin/powerStation">Cancel</Link>
