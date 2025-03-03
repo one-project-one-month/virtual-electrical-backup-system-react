@@ -73,9 +73,9 @@ export default function EditPowerStationForm() {
 
     const formData = new FormData(e.currentTarget);
 
-    let formValues = Object.fromEntries(formData) as Record<string, any>;
+    const formValues = Object.fromEntries(formData);
 
-    formValues = {
+    const parsedValues = {
       ...formValues,
       brandId: Number(formValues.brandId),
       watt: Number(formValues.watt),
@@ -85,20 +85,25 @@ export default function EditPowerStationForm() {
       inputAmp: Number(formValues.inputAmp),
       outputAmp: Number(formValues.outputAmp),
       powerStationPrice: Number(formValues.powerStationPrice),
-      redirect: formValues.redirect? true : false,
+      image: formValues.image as File,
+      redirect: formValues.redirect ? true : false,
     };
 
-    const result = formSchema.safeParse(formValues);
-    if (result.success) {
-      console.log(result);
-      setError(undefined);
+    const result = formSchema.safeParse(parsedValues);
 
-      if (result.data.redirect) {
-        navigate("../powerStation");
-      }
-    } else {
+    
+    if (!result.success) {
       setError(result.error.format());
       console.log(result.error.format());
+      return;
+    }
+
+    setError(undefined);
+    console.log(result);
+    e.currentTarget.reset();
+
+    if (result.data.redirect) {
+      navigate("../powerStation");
     }
   }
 
@@ -332,10 +337,7 @@ export default function EditPowerStationForm() {
 
           <div className="flex flex-col justify-start gap-4 col-span-12">
             <div className="flex items-center space-x-2">
-              <Checkbox
-                id="redirect"
-                name="redirect"
-              />
+              <Checkbox id="redirect" name="redirect" checked />
               <label
                 htmlFor="redirect"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -351,7 +353,7 @@ export default function EditPowerStationForm() {
               type="submit"
               className="duration-500 bg-electric-500 hover:bg-electric-600 active:scale-95 px-10"
             >
-              Create
+              Edit
             </Button>
             <Button className="duration-500 bg-gray-50 hover:bg-gray-200 border border-black text-black active:scale-95 px-10">
               <Link to="/admin/powerStation">Cancel</Link>

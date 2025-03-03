@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Link, redirect, useNavigate,  } from "react-router-dom";
+import { Link, useNavigate,  } from "react-router-dom";
 import { powerStationBrands } from "@/admin/data/powerstations";
 
 const formSchema = z.object({
@@ -41,9 +41,9 @@ export default function CreatePowerStationForm() {
 
     const formData = new FormData(e.currentTarget);
 
-    let formValues = Object.fromEntries(formData) as Record<string, any>;
+    const formValues = Object.fromEntries(formData);
 
-    formValues = {
+    const parsedValues = {
       ...formValues,
       brandId: Number(formValues.brandId),
       watt: Number(formValues.watt),
@@ -53,19 +53,25 @@ export default function CreatePowerStationForm() {
       inputAmp: Number(formValues.inputAmp),
       outputAmp: Number(formValues.outputAmp),
       powerStationPrice: Number(formValues.powerStationPrice),
+      image: formValues.image as File,
       redirect: formValues.redirect ? true : false,
     };
 
-    const result = formSchema.safeParse(formValues);
+    const result = formSchema.safeParse(parsedValues);
     
 
-    if (result.success) {
-      console.log(result.data);
-      if (result.data.redirect) {
-        navigate("/admin/powerStation");
-      }
-    } else {
+    if (!result.success) {
       setError(result.error.format());
+      console.log(result.error.format());
+      return;
+    }
+
+    setError(undefined);
+    console.log(result);
+    e.currentTarget.reset();
+
+    if (result.data.redirect) {
+      navigate("../powerStation");
     }
   }
 
