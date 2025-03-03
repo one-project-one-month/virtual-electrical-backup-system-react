@@ -10,7 +10,7 @@ import brandRoute from "./brandRoute";
 import deviceRoute from "./deviceRoute";
 
 import inverterRoute from "./inverterRoute";
-
+import inverterTypeRoute from "./inverterTypeRoute";
 
 const adminRoute = [
   {
@@ -28,7 +28,7 @@ const adminRoute = [
       ...brandRoute,
       ...deviceRoute,
       ...inverterRoute,
-
+      ...inverterTypeRoute,
     ],
   },
 ];

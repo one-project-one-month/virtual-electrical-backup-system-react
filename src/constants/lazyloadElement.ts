@@ -62,6 +62,13 @@ export const EditInverterPage = lazy(
 );
 export const InverterDetailPage = lazy(
   () => import("@/admin/pages/InverterDetailPage")
+);
 
-
+//InverterType
+export const InverterTypePage = lazy(() => import("@/admin/pages/InverterTypePage"));
+export const CreateInverterTypePage = lazy(
+  () => import("@/admin/pages/CreateInverterTypePage")
+);
+export const EditInverterTypePage = lazy(
+  () => import("@/admin/pages/EditInverterTypePage")
 );
