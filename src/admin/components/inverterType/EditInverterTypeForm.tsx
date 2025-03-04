@@ -31,13 +31,10 @@ const EditInverterTypePage = () => {
       redirect_to_list: formValues.redirect_to_list ? true : false,
     };
     const result = formSchema.safeParse(parsedValues);
-    if (result.success) {
-      setErrors(undefined);
-      e.currentTarget.reset();
-    } else if (!result.success) {
+    if (!result.success) {
       setErrors(result.error.format());
-      console.log(result.error.format());
     }
+    setErrors(undefined);
     if (result.success && result.data.redirect_to_list) {
       navigate("../inverterType");
     }
