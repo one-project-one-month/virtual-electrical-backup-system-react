@@ -23,14 +23,11 @@ const InverterTable = () => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">ID</TableHead>
-            <TableHead className="">Type</TableHead>
-            <TableHead className="text-nowrap">Wave Type</TableHead>
-            <TableHead className="">Model</TableHead>
+            <TableHead className="">Image</TableHead>
             <TableHead className="">Brand</TableHead>
-            <TableHead className="">Compatible Battery</TableHead>
             <TableHead className="text-center min-w-[4rem]">Volt</TableHead>
             <TableHead className="text-center min-w-[6rem]">Power</TableHead>
-            <TableHead className="text-right min-w-[6rem]">Price</TableHead>
+            <TableHead className="text-center min-w-[6rem]">Price</TableHead>
             <TableHead className="text-center">Action</TableHead>
           </TableRow>
         </TableHeader>
