@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { useState } from "react";
-import { inverterTypes } from "../../data/inverters";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import editInverterType from "@/services/inverterType/editInverterType";
+import { InverterType } from "@/types/inverterType";
+import { useBoundStore } from "@/store/store";
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   efficiency: z.string().min(1, { message: "Efficiency is required" }),
@@ -12,9 +15,11 @@ const formSchema = z.object({
 });
 
 const EditInverterTypePage = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
-  const currentInverterType = inverterTypes.find(
+  const { inverterType } = useBoundStore.getState();
+  const currentInverterType = inverterType.find(
     (inverterType) => inverterType.id === Number(id)
   );
   const [errors, setErrors] =
@@ -22,7 +27,14 @@ const EditInverterTypePage = () => {
   const previousPage = () => {
     navigate(-1);
   };
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const { mutateAsync: editInverterTypeMutation } = useMutation({
+    mutationFn: (payload: Partial<InverterType>) => editInverterType(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["inverterType"] });
+    },
+  });
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const formValues = Object.fromEntries(formData);
@@ -33,7 +45,14 @@ const EditInverterTypePage = () => {
     const result = formSchema.safeParse(parsedValues);
     if (!result.success) {
       setErrors(result.error.format());
+      return;
     }
+    const payload: Partial<InverterType> = {
+      id: Number(id),
+      name: result.data.name,
+      efficiency: Number(result.data.efficiency),
+    };
+    editInverterTypeMutation(payload);
     setErrors(undefined);
     if (result.success && result.data.redirect_to_list) {
       navigate("../inverterType");

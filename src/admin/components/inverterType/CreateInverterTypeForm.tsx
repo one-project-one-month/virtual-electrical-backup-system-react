@@ -3,25 +3,40 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useState } from "react";
+import createInverterType from "@/services/inverterType/createInverterType";
+import { InverterType } from "@/types/inverterType";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
-  efficiency: z.string().min(1, { message: "Efficiency is required" }),
+  efficiency: z
+    .number()
+    .min(1, { message: "Efficiency is required" })
+    .max(95, { message: "Efficiency must be less than 95" })
+    .min(60, { message: "Efficiency must be greater than 60" }),
   redirect_to_list: z.boolean(),
 });
 
 const CreateInverterTypePage = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
   const previousPage = () => {
     navigate(-1);
   };
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const { mutateAsync: createInverterTypeMutation } = useMutation({
+    mutationFn: (payload: Partial<InverterType>) => createInverterType(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["inverterType"] });
+    },
+  });
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const formValues = Object.fromEntries(formData);
     const parsedValues = {
       ...formValues,
+      efficiency: Number(formValues.efficiency),
       redirect_to_list: formValues.redirect_to_list ? true : false,
     };
     const result = formSchema.safeParse(parsedValues);
@@ -29,6 +44,12 @@ const CreateInverterTypePage = () => {
       setErrors(result.error.format());
       return;
     }
+    const payload: Partial<InverterType> = {
+      name: result.data.name,
+      efficiency: Number(result.data.efficiency),
+    };
+    console.log(payload);
+    createInverterTypeMutation(payload);
     setErrors(undefined);
     e.currentTarget.reset();
     if (result.data.redirect_to_list) {

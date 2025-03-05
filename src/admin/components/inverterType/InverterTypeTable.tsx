@@ -1,4 +1,3 @@
-import { inverterTypes } from "@/admin/data/inverters";
 import {
   Table,
   TableBody,
@@ -6,19 +5,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ApiResponse } from "@/types/apiResponse";
-import { InverterType } from "@/types/inverters";
-import { useState } from "react";
 import InverterTypeRow from "./InverterTypeRow";
+import { InverterType } from "@/types/inverterType";
 
-const InverterTable = () => {
-  const [invertersData, setInverterData] = useState<
-    ApiResponse<InverterType[]>
-  >({
-    message: "Data has been successfully",
-    data: inverterTypes,
-  });
+type InverterTypeTableProps = {
+  data: InverterType[];
+};
 
+const InverterTypeTable = ({ data }: InverterTypeTableProps) => {
   return (
     <section className="px-5 mt-5">
       <Table className="bg-white rounded-lg shadow-lg overflow-scroll overscroll-x-auto min-w-fit">
@@ -31,7 +25,7 @@ const InverterTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invertersData?.data?.map((inverter) => (
+          {data?.map((inverter) => (
             <InverterTypeRow key={inverter.id} inverterType={inverter} />
           ))}
         </TableBody>
@@ -40,4 +34,4 @@ const InverterTable = () => {
   );
 };
 
-export default InverterTable;
+export default InverterTypeTable;

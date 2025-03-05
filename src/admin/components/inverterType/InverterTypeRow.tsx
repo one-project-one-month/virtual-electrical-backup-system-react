@@ -1,4 +1,4 @@
-import { InverterType } from "@/types/inverters";
+import { InverterType } from "@/types/inverterType";
 import { Link } from "react-router-dom";
 
 type InverterTypeRowProps = {
