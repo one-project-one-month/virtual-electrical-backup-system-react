@@ -19,17 +19,27 @@ const formSchema = z.object({
 const CreateInverterTypePage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
   const previousPage = () => {
     navigate(-1);
   };
+
   const { mutateAsync: createInverterTypeMutation } = useMutation({
     mutationFn: (payload: Partial<InverterType>) => createInverterType(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["inverterType"] });
     },
+    onMutate: () => {
+      setIsLoading(true);
+    },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
+
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -118,6 +128,7 @@ const CreateInverterTypePage = () => {
           Cancel
         </Button>
         <Button
+          disabled={isLoading}
           className="row-start-4 col-span-2 py-2 bg-electric-400 text-white rounded-lg hover:bg-electric-500"
           type="submit"
         >

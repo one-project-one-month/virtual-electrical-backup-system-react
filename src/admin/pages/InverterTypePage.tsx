@@ -4,17 +4,25 @@ import Header from "../components/inverterType/Header";
 import PaginationComponent from "@/components/PaginationComponent";
 import fetchInverterType from "@/services/inverterType/fetchInverterType";
 import { useQuery } from "@tanstack/react-query";
+import { SkeletonTable } from "../components/inverterType/SkeletonTable";
+
 export default function InverterPage() {
-  const { data: inverterTypeData } = useQuery({
+  const { data: inverterTypeData, isLoading } = useQuery({
     queryKey: ["inverterType"],
     queryFn: () => fetchInverterType(),
   });
-  const inverterType = inverterTypeData?.reverse();
+  let content = null;
+  if (isLoading) {
+    content = <SkeletonTable />;
+  } else {
+    // const inverterType = inverterTypeData?.reverse();
+    content = <InverterTypeTable data={inverterTypeData} />;
+  }
   return (
     <section>
       <BreadcrumbDashboard currentPageTitle="Manage Inverter Type" />
       <Header />
-      <InverterTypeTable data={inverterType} />
+      {content}
       <PaginationComponent />
     </section>
   );

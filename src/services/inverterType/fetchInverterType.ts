@@ -2,6 +2,8 @@ import axios from "axios";
 import { useBoundStore } from "@/store/store";
 const fetchInverterType = async () => {
   const { setInverterType, token } = useBoundStore.getState();
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   try {
     const res = await axios.get("/v1/admin/inverter-types", {
       headers: {
@@ -9,7 +11,7 @@ const fetchInverterType = async () => {
       },
     });
     const result = res.data.data;
-    setInverterType(result);
+    setInverterType(result.reverse());
     return result;
   } catch (error) {
     console.log(error);

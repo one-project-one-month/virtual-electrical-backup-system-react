@@ -4,6 +4,6 @@ type Store = InverterTypeSlice & {
   token: string;
 };
 export const useBoundStore = create<Store>((...a) => ({
-  token: "1|93vWgIo9Z2elgTmySron7bgV7mEKt0RTCYKqWzQpca989e6d",
+  token: "1|hmsbODm48UdT6ALOpdpRKCOcZB8TAKZ5QLIlpxtA4a8f5946",
   ...createInverterTypeSlice(...a),
 }));
