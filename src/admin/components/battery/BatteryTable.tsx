@@ -17,20 +17,19 @@ const BatteryTable = () => {
     message: "Data has been successfully",
     data: batteries,
   });
-  
+
   return (
     <section className="px-5 mt-5">
       <Table className="bg-white rounded-lg shadow-lg">
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">ID</TableHead>
+            <TableHead className="">Battery Name</TableHead>
             <TableHead>Brand Name</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead className="text-right">Storage AMP</TableHead>
-            <TableHead className="text-right">Voltage</TableHead>
-            <TableHead className="text-right">Price</TableHead>
-            <TableHead className="text-right">Description</TableHead>
-            <TableHead className="text-right"></TableHead>
+            <TableHead className="text-center ">Storage AMP</TableHead>
+            <TableHead className="text-center ">Voltage</TableHead>
+            <TableHead className="text-center">Battery Type</TableHead>
+            <TableHead className="text-center ">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

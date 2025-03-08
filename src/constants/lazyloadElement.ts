@@ -11,6 +11,9 @@ export const CreateBatteryPage = lazy(
 export const EditBatteryPage = lazy(
   () => import("@/admin/pages/EditBatteryPage")
 );
+export const BatteryDetailPage = lazy(
+  () => import("@/admin/pages/BatteryDetailPage")
+);
 
 //generator 
 export const GeneratorPage = lazy(() => import("@/admin/pages/GeneratorPage"));

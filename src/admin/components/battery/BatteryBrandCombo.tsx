@@ -1,5 +1,5 @@
 import React from "react";
-import { batteryBrands } from "@/admin/data/batteryBrands"
+import brands from "@/admin/data/brand";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -52,16 +52,9 @@ const BatteryBrandCombo: React.FC<BatteryBrandComboProps> = ({
             {selected
               ? selected
               : value
-              ? batteryBrands.find(
-                  (batteryBrand) => batteryBrand.name === value
-                )?.name
+              ? brands.find((batteryBrand) => batteryBrand.name === value)?.name
               : "Select Brand Name"}
 
-            {/* {value 
-              ? batteryBrands.find(
-                  (batteryBrand) => batteryBrand.name === value
-                )?.name
-              : "Select Brand Name"} */}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -71,7 +64,7 @@ const BatteryBrandCombo: React.FC<BatteryBrandComboProps> = ({
             <CommandList>
               <CommandEmpty>No data found.</CommandEmpty>
               <CommandGroup>
-                {batteryBrands.map((batteryBrand) => (
+                {brands.map((batteryBrand) => (
                   <CommandItem
                     key={batteryBrand.id}
                     value={batteryBrand.name}

@@ -2,20 +2,26 @@ import {
   CreateBatteryPage,
   EditBatteryPage,
   BatteryPage,
+  BatteryDetailPage,
 } from "@/constants/lazyloadElement";
+import LazyLoad from "@/components/LazyLoad";
 
 const batteryRoute = [
   {
     path: "battery",
-    element: <BatteryPage />,
+    element: <LazyLoad component={BatteryPage} />,
   },
   {
     path: "battery/create",
-    element: <CreateBatteryPage />,
+    element: <LazyLoad component={CreateBatteryPage} />,
   },
   {
-    path: "battery/edit/:slug",
-    element: <EditBatteryPage />,
+    path: "battery/edit/:id",
+    element: <LazyLoad component={EditBatteryPage} />,
+  },
+  {
+    path: "battery/detail/:id",
+    element: <LazyLoad component={BatteryDetailPage} />,
   },
 ];
 export default batteryRoute;
