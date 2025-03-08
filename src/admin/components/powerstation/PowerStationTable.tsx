@@ -26,9 +26,6 @@ export default function PowerStationTable() {
                     <TableHead className="text-center">Usable Watt</TableHead>
                     <TableHead className="text-center">Charging Type</TableHead>
                     <TableHead className="text-center">Charging Time</TableHead>
-                    <TableHead className="text-right">Input Watt</TableHead>
-                    <TableHead className="text-right">Input Amp</TableHead>
-                    <TableHead className="text-right">Output Amp</TableHead>
                     <TableHead className="text-right">Price</TableHead>
                     <TableHead className="text-right">Action</TableHead>
                 </TableRow>

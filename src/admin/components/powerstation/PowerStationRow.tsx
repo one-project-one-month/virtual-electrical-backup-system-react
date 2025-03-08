@@ -1,6 +1,7 @@
 import { PowerStations } from "@/types/powerstations";
 import { formatTime } from "@/util/format";
 import { Link } from "react-router-dom";
+import { powerStationBrands } from "@/admin/data/powerstations";
 
 type PowerStationRowProps = {
   powerstation: PowerStations;
@@ -21,9 +22,6 @@ const PowerStationRow = ({
     usableWatt,
     chargingTime,
     chargingType,
-    inputWatt,
-    inputAmp,
-    outputAmp,
     powerStationPrice,
   },
 }: PowerStationRowProps) => {
@@ -32,7 +30,7 @@ const PowerStationRow = ({
       <TableRow>
         <TableCell>{id}</TableCell>
         <TableCell>{model}</TableCell>
-        <TableCell>{brandId}</TableCell>
+        <TableCell>{powerStationBrands.find((brand) => brand.id == brandId)?.name}</TableCell>
         <TableCell>
           {watt}
           <span className="ms-2">W</span>
@@ -45,18 +43,6 @@ const PowerStationRow = ({
         <TableCell className="text-center">{chargingType}</TableCell>
         <TableCell className="text-center">
           {formatTime(chargingTime)}
-        </TableCell>
-        <TableCell className="text-right">
-          {inputWatt}
-          <span className="ms-2">W</span>
-        </TableCell>
-        <TableCell className="text-right">
-          {inputAmp}
-          <span className="ms-2">Amp</span>
-        </TableCell>
-        <TableCell className="text-right">
-          {outputAmp}
-          <span className="ms-2">Amp</span>
         </TableCell>
         <TableCell className="text-right">
           <span className="me-2">{powerStationPrice}</span>$
