@@ -15,15 +15,18 @@ export default function InverterPage() {
   if (isLoading) {
     content = <SkeletonTable />;
   } else {
-    // const inverterType = inverterTypeData?.reverse();
-    content = <InverterTypeTable data={inverterTypeData} />;
+    content = (
+      <>
+        <InverterTypeTable data={inverterTypeData} />
+        <PaginationComponent />
+      </>
+    );
   }
   return (
     <section>
       <BreadcrumbDashboard currentPageTitle="Manage Inverter Type" />
       <Header />
       {content}
-      <PaginationComponent />
     </section>
   );
 }

@@ -1,9 +1,7 @@
 import { create } from "zustand";
-import { createInverterTypeSlice, InverterTypeSlice } from "./inverterTypeSlice";
-type Store = InverterTypeSlice & {
+type Store =  {
   token: string;
 };
-export const useBoundStore = create<Store>((...a) => ({
-  token: "1|hmsbODm48UdT6ALOpdpRKCOcZB8TAKZ5QLIlpxtA4a8f5946",
-  ...createInverterTypeSlice(...a),
+export const useStore = create<Store>(() => ({
+  token: "1|ZsP4Jf9ynyn10ILTSOoGepZ0FTqsFo46NHKFuJ6Lb64dbdf4",
 }));

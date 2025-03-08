@@ -1,7 +1,9 @@
+import { useInverterTypeStore } from '@/store/inverterTypeStore';
+import { useStore } from '@/store/store';
 import axios from "axios";
-import { useBoundStore } from "@/store/store";
 const fetchInverterType = async () => {
-  const { setInverterType, token } = useBoundStore.getState();
+  const { setInverterType} = useInverterTypeStore.getState();
+  const {token} = useStore.getState()
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   try {

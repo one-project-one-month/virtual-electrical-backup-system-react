@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import editInverterType from "@/services/inverterType/editInverterType";
 import { InverterType } from "@/types/inverterType";
-import { useBoundStore } from "@/store/store";
+import { useInverterTypeStore } from "@/store/inverterTypeStore";
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   efficiency: z.string().min(1, { message: "Efficiency is required" }),
@@ -18,7 +18,7 @@ const EditInverterTypePage = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { inverterType } = useBoundStore.getState();
+  const { inverterType } = useInverterTypeStore.getState();
   const currentInverterType = inverterType.find(
     (inverterType) => inverterType.id === Number(id)
   );
