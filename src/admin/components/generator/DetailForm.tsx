@@ -1,7 +1,6 @@
 import { brands } from '@/admin/data/brands';
 import { generators } from '@/admin/data/generator';
 import { Button } from '@/components/ui/button';
-import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 
 const DetailForm = () => {
