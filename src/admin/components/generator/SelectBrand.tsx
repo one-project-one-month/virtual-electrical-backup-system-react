@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,29 +17,30 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useEffect } from "react";
 
-export function SelectBrand<
-  T extends { id: number; name: string } & { name: string }
->({
-  data,
+export function SelectBrand<T extends { id: number; name: string }>({
+  brands,
   name,
-  defaultValue = "",
+  value,
+  onChange,
 }: {
-  data: T[];
+  brands: T[];
   name: string;
-  defaultValue: string | undefined;
+  value: number;
+  onChange: (value: number) => void;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
-  useEffect(() => {
-    if (defaultValue) {
-      setValue(defaultValue);
-    }
-  }, [defaultValue]);
+
+  const handleSelect = (currentValue: number) => {
+    const newValue = currentValue === value ? 0 : currentValue; // If same, deselect
+    onChange(newValue);  // Propagate selected value back to parent
+    setOpen(false);  // Close the dropdown
+    console.log(newValue)
+  };
+
   return (
     <>
-      <input type="hidden" name={name} value={value} />
+      <input type="hidden" name={name} value={value.toString()} />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -50,33 +50,30 @@ export function SelectBrand<
             className=" flex-1 justify-between text-gray-600 text-sm font-normal"
           >
             {value
-              ? data.find((data) => data.id === Number(value))?.name
+              ? brands.find((brand) => brand.id === Number(value))?.name
               : "Select ..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0">
           <Command>
-            <CommandInput placeholder="Search framework..." />
+            <CommandInput placeholder="Search brand..." />
             <CommandList>
-              <CommandEmpty>No framework found.</CommandEmpty>
+              <CommandEmpty>No Brands found.</CommandEmpty>
               <CommandGroup>
-                {data.map((data) => (
+                {brands.map((brand) => (
                   <CommandItem
-                    key={data.id}
-                    value={data.id.toString()}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue);
-                      setOpen(false);
-                    }}
+                    key={brand.id}
+                    value={brand.id.toString()}
+                    onSelect={() => handleSelect(brand.id)}
                   >
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === String(data.id) ? "opacity-100" : "opacity-0"
+                        value === brand.id ? "opacity-100" : "opacity-0"
                       )}
                     />
-                    {data.name}
+                    {brand.name}
                   </CommandItem>
                 ))}
               </CommandGroup>
