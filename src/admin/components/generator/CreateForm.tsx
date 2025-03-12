@@ -51,9 +51,9 @@ const CreateForm = () => {
         <label className='text-xs text-gray-600 after:ml-0.5 after:text-red-700 after:content-["*"]' htmlFor='Brand'>Brand</label>
         <div className="flex items-center gap-2">
           <Controller control={control} name='brandId' render={({field}) => 
-          <SelectBrand {...field}// Automatically passes field.value and field.onChange
+          <SelectBrand {...field}
           brands={brands}
-          value={field.value ? field.value : 0} // Make sure it defaults to empty string if no value
+          value={field.value ? field.value : 0} 
           onChange={field.onChange} />
           }/>
         <DialogCloseButton isBrand={true} />
