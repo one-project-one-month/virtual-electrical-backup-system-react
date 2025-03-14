@@ -77,8 +77,9 @@ export default function CreatePowerStationForm() {
 
   return (
     <>
-      <section className="p-5 mt-5 w-1/2">
+      <section className="p-5 mt-5 w-full">
         <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-4">
+          <div className="grid grid-cols-12 col-span-6 gap-4">
           <div className="flex flex-col justify-start gap-4 col-span-6">
             <Label htmlFor="model">Model<span className="ms-2 text-red-500">*</span></Label>
             <Input
@@ -222,19 +223,6 @@ export default function CreatePowerStationForm() {
               placeholder="Enter image URL"
             />
           </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-12">
-            <Label htmlFor="description">Description<span className="ms-2 text-red-500">*</span></Label>
-            <textarea
-              id="description"
-              name="description"
-              rows={4}
-              placeholder="Enter description"
-              className="w-full p-2 border border-gray-300 rounded-md"
-            ></textarea>
-            {error?.description && error.description._errors.length > 0 && <p className="text-red-500 text-sm">{error.description._errors[0]}</p>}
-          </div>
-
           <div className="flex flex-col justify-start gap-4 col-span-12">
             <div className="flex items-center space-x-2">
               <Checkbox name="redirect" id="redirect" />
@@ -258,6 +246,21 @@ export default function CreatePowerStationForm() {
               <Link to="/admin/powerStation">Cancel</Link>
             </Button>
           </div>
+          </div>
+
+          <div className="flex flex-col justify-start gap-4 col-span-6">
+            <Label htmlFor="description">Description<span className="ms-2 text-red-500">*</span></Label>
+            <textarea
+              id="description"
+              name="description"
+              rows={10}
+              placeholder="Enter description"
+              className="w-full p-2 border border-gray-300 rounded-md"
+            ></textarea>
+            {error?.description && error.description._errors.length > 0 && <p className="text-red-500 text-sm">{error.description._errors[0]}</p>}
+          </div>
+
+          
         </form>
       </section>
     </>
