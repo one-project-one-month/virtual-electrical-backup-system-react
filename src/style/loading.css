@@ -1,10 +1,15 @@
+
 /* HTML: <div class="loader"></div> */
 .loader {
-    width: 90px;
-    height: 14px;
-    background: repeating-linear-gradient(90deg,#1eadff 0 calc(25% - 5px),#0000 0 25%) left/calc(4*100%/3) 100%;
-    animation: l1 0.5s infinite linear;
+    height: 4px;
+    width: 100vw;
+    --c:no-repeat linear-gradient(#1eadff 0 0);
+    background: var(--c),var(--c),#d6f2ff;
+    background-size: 60% 100%;
+    animation: l16 3s infinite;
   }
-  @keyframes l1 {
-      100% {background-position: right}
+  @keyframes l16 {
+    0%   {background-position:-150% 0,-150% 0}
+    66%  {background-position: 250% 0,-150% 0}
+    100% {background-position: 250% 0, 250% 0}
   }
