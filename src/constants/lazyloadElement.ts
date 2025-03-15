@@ -15,6 +15,14 @@ export const BatteryDetailPage = lazy(
   () => import("@/admin/pages/BatteryDetailPage")
 );
 
+// Battery Type
+export const BatteryTypePage = lazy(() => import("@/admin/pages/BatteryTypePage"));
+export const CreateBatteryTypePage = lazy(
+    () => import("@/admin/pages/CreateBatteryTypePage")
+);
+export const EditTypePage = lazy(() => import("@/admin/pages/EditBatteryTypePage"));
+
+
 //generator 
 export const GeneratorPage = lazy(() => import("@/admin/pages/GeneratorPage"));
 export const CreateGeneratorPage = lazy(

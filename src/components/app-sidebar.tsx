@@ -14,11 +14,11 @@ import { Link } from "react-router-dom";
 
 // This is sample data.
 const data = {
-  logo:{
-      title: "VEBS",
-      url: "/admin",
-      icon: LucideCable,
-    },
+  logo: {
+    title: "VEBS",
+    url: "/admin",
+    icon: LucideCable,
+  },
   navMain: [
     {
       title: "Products",
@@ -29,6 +29,10 @@ const data = {
         {
           title: "Battery",
           url: "/admin/battery",
+        },
+        {
+          title: "Battery-Type",
+          url: "/admin/battery-type",
         },
         {
           title: "Brand",

@@ -29,6 +29,7 @@ const BatteryDetailForm = () => {
   return (
     <>
       <div className="grid grid-cols-12 gap-6 p-4 pl-10 pt-5">
+        {/* Image Column */}
         <div className="col-span-4">
           <img
             className="w-full h-[180px] object-cover border-2 border-gray-200 rounded-lg"
@@ -36,42 +37,60 @@ const BatteryDetailForm = () => {
             alt="battery"
           />
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-2 col-span-9">
-          <p className="text-sm font-light text-gray-500">Battery ID</p>
-          <p className="text-sm font-normal">{battery?.id}</p>
-        </div>
-        <div className="grid grid-cols-5 gap-2 row-start-3 col-span-9">
-          <p className="text-sm font-light text-gray-500">Battery Name </p>
-          <p className="text-sm font-normal">{battery?.name}</p>
-        </div>
-        <div className="grid grid-cols-5 gap-2 row-start-4 col-span-9">
-          <p className="text-sm font-light text-gray-500">Brand Name</p>
-          <p className="text-sm font-normal">{selectedBrand?.name}</p>
-        </div>
-        <div className="grid grid-cols-5 gap-2 row-start-5 col-span-9">
-          <p className="text-sm font-light text-gray-500">Type Name</p>
-          <p className="text-sm font-normal">{selectedType?.name}</p>
-        </div>
-        <div className="grid grid-cols-5 gap-2 row-start-6 col-span-9">
-          <p className="text-sm font-light text-gray-500">Storage AMP</p>
-          <p className="text-sm font-normal">{battery?.storage_amp} Ah</p>
-        </div>
-        <div className="grid grid-cols-5 gap-2 row-start-7 col-span-9">
-          <p className="text-sm font-light text-gray-500">Battery Volt</p>
-          <p className="text-sm font-normal">{battery?.voltage} V</p>
-        </div>
-        <div className="grid grid-cols-5 gap-1 row-start-8 col-span-9">
-          <p className="text-sm font-light text-gray-500">Description</p>
-          <p className="text-sm font-normal">{battery?.description} A</p>
-        </div>
-        <div className="grid grid-cols-5 gap-1 row-start-9 col-span-9">
-          <Button
-            onClick={previousPage}
-            className="bg-electric-400 col-span-2 text-white rounded-lg hover:bg-electric-500 hover:text-white"
-            variant="outline"
-          >
-            Manage Battery
-          </Button>
+
+        {/* Details Column */}
+        <div className="col-span-8 grid grid-cols-5 gap-y-3">
+          <p className="text-sm font-light text-gray-500 col-span-2">
+            Battery ID
+          </p>
+          <p className="text-sm font-normal col-span-3">{battery?.id}</p>
+
+          <p className="text-sm font-light text-gray-500 col-span-2">
+            Battery Name
+          </p>
+          <p className="text-sm font-normal col-span-3">{battery?.name}</p>
+
+          <p className="text-sm font-light text-gray-500 col-span-2">
+            Brand Name
+          </p>
+          <p className="text-sm font-normal col-span-3">
+            {selectedBrand?.name}
+          </p>
+
+          <p className="text-sm font-light text-gray-500 col-span-2">
+            Type Name
+          </p>
+          <p className="text-sm font-normal col-span-3">{selectedType?.name}</p>
+
+          <p className="text-sm font-light text-gray-500 col-span-2">
+            Storage AMP
+          </p>
+          <p className="text-sm font-normal col-span-3">
+            {battery?.storage_amp} Ah
+          </p>
+
+          <p className="text-sm font-light text-gray-500 col-span-2">
+            Battery Volt
+          </p>
+          <p className="text-sm font-normal col-span-3">{battery?.voltage} V</p>
+
+          <p className="text-sm font-light text-gray-500 col-span-2">
+            Description
+          </p>
+          <p className="text-sm font-normal col-span-3">
+            {battery?.description}
+          </p>
+
+          {/* Button Row */}
+          <div className="col-span-5 flex">
+            <Button
+              onClick={previousPage}
+              className="bg-electric-400 text-white rounded-lg hover:bg-electric-500 hover:text-white"
+              variant="outline"
+            >
+              Manage Battery
+            </Button>
+          </div>
         </div>
       </div>
     </>

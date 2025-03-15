@@ -12,6 +12,7 @@ import deviceRoute from "./deviceRoute";
 
 import inverterRoute from "./inverterRoute";
 
+import batteryTypeRoute from "./batteryTypeRoute";
 
 const adminRoute = [
   {
@@ -29,7 +30,8 @@ const adminRoute = [
       ...brandRoute,
       ...deviceRoute,
       ...inverterRoute,
-      ...generatorRoute
+      ...generatorRoute,
+      ...batteryTypeRoute
     ],
   },
 ];

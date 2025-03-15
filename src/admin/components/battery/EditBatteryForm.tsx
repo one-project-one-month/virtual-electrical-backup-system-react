@@ -96,8 +96,8 @@ const EditBatteryForm = () => {
       });
 
       //for handling combo box
-      setSelectedBrand(selectedBattery.brandName);
-      setSelectedType(selectedBattery.brandType);
+      // setSelectedBrand(selectedBattery.brandName);
+      // setSelectedType(selectedBattery.brandType);
     }
   }, [BatteryID, reset]);
 
@@ -108,7 +108,7 @@ const EditBatteryForm = () => {
     });
   };
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const onSubmit: SubmitHandler<FormFeilds> = (data) => {
     console.log("update data", data);
@@ -129,20 +129,22 @@ const EditBatteryForm = () => {
 
   return (
     <>
-      <div className="container w-1/2 mt-5 mx-5 ">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* //For handling ID  */}
-          <input
-            type="hidden"
-            id="voltage"
-            name="voltage"
-            value={Number(formData.id)}
-            placeholder="voltage"
-            className="text-xl border border-grey-700"
-          />
+      <div className="container w-3/4 mt-5 mx-5">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex justify-between gap-6"
+        >
+          <div className="w-1/2">
+            {/* //For handling ID  */}
+            <input
+              type="hidden"
+              id="voltage"
+              name="voltage"
+              value={Number(formData.id)}
+              placeholder="voltage"
+              className="text-xl border border-grey-700"
+            />
 
-          {/* For aligning brand and type  */}
-          <div className="flex justify-between ">
             {/* Battery Brand */}
             <div className=" text-xs text-gray-600 ">
               <label htmlFor="">Brand Name</label>
@@ -168,6 +170,7 @@ const EditBatteryForm = () => {
                     <Button
                       className="h-10 w-10 text-lg rounded-full"
                       variant="outline"
+                      onClick={() => navigate(`/admin/brand/create`)}
                     >
                       +
                     </Button>
@@ -197,7 +200,7 @@ const EditBatteryForm = () => {
                         field.onChange(value);
                         setSelectedType(value);
                       }}
-                      selected={selectedType}
+                      // selected={selectedType}
                     />
                   )}
                 />
@@ -206,6 +209,7 @@ const EditBatteryForm = () => {
                     <Button
                       className="h-10 w-10 text-lg rounded-full"
                       variant="outline"
+                      onClick={() => navigate(`/admin/battery-type/create`)}
                     >
                       +
                     </Button>
@@ -217,145 +221,152 @@ const EditBatteryForm = () => {
                 {errors.brand?.message || ""}
               </p>
             </div>
-          </div>
 
-          {/* Name  */}
-          <div className="w-full text-sm text-gray-600 ">
-            <label
-              htmlFor=""
-              className="after:ml-0.5 after:text-red-700 after:content-['*']"
-            >
-              Battery Name
-            </label>
-            <Input
-              type="text"
-              id="name"
-              {...register("name", { required: "* Name required" })}
-              placeholder=""
-              // value={formData.storageAMP}
-              onChange={handleChange}
-            />
-            <p className="text-red-500 text-xs min-h-[30px]">
-              {errors.name?.message || ""}
-            </p>
-          </div>
-
-          <div className="flex justify-between gap-4">
-            {/* Storage AMP */}
+            {/* Name  */}
             <div className="w-full text-sm text-gray-600 ">
               <label
                 htmlFor=""
                 className="after:ml-0.5 after:text-red-700 after:content-['*']"
               >
-                Storage AMP
+                Battery Name
               </label>
               <Input
-                type="number"
-                id="storage_amp"
-                {...register("storage_amp", { required: "* Storage required" })}
+                type="text"
+                id="name"
+                {...register("name", { required: "* Name required" })}
                 placeholder=""
                 // value={formData.storageAMP}
                 onChange={handleChange}
               />
               <p className="text-red-500 text-xs min-h-[30px]">
-                {errors.storage_amp?.message || ""}
+                {errors.name?.message || ""}
               </p>
-              {/* {errors.storageAMP && (
+            </div>
+
+            <div className="flex justify-between gap-4">
+              {/* Storage AMP */}
+              <div className="w-full text-sm text-gray-600 ">
+                <label
+                  htmlFor=""
+                  className="after:ml-0.5 after:text-red-700 after:content-['*']"
+                >
+                  Storage AMP
+                </label>
+                <Input
+                  type="number"
+                  id="storage_amp"
+                  {...register("storage_amp", {
+                    required: "* Storage required",
+                  })}
+                  placeholder=""
+                  // value={formData.storageAMP}
+                  onChange={handleChange}
+                />
+                <p className="text-red-500 text-xs min-h-[30px]">
+                  {errors.storage_amp?.message || ""}
+                </p>
+                {/* {errors.storageAMP && (
                 <p className="text-red-500 text-sm">
                     {errors.storageAMP?.message}
                 </p>
                 )} */}
+              </div>
+
+              {/* Battery Voltage */}
+              <div className="w-full text-sm text-gray-600 ">
+                <label
+                  htmlFor=""
+                  className="after:ml-0.5 after:text-red-700 after:content-['*']"
+                >
+                  Battery Volt
+                </label>
+                <Input
+                  type="number"
+                  id="voltage"
+                  {...register("voltage", { required: "* Voltage required" })}
+                  // value={formData.voltage}
+                  onChange={handleChange}
+                />
+                <p className="text-red-500 text-xs min-h-[30px]">
+                  {errors.type?.message || ""}
+                </p>
+              </div>
             </div>
 
-            {/* Battery Voltage */}
+            {/* IMAGE  */}
+            <div className="row-start-5 col-span-6 grid gap-2">
+              <label
+                className="text-xs text-gray-600"
+                htmlFor="compatibleBattery"
+              >
+                Image
+              </label>
+              <Input
+                type="file"
+                className="text-sm placeholder:text-xs"
+                id="image"
+                placeholder="image"
+                {...register("image", {
+                  required: "* image required",
+                })}
+              />
+            </div>
+            <br />
+
+            <div className="flex items-center gap-4">
+              <input
+                className="size-4 inline"
+                type="checkbox"
+                id="redirect_to_battery"
+                name="redirect_to_list"
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+              />
+              <label
+                className="text-gray-500 text-sm"
+                htmlFor="redirect_to_battery"
+              >
+                Redirect to manage battery
+              </label>
+            </div>
+            <br />
+            <div className="container mx-5 flex col-span-6 gap-3 ">
+              <Button
+                type="submit"
+                className="bg-blue-500 text-white px-4 py-2 mx-5 rounded-sm"
+              >
+                Save
+              </Button>
+              <Button
+                onClick={() => navigate(`/admin/battery/`)}
+                className="bg-blue-500 text-white px-4 py-2 rounded-sm"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+
+          {/* Description */}
+          <div className="w-1/2">
             <div className="w-full text-sm text-gray-600 ">
               <label
                 htmlFor=""
-                className="after:ml-0.5 after:text-red-700 after:content-['*']"
+                className="text-sm text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
               >
-                Battery Volt
+                Description
               </label>
-              <Input
-                type="number"
-                id="voltage"
-                {...register("voltage", { required: "* Voltage required" })}
-                // value={formData.voltage}
-                onChange={handleChange}
+              <textarea
+                id="description"
+                {...register("description", {
+                  required: "Description required",
+                })}
+                className="text-sm w-full text-gray-600 p-1"
+                rows={6}
               />
-              <p className="text-red-500 text-xs min-h-[30px]">
-                {errors.type?.message || ""}
+              <p className="text-red-500 text-xs min-h-[20px]">
+                {errors.description?.message || ""}
               </p>
             </div>
-          </div>
-
-          {/* IMAGE  */}
-          <div className="row-start-5 col-span-6 grid gap-2">
-            <label
-              className="text-xs text-gray-600"
-              htmlFor="compatibleBattery"
-            >
-              Image
-            </label>
-            <Input
-              type="file"
-              className="text-sm placeholder:text-xs"
-              id="image"
-              placeholder="image"
-              {...register("image", {
-                required: "* image required",
-              })}
-            />
-          </div>
-          <br />
-          {/* Description */}
-          <div className="w-full text-sm text-gray-600 ">
-            <label
-              htmlFor=""
-              className="text-sm text-gray-600 after:ml-0.5 after:text-red-700 after:content-['*']"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              {...register("description", { required: "Description required" })}
-              className="text-sm w-full text-gray-600 p-1"
-              rows={3}
-            />
-            <p className="text-red-500 text-xs min-h-[20px]">
-              {errors.description?.message || ""}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <input
-              className="size-4 inline"
-              type="checkbox"
-              id="redirect_to_battery"
-              name="redirect_to_list"
-              checked={checked}
-              onChange={(e) => setChecked(e.target.checked)}
-            />
-            <label
-              className="text-gray-500 text-sm"
-              htmlFor="redirect_to_battery"
-            >
-              Redirect to manage battery
-            </label>
-          </div>
-          <br />
-          <div className="container mx-5 flex col-span-6 gap-3 ">
-            <Button
-              type="submit"
-              className="bg-blue-500 text-white px-4 py-2 mx-5 rounded-sm"
-            >
-              Save
-            </Button>
-            <Button
-              onClick={() => navigate(`/admin/battery/`)}
-              className="bg-blue-500 text-white px-4 py-2 rounded-sm"
-            >
-              Cancel
-            </Button>
           </div>
         </form>
       </div>
