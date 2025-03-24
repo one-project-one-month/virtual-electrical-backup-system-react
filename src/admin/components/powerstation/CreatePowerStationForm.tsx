@@ -13,10 +13,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate,  } from "react-router-dom";
 import { powerStationBrands } from "@/admin/data/powerstations";
+import { useMutation } from "@tanstack/react-query";
+import { createPowerStationOption } from "@/query/powerStationQueryOptions";
 
 const formSchema = z.object({
     model: z.string().nonempty("Model is required"),
-    brandId: z.number().min(1, "Brand shouldn't be empty"),
+    brandId: z.string().nonempty("Brand should not be empty"),
     watt: z.number().nonnegative("Watt must be a positive number").min(1, "Watt must be greater than 0"),
     waveType: z.string().nonempty("Wave Type is required"),
     usableWatt: z.number().nonnegative("Usable Watt must be a positive number").min(1, "Usable Watt must be greater than 0"),
@@ -33,6 +35,7 @@ const formSchema = z.object({
 
 export default function CreatePowerStationForm() {
   const [error, setError] = useState<z.ZodFormattedError<typeof formSchema>["_output"] | undefined>(undefined);
+  const createMutation = useMutation(createPowerStationOption());
 
   const navigate = useNavigate();
 
@@ -67,7 +70,23 @@ export default function CreatePowerStationForm() {
     }
 
     setError(undefined);
-    console.log(result);
+    const newData = {
+      _id: "",
+      model: result.data.model,
+      watt: result.data.watt,
+      brandId: result.data.brandId,
+      waveType: result.data.waveType,
+      usableWatt: result.data.usableWatt,
+      chargingTime: result.data.chargingTime,
+      chargingType: result.data.chargingType,
+      inputWatt: result.data.inputWatt,
+      inputAmp: result.data.inputAmp,
+      outputAmp: result.data.outputAmp,
+      powerStationPrice: result.data.powerStationPrice,
+      image: "something",
+      description: result.data.description,
+    };
+    createMutation.mutate({newData})
     e.currentTarget.reset();
 
     if (result.data.redirect) {

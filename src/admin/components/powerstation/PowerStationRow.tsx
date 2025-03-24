@@ -1,10 +1,11 @@
 import { PowerStations } from "@/types/powerstations";
 import { formatTime } from "@/util/format";
 import { Link } from "react-router-dom";
-import { powerStationBrands } from "@/admin/data/powerstations";
 
 type PowerStationRowProps = {
   powerstation: PowerStations;
+  id: number;
+  handleDelete: (id: string) => void;
 };
 
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -14,7 +15,7 @@ import { LucideNotepadText } from "lucide-react";
 
 const PowerStationRow = ({
   powerstation: {
-    id,
+    _id,
     model,
     watt,
     brandId,
@@ -24,13 +25,19 @@ const PowerStationRow = ({
     chargingType,
     powerStationPrice,
   },
+  id,
+  handleDelete
 }: PowerStationRowProps) => {
+
+
   return (
     <>
       <TableRow>
         <TableCell>{id}</TableCell>
         <TableCell>{model}</TableCell>
-        <TableCell>{powerStationBrands.find((brand) => brand.id == brandId)?.name}</TableCell>
+        <TableCell>
+          {brandId.name}
+        </TableCell>
         <TableCell>
           {watt}
           <span className="ms-2">W</span>
@@ -48,19 +55,19 @@ const PowerStationRow = ({
           <span className="me-2">{powerStationPrice}</span>$
         </TableCell>
         <TableCell className="text-right flex gap-1 justify-end">
-          <Button variant="outline" size="sm">
-            <Link to={`/admin/powerstation/edit/${id}`}>
+          <Link to={`/admin/powerstation/edit/${_id}`}>
+            <Button variant="outline" size="sm">
               <LucidePencil />
-            </Link>
-          </Button>
-          <Button variant="outline" size="sm">
+            </Button>
+          </Link>
+          <Button onClick={() => handleDelete(_id)} variant="outline" size="sm">
             <LucideTrash2 />
           </Button>
-          <Button variant="outline" size="sm">
-            <Link to={`/admin/powerstation/detail/${id}`}>
+          <Link to={`/admin/powerstation/detail/${_id}`}>
+            <Button variant="outline" size="sm">
               <LucideNotepadText />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </TableCell>
       </TableRow>
     </>

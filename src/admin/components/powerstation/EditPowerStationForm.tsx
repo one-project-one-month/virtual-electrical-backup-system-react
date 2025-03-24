@@ -12,16 +12,18 @@ import {
 import { Label } from "@/components/ui/label";
 import { useParams } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
-import { powerstations } from "@/admin/data/powerstations";
 import { Checkbox } from "@/components/ui/checkbox";
-import { powerStationBrands } from "@/admin/data/powerstations";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  updatePowerStationByIdOption,
+  getPowerStationByIdOption,
+} from "@/query/powerStationQueryOptions";
+import { getAllBrandOption } from "@/query/brandQueryOption";
+import { Brands } from "@/types/brand";
 
 const formSchema = z.object({
   model: z.string().nonempty("Model is required"),
-  brandId: z
-    .number()
-    .nonnegative("Brand ID must be a positive number")
-    .min(1, "Brand ID must be greater than 0"),
+  brandId: z.string().nonempty("Brand should not be empty"),
   watt: z
     .number()
     .nonnegative("Watt must be a positive number")
@@ -58,26 +60,34 @@ const formSchema = z.object({
 });
 
 export default function EditPowerStationForm() {
-  const { id } = useParams<{ id: string }>();
-  const data = powerstations.find(
-    (powerstation) => powerstation.id === Number(id)
-  );
   const [error, setError] = useState<
     z.ZodFormattedError<typeof formSchema>["_output"] | undefined
   >(undefined);
 
   const navigate = useNavigate();
 
+  const { id } = useParams<{ id: string }>();
+
+  if (!id) {
+    throw Error("Invalid id");
+  }
+
+
+
+  const { data } = useQuery(getPowerStationByIdOption(id));
+  const updateMutation = useMutation(updatePowerStationByIdOption());
+
+  const {data: brands, isLoading: brandLoading} = useQuery(getAllBrandOption(`category=67de36915a3263f3b010b2bd`));
+  if(brandLoading) return <p>Loading...</p>
+
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-
     const formValues = Object.fromEntries(formData);
-
     const parsedValues = {
       ...formValues,
-      brandId: Number(formValues.brandId),
+      brandId: formValues.brandId,
       watt: Number(formValues.watt),
       usableWatt: Number(formValues.usableWatt),
       chargingTime: Number(formValues.chargingTime),
@@ -91,255 +101,282 @@ export default function EditPowerStationForm() {
 
     const result = formSchema.safeParse(parsedValues);
 
-    
     if (!result.success) {
       setError(result.error.format());
-      console.log(result.error.format());
       return;
     }
 
     setError(undefined);
-    console.log(result);
-    e.currentTarget.reset();
+    if (!id) {
+      throw Error("Invalid id");
+    }
+    const editedData = {
+      _id: id,
+      model: result.data.model,
+      watt: result.data.watt,
+      brandId: result.data.brandId,
+      waveType: result.data.waveType,
+      usableWatt: result.data.usableWatt,
+      chargingTime: result.data.chargingTime,
+      chargingType: result.data.chargingType,
+      inputWatt: result.data.inputWatt,
+      inputAmp: result.data.inputAmp,
+      outputAmp: result.data.outputAmp,
+      powerStationPrice: result.data.powerStationPrice,
+      image: "something",
+      description: result.data.description,
+    };
+    updateMutation.mutate({ id: id, data: editedData });
 
     if (result.data.redirect) {
-      navigate("../powerStation");
+      navigate(-1);
     }
   }
 
   return (
     <>
       <section className="p-5 mt-5 w-full">
-        <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-4">
+        {data && (<form onSubmit={handleSubmit} className="grid grid-cols-12 gap-4">
           <div className="grid grid-cols-12 col-span-6 gap-4">
-          <div className="flex flex-col justify-start gap-4 col-span-6">
-            <Label htmlFor="model">
-              Model<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              id="model"
-              name="model"
-              defaultValue={data?.model}
-              type="text"
-              placeholder="Enter model"
-            />
-            {error?.model && error.model._errors.length > 0 && (
-              <p className="text-red-500 text-sm">{error.model._errors[0]}</p>
-            )}
-          </div>
+            <div className="flex flex-col justify-start gap-4 col-span-6">
+              <Label htmlFor="model">
+                Model<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                id="model"
+                name="model"
+                defaultValue={data?.model}
+                type="text"
+                placeholder="Enter model"
+              />
+              {error?.model && error.model._errors.length > 0 && (
+                <p className="text-red-500 text-sm">{error.model._errors[0]}</p>
+              )}
+            </div>
 
-          <div className="flex flex-col justify-start gap-4 col-span-6">
-            <Label htmlFor="brandId">
-              Brand<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <div className="flex gap-3">
-              <Select defaultValue={String(data?.brandId)} name="brandId">
+            <div className="flex flex-col justify-start gap-4 col-span-6">
+              <Label htmlFor="brandId">
+                Brand<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <div className="flex gap-3">
+                {data?.brandId && brands && (<Select
+                  defaultValue={data?.brandId}
+                  name="brandId"
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select Brand" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {brands.map((brand: Brands) => {
+                      return (
+                        <SelectItem key={brand._id} value={brand._id}>
+                          {brand.name}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>)}
+              </div>
+            </div>
+
+            <div className="flex flex-col justify-start gap-4 col-span-4">
+              <Label htmlFor="watt">
+                Watt<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                defaultValue={data?.watt}
+                id="watt"
+                name="watt"
+                type="number"
+                placeholder="Enter watt"
+              />
+              {error?.watt && error.watt._errors.length > 0 && (
+                <p className="text-red-500 text-sm">{error.watt._errors[0]}</p>
+              )}
+            </div>
+
+            <div className="flex flex-col justify-start gap-4 col-span-4">
+              <Label htmlFor="usableWatt">
+                Usable Watt<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                defaultValue={data?.usableWatt}
+                id="usableWatt"
+                name="usableWatt"
+                type="number"
+                placeholder="Enter usable watt"
+              />
+              {error?.usableWatt && error.usableWatt._errors.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error.usableWatt._errors[0]}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col justify-start gap-4 col-span-4">
+              <Label htmlFor="inputWatt">
+                Input Watt<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                defaultValue={data?.inputWatt}
+                id="inputWatt"
+                name="inputWatt"
+                type="number"
+                placeholder="Enter input watt"
+              />
+              {error?.inputWatt && error.inputWatt._errors.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error.inputWatt._errors[0]}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col justify-start gap-4 col-span-6">
+              <Label htmlFor="chargingTime">
+                Charging Time (hrs)<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                defaultValue={data?.chargingTime}
+                id="chargingTime"
+                name="chargingTime"
+                type="number"
+                placeholder="Enter charging time"
+              />
+              {error?.chargingTime && error.chargingTime._errors.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error.chargingTime._errors[0]}
+                </p>
+              )}
+            </div>
+
+            <div className="flex flex-col justify-start gap-4 col-span-6">
+              <Label htmlFor="chargingType">
+                Charging Type<span className="ms-2 text-red-500">*</span>
+              </Label>
+              {data?.chargingType && (<Select
+                defaultValue={data?.chargingType}
+                name="chargingType"
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select Charging Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {powerStationBrands.map((brand) => {
-                    return (
-                      <SelectItem key={brand.id} value={String(brand.id)}>
-                        {brand.name}
-                      </SelectItem>
-                    );
-                  })}
+                  <SelectItem value="Solar">Solar</SelectItem>
+                  <SelectItem value="AC">AC</SelectItem>
+                  <SelectItem value="Solar/AC">Solar/AC</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select>)}
+              {error?.chargingType && error.chargingType._errors.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error.chargingType._errors[0]}
+                </p>
+              )}
             </div>
-          </div>
 
-          <div className="flex flex-col justify-start gap-4 col-span-4">
-            <Label htmlFor="watt">
-              Watt<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              defaultValue={data?.watt}
-              id="watt"
-              name="watt"
-              type="number"
-              placeholder="Enter watt"
-            />
-            {error?.watt && error.watt._errors.length > 0 && (
-              <p className="text-red-500 text-sm">{error.watt._errors[0]}</p>
-            )}
-          </div>
+            <div className="flex flex-col justify-start gap-4 col-span-6">
+              <Label htmlFor="inputAmp">
+                Input Amp<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                defaultValue={data?.inputAmp}
+                id="inputAmp"
+                name="inputAmp"
+                type="number"
+                placeholder="Enter input amp"
+              />
+              {error?.inputAmp && error.inputAmp._errors.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error.inputAmp._errors[0]}
+                </p>
+              )}
+            </div>
 
-          <div className="flex flex-col justify-start gap-4 col-span-4">
-            <Label htmlFor="usableWatt">
-              Usable Watt<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              defaultValue={data?.usableWatt}
-              id="usableWatt"
-              name="usableWatt"
-              type="number"
-              placeholder="Enter usable watt"
-            />
-            {error?.usableWatt && error.usableWatt._errors.length > 0 && (
-              <p className="text-red-500 text-sm">
-                {error.usableWatt._errors[0]}
-              </p>
-            )}
-          </div>
+            <div className="flex flex-col justify-start gap-4 col-span-6">
+              <Label htmlFor="outputAmp">
+                Output Amp<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                defaultValue={data?.outputAmp}
+                id="outputAmp"
+                name="outputAmp"
+                type="number"
+                placeholder="Enter output amp"
+              />
+            </div>
 
-          <div className="flex flex-col justify-start gap-4 col-span-4">
-            <Label htmlFor="inputWatt">
-              Input Watt<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              defaultValue={data?.inputWatt}
-              id="inputWatt"
-              name="inputWatt"
-              type="number"
-              placeholder="Enter input watt"
-            />
-            {error?.inputWatt && error.inputWatt._errors.length > 0 && (
-              <p className="text-red-500 text-sm">
-                {error.inputWatt._errors[0]}
-              </p>
-            )}
-          </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-6">
-            <Label htmlFor="chargingTime">
-              Charging Time (hrs)<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              defaultValue={data?.chargingTime}
-              id="chargingTime"
-              name="chargingTime"
-              type="number"
-              placeholder="Enter charging time"
-            />
-            {error?.chargingTime && error.chargingTime._errors.length > 0 && (
-              <p className="text-red-500 text-sm">
-                {error.chargingTime._errors[0]}
-              </p>
-            )}
-          </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-6">
-            <Label htmlFor="chargingType">
-              Charging Type<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Select defaultValue={data?.chargingType} name="chargingType">
-              <SelectTrigger>
-                <SelectValue placeholder="Select Charging Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Solar">Solar</SelectItem>
-                <SelectItem value="AC">AC</SelectItem>
-                <SelectItem value="Solar/AC">Solar/AC</SelectItem>
-              </SelectContent>
-            </Select>
-            {error?.chargingType && error.chargingType._errors.length > 0 && (
-              <p className="text-red-500 text-sm">
-                {error.chargingType._errors[0]}
-              </p>
-            )}
-          </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-6">
-            <Label htmlFor="inputAmp">
-              Input Amp<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              defaultValue={data?.inputAmp}
-              id="inputAmp"
-              name="inputAmp"
-              type="number"
-              placeholder="Enter input amp"
-            />
-            {error?.inputAmp && error.inputAmp._errors.length > 0 && (
-              <p className="text-red-500 text-sm">
-                {error.inputAmp._errors[0]}
-              </p>
-            )}
-          </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-6">
-            <Label htmlFor="outputAmp">
-              Output Amp<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              defaultValue={data?.outputAmp}
-              id="outputAmp"
-              name="outputAmp"
-              type="number"
-              placeholder="Enter output amp"
-            />
-          </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-6">
-            <Label htmlFor="waveType">
-              Wave Type<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Select defaultValue={data?.waveType} name="waveType">
-              <SelectTrigger>
-                <SelectValue placeholder="Select Wave Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Pure Sine">Pure sine</SelectItem>
-                <SelectItem value="Modified Sine">Modifined sine</SelectItem>
-              </SelectContent>
-            </Select>
-            {error?.waveType && error.waveType._errors.length > 0 && (
-              <p className="text-red-500 text-sm">
-                {error.waveType._errors[0]}
-              </p>
-            )}
-          </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-6">
-            <Label htmlFor="powerStationPrice">
-              Price<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              defaultValue={data?.powerStationPrice}
-              id="powerStationPrice"
-              name="powerStationPrice"
-              type="number"
-              placeholder="Enter price"
-            />
-          </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-12">
-            <Label htmlFor="image">
-              Image<span className="ms-2 text-red-500">*</span>
-            </Label>
-            <Input
-              id="image"
-              name="image"
-              type="file"
-              placeholder="Enter image URL"
-            />
-          </div>
-          <div className="flex flex-col justify-start gap-4 col-span-12">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="redirect" name="redirect" checked />
-              <label
-                htmlFor="redirect"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            <div className="flex flex-col justify-start gap-4 col-span-6">
+              <Label htmlFor="waveType">
+                Wave Type<span className="ms-2 text-red-500">*</span>
+              </Label>
+              {data?.waveType && (<Select
+                defaultValue={data?.waveType}
+                name="waveType"
               >
-                Redirect to power station page
-                <span className="ms-2 text-red-500">*</span>
-              </label>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Wave Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Pure Sine Wave">Pure sine</SelectItem>
+                  <SelectItem value="Modified Sine Wave">
+                    Modifined sine
+                  </SelectItem>
+                </SelectContent>
+              </Select>)}
+              {error?.waveType && error.waveType._errors.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error.waveType._errors[0]}
+                </p>
+              )}
             </div>
-          </div>
 
-          <div className="flex gap-6">
-            <Button
-              type="submit"
-              className="duration-500 bg-electric-500 hover:bg-electric-600 active:scale-95 px-10"
-            >
-              Edit
-            </Button>
-            <Button className="duration-500 bg-gray-50 hover:bg-gray-200 border border-black text-black active:scale-95 px-10">
-              <Link to="/admin/powerStation">Cancel</Link>
-            </Button>
-          </div>
+            <div className="flex flex-col justify-start gap-4 col-span-6">
+              <Label htmlFor="powerStationPrice">
+                Price<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                defaultValue={data?.powerStationPrice}
+                id="powerStationPrice"
+                name="powerStationPrice"
+                type="number"
+                placeholder="Enter price"
+              />
+            </div>
+
+            <div className="flex flex-col justify-start gap-4 col-span-12">
+              <Label htmlFor="image">
+                Image<span className="ms-2 text-red-500">*</span>
+              </Label>
+              <Input
+                id="image"
+                name="image"
+                type="file"
+                placeholder="Enter image URL"
+              />
+            </div>
+            <div className="flex flex-col justify-start gap-4 col-span-12">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="redirect" defaultChecked name="redirect" />
+                <label
+                  htmlFor="redirect"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Redirect to power station page
+                  <span className="ms-2 text-red-500">*</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="flex gap-6">
+              <Button
+                type="submit"
+                className="duration-500 bg-electric-500 hover:bg-electric-600 active:scale-95 px-10"
+              >
+                Edit
+              </Button>
+              <Button className="duration-500 bg-gray-50 hover:bg-gray-200 border border-black text-black active:scale-95 px-10">
+                <Link to="/admin/powerStation">Cancel</Link>
+              </Button>
+            </div>
           </div>
 
           <div className="flex flex-col justify-start gap-4 col-span-6">
@@ -360,9 +397,7 @@ export default function EditPowerStationForm() {
               </p>
             )}
           </div>
-
-          
-        </form>
+        </form>)}
       </section>
     </>
   );
