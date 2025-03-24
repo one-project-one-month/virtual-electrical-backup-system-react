@@ -1,16 +1,22 @@
-import { powerstations } from "@/admin/data/powerstations";
+
 import { useParams } from "react-router-dom";
 import { LucideImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { formatTime } from "@/util/format";
+import { useQuery } from "@tanstack/react-query";
+import { getPowerStationByIdOption } from "@/query/powerStationQueryOptions";
 
 export default function PowerStationDetail() {
   const { id } = useParams<{ id: string }>();
-  const data = powerstations.find((item) => item.id === Number(id));
+  if(!id) {
+    throw Error("PowerStation Not found");
+  }
+  const {data} = useQuery(getPowerStationByIdOption(id));
 
   return (
     <section className="p-5">
-        {data ? <div className="flex justify-between gap-x-5">
+        {data ? <div className="grid grid-cols-2 gap-x-5">
           <div className="h-[25rem] bg-gray-300 w-full flex justify-center items-center rounded-lg">
             <LucideImage className="w-[50px] h-[50px] text-gray-500" />
            </div>
@@ -37,7 +43,7 @@ export default function PowerStationDetail() {
            </div>
            <div className="mt-7 grid grid-cols-2 gap-4">
             <p className="text-gray-600">Charging Time:</p>
-            <p>{data.chargingTime}</p>
+            <p>{formatTime(data.chargingTime)}</p>
            </div>
            <div className="mt-7 grid grid-cols-2 gap-4">
             <p className="text-gray-600">Charging Type:</p>
@@ -68,7 +74,7 @@ export default function PowerStationDetail() {
                 <Link to="/admin/powerstations">Back</Link>
             </Button>
             <Button className="w-1/2 ml-2 duration-500 bg-electric-500 hover:bg-electric-600 active:scale-95">
-              <Link to={`/admin/powerstation/edit/${data.id}`}>Edit</Link>
+              <Link to={`/admin/powerstation/edit/${data._id}`}>Edit</Link>
             </Button>
           </div>
            </div>

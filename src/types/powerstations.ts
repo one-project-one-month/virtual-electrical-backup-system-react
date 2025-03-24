@@ -1,8 +1,8 @@
 export type PowerStations = {
-    id: number;
+    _id: string;
     model: string;
     watt: number;
-    brandId: number;
+    brandId: string;
     waveType: string;
     usableWatt: number;
     chargingTime: number;

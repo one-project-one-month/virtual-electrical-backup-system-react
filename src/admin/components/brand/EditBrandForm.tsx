@@ -5,23 +5,40 @@ import { Label } from "@/components/ui/label";
 import { FormEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { z, ZodFormattedError } from "zod";
-import brands from "@/admin/data/brand";
+import { useQuery } from "@tanstack/react-query";
+import { getBrandByIdOption } from "@/query/brandQueryOption";
+import { getAllCategoryOption } from "@/query/categoryQueryOption";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Category } from "@/types/brand";
 
 const formSchema = z.object({
   name: z
     .string()
     .min(3, { message: "Brand name must be at least 3 characters" })
     .max(40, { message: "Brand name must be at most 40 characters" }),
+  category: z.string().nonempty('This field should not be empty'),
 
   redirect_to_list: z.boolean(),
 });
 const EditBrandForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+
+  if (!id) {
+    return console.log("No id found");
+  }
+
+  const { data: brand } = useQuery(getBrandByIdOption(id));
+  const { data: category } = useQuery(getAllCategoryOption());
+
   const [error, setError] =
     useState<ZodFormattedError<typeof formSchema>["_output"]>();
-
-  const currentBrand = brands.find((brand) => brand.id === Number(id));
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -36,16 +53,14 @@ const EditBrandForm = () => {
       setError(result.error.format());
       return;
     }
-
-    console.log(result);
   };
 
   return (
     <section className="px-5 mt-5">
       <h1 className="font-semibold text-2xl mb-5"> Edit Brand </h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
         <div className="grid grid-cols-2 gap-5">
-          <div className="space-y-2">
+          <div className="space-y-2 col-span-2">
             <Label htmlFor="name" className="mb-3">
               Brand Name
             </Label>
@@ -53,13 +68,35 @@ const EditBrandForm = () => {
             <Input
               placeholder="Exide"
               name="name"
-              defaultValue={currentBrand?.name}
+              defaultValue={brand?.name}
             />
             {error?.name?._errors && error?.name?._errors?.length > 0 && (
               <p className="text-red-500 text-sm">{error?.name?._errors[0]}</p>
             )}
           </div>
-
+          <div className="flex flex-col justify-start gap-4 col-span-2">
+            <Label htmlFor="category">
+              Category<span className="ms-2 text-red-500">*</span>
+            </Label>
+            {brand?.category && (<Select name="category" defaultValue={brand?.category._id}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent>
+                {category?.map((item: Category) => (
+                  <SelectItem key={item._id} value={item._id}>
+                    {item.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>)}
+            {error?.category?._errors &&
+              error?.category?._errors?.length > 0 && (
+                <p className="text-red-500 text-sm">
+                  {error?.category?._errors[0]}
+                </p>
+              )}
+          </div>
           <div className="flex items-center col-span-2 gap-x-2">
             <Checkbox id="redirect_to_brand" name="redirect_to_list" checked />
             <Label htmlFor="redirect_to_brand">Go to manage brand</Label>
