@@ -13,10 +13,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { Link, useNavigate,  } from "react-router-dom";
 import { powerStationBrands } from "@/admin/data/powerstations";
+import { useMutation } from "@tanstack/react-query";
+import { createPowerStationOption } from "@/query/powerStationQueryOptions";
 
 const formSchema = z.object({
     model: z.string().nonempty("Model is required"),
-    brandId: z.number().min(1, "Brand shouldn't be empty"),
+    brandId: z.string().nonempty("Brand should not be empty"),
     watt: z.number().nonnegative("Watt must be a positive number").min(1, "Watt must be greater than 0"),
     waveType: z.string().nonempty("Wave Type is required"),
     usableWatt: z.number().nonnegative("Usable Watt must be a positive number").min(1, "Usable Watt must be greater than 0"),
@@ -33,6 +35,7 @@ const formSchema = z.object({
 
 export default function CreatePowerStationForm() {
   const [error, setError] = useState<z.ZodFormattedError<typeof formSchema>["_output"] | undefined>(undefined);
+  const createMutation = useMutation(createPowerStationOption());
 
   const navigate = useNavigate();
 
@@ -67,7 +70,23 @@ export default function CreatePowerStationForm() {
     }
 
     setError(undefined);
-    console.log(result);
+    const newData = {
+      _id: "",
+      model: result.data.model,
+      watt: result.data.watt,
+      brandId: result.data.brandId,
+      waveType: result.data.waveType,
+      usableWatt: result.data.usableWatt,
+      chargingTime: result.data.chargingTime,
+      chargingType: result.data.chargingType,
+      inputWatt: result.data.inputWatt,
+      inputAmp: result.data.inputAmp,
+      outputAmp: result.data.outputAmp,
+      powerStationPrice: result.data.powerStationPrice,
+      image: "something",
+      description: result.data.description,
+    };
+    createMutation.mutate({newData})
     e.currentTarget.reset();
 
     if (result.data.redirect) {
@@ -77,8 +96,9 @@ export default function CreatePowerStationForm() {
 
   return (
     <>
-      <section className="p-5 mt-5 w-1/2">
+      <section className="p-5 mt-5 w-full">
         <form onSubmit={handleSubmit} className="grid grid-cols-12 gap-4">
+          <div className="grid grid-cols-12 col-span-6 gap-4">
           <div className="flex flex-col justify-start gap-4 col-span-6">
             <Label htmlFor="model">Model<span className="ms-2 text-red-500">*</span></Label>
             <Input
@@ -222,19 +242,6 @@ export default function CreatePowerStationForm() {
               placeholder="Enter image URL"
             />
           </div>
-
-          <div className="flex flex-col justify-start gap-4 col-span-12">
-            <Label htmlFor="description">Description<span className="ms-2 text-red-500">*</span></Label>
-            <textarea
-              id="description"
-              name="description"
-              rows={4}
-              placeholder="Enter description"
-              className="w-full p-2 border border-gray-300 rounded-md"
-            ></textarea>
-            {error?.description && error.description._errors.length > 0 && <p className="text-red-500 text-sm">{error.description._errors[0]}</p>}
-          </div>
-
           <div className="flex flex-col justify-start gap-4 col-span-12">
             <div className="flex items-center space-x-2">
               <Checkbox name="redirect" id="redirect" />
@@ -258,6 +265,21 @@ export default function CreatePowerStationForm() {
               <Link to="/admin/powerStation">Cancel</Link>
             </Button>
           </div>
+          </div>
+
+          <div className="flex flex-col justify-start gap-4 col-span-6">
+            <Label htmlFor="description">Description<span className="ms-2 text-red-500">*</span></Label>
+            <textarea
+              id="description"
+              name="description"
+              rows={10}
+              placeholder="Enter description"
+              className="w-full p-2 border border-gray-300 rounded-md"
+            ></textarea>
+            {error?.description && error.description._errors.length > 0 && <p className="text-red-500 text-sm">{error.description._errors[0]}</p>}
+          </div>
+
+          
         </form>
       </section>
     </>
