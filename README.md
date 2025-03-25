@@ -7,6 +7,7 @@
 Tech Stack
 
 >Frontend: React, TypeScript, Zustand, React-Query, TailwindCss, Shadcn, zod
+
 >Backend: Nodejs, Express, MongoDb
 
 ---------------------------------
