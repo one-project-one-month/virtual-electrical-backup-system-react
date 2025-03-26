@@ -1,18 +1,14 @@
 import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useState } from 'react'
-import type { ApiResponse } from '@/types/apiResponse'
-import { generators } from '@/admin/data/generator'
-import type { Generator } from '@/types/generator'
+import { useEffect, useState } from 'react'
 import GeneratorRow from './GeneratorRow'
-import { Link } from 'react-router-dom'
+import { useGeneratorStore } from '@/store/generatorStore'
 
 const GeneratorTable = () => {
-  const [generatorData, setGeneratorData] = useState<ApiResponse<Generator[]>>({
-      message: "Data has been successfully",
-      data: generators,
-      
-    });
-    console.log(generatorData)
+  const {generators, fetchGenerator} = useGeneratorStore();
+
+  useEffect(()=>{
+    fetchGenerator()
+  },[])
   return (
     <section className="px-5 mt-5">
       <Table className="bg-white rounded-lg shadow-lg">
@@ -29,8 +25,8 @@ const GeneratorTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {generatorData?.data?.map((generator)=> (
-                <GeneratorRow key={generator.id} generator={generator}/>
+          {generators?.map((generator,index)=> (
+                <GeneratorRow key={generator.id} index={index} generator={generator}/>
           ))}
         </TableBody>
       </Table>

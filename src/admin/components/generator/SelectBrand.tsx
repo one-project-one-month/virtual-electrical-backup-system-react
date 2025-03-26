@@ -32,9 +32,9 @@ export function SelectBrand<T extends { id: number; name: string }>({
   const [open, setOpen] = React.useState(false);
 
   const handleSelect = (currentValue: number) => {
-    const newValue = currentValue === value ? 0 : currentValue; // If same, deselect
-    onChange(newValue);  // Propagate selected value back to parent
-    setOpen(false);  // Close the dropdown
+    const newValue = currentValue === value ? 0 : currentValue; 
+    onChange(newValue);  
+    setOpen(false); 
     console.log(newValue)
   };
 

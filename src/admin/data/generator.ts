@@ -2,7 +2,7 @@
     {
         id: 1,
         name: "EcoPower 3000",
-        brandId: 101,
+        brandId: 1,
         model: "EP-3000X",
         watt: 3000,
         price: 499.99,
@@ -13,7 +13,7 @@
     {
         id: 2,
         name: "ThunderPro 5000",
-        brandId: 102,
+        brandId: 2,
         model: "TP-5000",
         watt: 5000,
         price: 799.99,
@@ -24,7 +24,7 @@
     {
         id: 3,
         name: "PowerMate 1500",
-        brandId: 103,
+        brandId: 3,
         model: "PM-1500A",
         watt: 1500,
         price: 299.99,
@@ -35,7 +35,7 @@
     {
         id: 4,
         name: "MaxVolt X2000",
-        brandId: 104,
+        brandId: 4,
         model: "MX-2000",
         watt: 2000,
         price: 399.99,
@@ -46,7 +46,7 @@
     {
         id: 5,
         name: "UltraGen 7000",
-        brandId: 105,
+        brandId: 5,
         model: "UG-7000T",
         watt: 7000,
         price: 999.99,
