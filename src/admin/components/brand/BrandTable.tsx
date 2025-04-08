@@ -11,21 +11,19 @@ import BrandRow from "./BrandRow";
 import { deleteBrandOption, getAllBrandOption } from "@/query/brandQueryOption";
 
 const BrandTable = () => {
-  const {data: brands, isLoading} = useQuery(getAllBrandOption());
+  const { data: brands, isLoading } = useQuery(getAllBrandOption());
   const deleteMutation = useMutation(deleteBrandOption());
 
-
-  if(isLoading) {
-    return <p>loading...</p>
+  if (isLoading) {
+    return <p>loading...</p>;
   }
-
   const handleDelete = async (id: string) => {
     try {
       await deleteMutation.mutateAsync(id);
     } catch (error) {
       console.log("Error deleting brand");
     }
-  }
+  };
 
   return (
     <section className="px-5 mt-5">
@@ -40,7 +38,12 @@ const BrandTable = () => {
         </TableHeader>
         <TableBody>
           {brands?.map((brand: Brands, index: number) => (
-            <BrandRow key={brand._id} brand={brand} id={index + 1} delete={handleDelete}  />
+            <BrandRow
+              key={brand._id}
+              brand={brand}
+              id={index + 1}
+              delete={handleDelete}
+            />
           ))}
         </TableBody>
       </Table>
