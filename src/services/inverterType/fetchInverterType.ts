@@ -7,13 +7,13 @@ const fetchInverterType = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   try {
-    const res = await axios.get("/v1/admin/inverter-types", {
+    const res = await axios.get("/inverter-type", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    const result = res.data.data;
-    setInverterType(result.reverse());
+    const result = res.data;
+    setInverterType(result);
     return result;
   } catch (error) {
     console.log(error);

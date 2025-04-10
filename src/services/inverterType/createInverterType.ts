@@ -7,7 +7,7 @@ const createInverterType = async (data: Partial<InverterType>) => {
   const { token } = useStore.getState();
   const {  addInverterType } = useInverterTypeStore.getState();
   try {
-    const res = await axios.post("/v1/admin/inverter-types", data, {
+    const res = await axios.post("/inverter-type/create", data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

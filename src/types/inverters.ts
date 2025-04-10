@@ -11,9 +11,3 @@ export type Inverters = {
     description: string;
     watt: number;
 };
-
-export type InverterType = {
-    id: number;
-    name: string;
-    efficiency: number;
-}

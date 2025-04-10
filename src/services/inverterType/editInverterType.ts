@@ -7,7 +7,7 @@ const editInverterType = async (data: Partial<InverterType>) => {
   const { editInverterType } = useInverterTypeStore.getState();
   try {
     const res = await axios.patch(
-      `/v1/admin/inverter-types/${data.id}`,
+      `/inverter-type/update/${data._id}`,
       data,
       {
         headers: {
@@ -16,6 +16,7 @@ const editInverterType = async (data: Partial<InverterType>) => {
       }
     );
     const result = res.data.data;
+    console.log(result)
     editInverterType(result);
     return result;
   } catch (error) {

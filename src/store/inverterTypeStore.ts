@@ -15,5 +15,5 @@ export const useInverterTypeStore=  create<InverterTypeStore>((set) => ({
   setInverterType: (inverterType: InverterType[]) =>
     set(() => ({ inverterType: inverterType })),
   editInverterType: (inverterType: InverterType) =>
-    set((state: InverterTypeStore) => ({ inverterType: state.inverterType.map((item) => item.id === inverterType.id ? inverterType : item) })),
+    set((state: InverterTypeStore) => ({ inverterType: state.inverterType.map((item) => item._id === inverterType._id ? inverterType : item) })),
 }));

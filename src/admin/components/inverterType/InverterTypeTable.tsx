@@ -25,8 +25,12 @@ const InverterTypeTable = ({ data }: InverterTypeTableProps) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.map((inverter) => (
-            <InverterTypeRow key={inverter.id} inverterType={inverter} />
+          {data?.map((inverter, index) => (
+            <InverterTypeRow
+              key={inverter._id}
+              inverterType={inverter}
+              id={index + 1}
+            />
           ))}
         </TableBody>
       </Table>

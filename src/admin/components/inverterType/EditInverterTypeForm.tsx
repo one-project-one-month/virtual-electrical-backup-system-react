@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import editInverterType from "@/services/inverterType/editInverterType";
+import { useMutation } from "@tanstack/react-query";
 import { InverterType } from "@/types/inverterType";
 import { useInverterTypeStore } from "@/store/inverterTypeStore";
+import { useUpdateInverterTypeOption } from "@/query/inverterTypeQueryOption";
+
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   efficiency: z.string().min(1, { message: "Efficiency is required" }),
@@ -15,25 +16,22 @@ const formSchema = z.object({
 });
 
 const EditInverterTypePage = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
   const { inverterType } = useInverterTypeStore.getState();
   const currentInverterType = inverterType.find(
-    (inverterType) => inverterType.id === Number(id)
+    (inverterType) => String(inverterType._id) === id
   );
+  console.log(inverterType);
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
   const previousPage = () => {
     navigate(-1);
   };
 
-  const { mutateAsync: editInverterTypeMutation } = useMutation({
-    mutationFn: (payload: Partial<InverterType>) => editInverterType(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["inverterType"] });
-    },
-  });
+  const { mutateAsync: editInverterTypeMutation } = useMutation(
+    useUpdateInverterTypeOption()
+  );
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -47,8 +45,8 @@ const EditInverterTypePage = () => {
       setErrors(result.error.format());
       return;
     }
-    const payload: Partial<InverterType> = {
-      id: Number(id),
+    const payload: InverterType = {
+      _id: String(id),
       name: result.data.name,
       efficiency: Number(result.data.efficiency),
     };

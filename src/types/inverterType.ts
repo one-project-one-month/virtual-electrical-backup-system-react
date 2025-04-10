@@ -1,5 +1,5 @@
 export type InverterType = {
-    id: number;
+    _id: string;
     name: string;
     efficiency: number;
 }

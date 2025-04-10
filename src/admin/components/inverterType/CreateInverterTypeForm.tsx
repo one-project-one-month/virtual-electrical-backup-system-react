@@ -3,21 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useState } from "react";
-import createInverterType from "@/services/inverterType/createInverterType";
 import { InverterType } from "@/types/inverterType";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useCreateInverterTypeOption } from "@/query/inverterTypeQueryOption";
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
   efficiency: z
     .number()
-    .min(1, { message: "Efficiency is required" })
-    .max(95, { message: "Efficiency must be less than 95" })
-    .min(60, { message: "Efficiency must be greater than 60" }),
+    .min(0, { message: "Efficiency is required" })
+    .max(0.95, { message: "Efficiency must be less than 0.95" })
+    .min(0.6, { message: "Efficiency must be greater than 0.60" }),
   redirect_to_list: z.boolean(),
 });
 
 const CreateInverterTypePage = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,18 +26,9 @@ const CreateInverterTypePage = () => {
     navigate(-1);
   };
 
-  const { mutateAsync: createInverterTypeMutation } = useMutation({
-    mutationFn: (payload: Partial<InverterType>) => createInverterType(payload),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["inverterType"] });
-    },
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSettled: () => {
-      setIsLoading(false);
-    },
-  });
+  const { mutateAsync: createInverterTypeMutation } = useMutation(
+    useCreateInverterTypeOption(setIsLoading)
+  );
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
