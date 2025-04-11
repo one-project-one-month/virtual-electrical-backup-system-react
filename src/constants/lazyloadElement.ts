@@ -12,7 +12,17 @@ export const EditBatteryPage = lazy(
   () => import("@/admin/pages/EditBatteryPage")
 );
 
-
+//generator 
+export const GeneratorPage = lazy(() => import("@/admin/pages/GeneratorPage"));
+export const CreateGeneratorPage = lazy(
+  () => import("@/admin/pages/CreateGeneratorPage")
+);
+export const EditGeneratorPage = lazy(
+  () => import("@/admin/pages/EditGeneratorPage")
+);
+export const GeneratorDetailPage = lazy(
+  () => import("@/admin/pages/GeneratorDetailPage")
+)
 //PowerStation
 export const PowerStationPage = lazy(
   () => import("@/admin/pages/PowerStationPage")
@@ -42,6 +52,7 @@ export const CreateBrandPage = lazy(
   () => import("@/admin/pages/CreateBrandPage")
 );
 export const EditBrandPage = lazy(() => import("@/admin/pages/EditBrandPage"));
+
 
 
 // Device

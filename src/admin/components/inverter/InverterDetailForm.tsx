@@ -14,61 +14,61 @@ function InverterDetailPage() {
   return (
     <>
       <div className="grid grid-cols-12 gap-6 p-4 pl-10 pt-5">
-        <div className="col-span-3">
+        <div className="col-start-1 col-span-6 row-span-10 mr-12 ">
           <img
-            className="w-full h-[180px] object-cover border-2 border-gray-200 rounded-lg"
+            className="w-full h-full object-cover border-2 border-gray-200 rounded-lg"
             src={inverter?.image}
             alt="inverter"
           />
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-2 col-span-9">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-2 col-span-9">
           <p className="text-sm font-light text-gray-500">Inverter Type :</p>
-          <p className="text-sm font-normal">
+          <p className="text-sm font-normal text-nowrap">
             {
               inverterTypes.find((type) => type.id === inverter?.inverterType)
                 ?.name
             }
           </p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-3 col-span-9">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-3 col-span-9">
           <p className="text-sm font-light text-gray-500">Model :</p>
           <p className="text-sm font-normal">{inverter?.model}</p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-4 col-span-9">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-4 col-span-9">
           <p className="text-sm font-light text-gray-500">Brand :</p>
           <p className="text-sm font-normal">
             {brands.find((brand) => brand.id === inverter?.brandId)?.name}
           </p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-5 col-span-9">
-          <p className="text-sm font-light text-gray-500">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-5 col-span-9 text-nowrap">
+          <p className="text-sm font-light text-gray-500 ">
             Compatible Battery :
           </p>
           <p className="text-sm font-normal">{inverter?.compatibleBattery}</p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-6 col-span-9">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-6 col-span-9">
           <p className="text-sm font-light text-gray-500">Wave Type :</p>
           <p className="text-sm font-normal">{inverter?.waveType}</p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-7 col-span-9">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-7 col-span-9">
           <p className="text-sm font-light text-gray-500">Inverter Volt :</p>
           <p className="text-sm font-normal">{inverter?.inverterVolt} V</p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-8 col-span-9">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-8 col-span-9">
           <p className="text-sm font-light text-gray-500">Inverter Watt :</p>
           <p className="text-sm font-normal">{inverter?.watt} W</p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-9 col-span-9">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-9 col-span-9">
           <p className="text-sm font-light text-gray-500">Inverter Price :</p>
           <p className="text-sm font-normal">{inverter?.inverterPrice} $</p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-10 col-span-9">
+        <div className="grid grid-cols-3 gap-2 col-start-7 row-start-10 col-span-9">
           <p className="text-sm font-light text-gray-500">
             Inverter Description :
           </p>
           <p className="text-sm font-normal">{inverter?.description}</p>
         </div>
-        <div className="grid grid-cols-5 gap-2 row-start-11 col-span-9 mt-4 ">
+        <div className="grid grid-cols-3 gap-2 col-start-7  row-start-11 col-span-9 mt-4 ">
           <Button
             onClick={previousPage}
             className="bg-electric-400 col-span-2 text-white rounded-lg hover:bg-electric-500 hover:text-white"

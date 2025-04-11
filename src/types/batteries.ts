@@ -1,9 +1,9 @@
 export type Batteries = {
   id: number;
-  name: string;
-  capacity: string;
-  voltage: string;
-  brand: string;
-  modelNo: string;
+  brandName : string;
+  brandType : string;
+  storageAMP: number;
+  voltage: number;
   price: number;
+  description: string;
 };

@@ -12,6 +12,7 @@ import { useState } from "react";
 import BatteryRow from "./BatteryRow";
 
 const BatteryTable = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [batteriesData, setBatteriesData] = useState<ApiResponse<Batteries[]>>({
     message: "Data has been successfully",
     data: batteries,
@@ -23,13 +24,13 @@ const BatteryTable = () => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">ID</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Brand</TableHead>
-            <TableHead className="text-right">Capacity</TableHead>
+            <TableHead>Brand Name</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead className="text-right">Storage AMP</TableHead>
             <TableHead className="text-right">Voltage</TableHead>
-            <TableHead className="text-right">Model No</TableHead>
             <TableHead className="text-right">Price</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead className="text-right">Description</TableHead>
+            <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

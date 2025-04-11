@@ -1,4 +1,5 @@
 import { ComponentProps, ElementType, Suspense } from "react";
+import Loader from "./common/Loader";
 
 type LazyLoadProps<T extends ElementType> = {
   component: ElementType;
@@ -9,7 +10,7 @@ const LazyLoad = <T extends ElementType>({
   ...props
 }: LazyLoadProps<T>) => {
   return (
-    <Suspense fallback={<div> loading... </div>}>
+    <Suspense fallback={<Loader />}>
       <Component {...props} />
     </Suspense>
   );

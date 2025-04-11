@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 type PowerStationRowProps = {
   powerstation: PowerStations;
+  id: number;
+  handleDelete: (id: string) => void;
 };
 
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -13,7 +15,7 @@ import { LucideNotepadText } from "lucide-react";
 
 const PowerStationRow = ({
   powerstation: {
-    id,
+    _id,
     model,
     watt,
     brandId,
@@ -21,18 +23,21 @@ const PowerStationRow = ({
     usableWatt,
     chargingTime,
     chargingType,
-    inputWatt,
-    inputAmp,
-    outputAmp,
     powerStationPrice,
   },
+  id,
+  handleDelete
 }: PowerStationRowProps) => {
+
+
   return (
     <>
       <TableRow>
         <TableCell>{id}</TableCell>
         <TableCell>{model}</TableCell>
-        <TableCell>{brandId}</TableCell>
+        <TableCell>
+          {brandId.name}
+        </TableCell>
         <TableCell>
           {watt}
           <span className="ms-2">W</span>
@@ -47,34 +52,22 @@ const PowerStationRow = ({
           {formatTime(chargingTime)}
         </TableCell>
         <TableCell className="text-right">
-          {inputWatt}
-          <span className="ms-2">W</span>
-        </TableCell>
-        <TableCell className="text-right">
-          {inputAmp}
-          <span className="ms-2">Amp</span>
-        </TableCell>
-        <TableCell className="text-right">
-          {outputAmp}
-          <span className="ms-2">Amp</span>
-        </TableCell>
-        <TableCell className="text-right">
           <span className="me-2">{powerStationPrice}</span>$
         </TableCell>
         <TableCell className="text-right flex gap-1 justify-end">
-          <Button variant="outline" size="sm">
-            <Link to={`/admin/powerstation/edit/${id}`}>
+          <Link to={`/admin/powerstation/edit/${_id}`}>
+            <Button variant="outline" size="sm">
               <LucidePencil />
-            </Link>
-          </Button>
-          <Button variant="outline" size="sm">
+            </Button>
+          </Link>
+          <Button onClick={() => handleDelete(_id)} variant="outline" size="sm">
             <LucideTrash2 />
           </Button>
-          <Button variant="outline" size="sm">
-            <Link to={`/admin/powerstation/detail/${id}`}>
+          <Link to={`/admin/powerstation/detail/${_id}`}>
+            <Button variant="outline" size="sm">
               <LucideNotepadText />
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </TableCell>
       </TableRow>
     </>

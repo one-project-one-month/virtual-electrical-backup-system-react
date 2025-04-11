@@ -11,18 +11,16 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 
 const formSchema = z.object({
-  inverterType: z.number().min(1, { message: "Inverter type is required" }),
+  inverterType: z.string().min(1, { message: "Inverter type is required" }),
   model: z.string().min(1, { message: "Model is required" }),
-  brandId: z.number().min(1, { message: "Brand is required" }),
-  inverterPrice: z.number().min(1, { message: "Price is required" }),
+  brandId: z.string().min(1, { message: "Brand is required" }),
+  inverterPrice: z.string().min(1, { message: "Price is required" }),
   waveType: z.string().min(1, { message: "Wave type is required" }),
   compatibleBattery: z
     .string()
     .min(1, { message: "Compatible battery is required" }),
-  watt: z.number().min(1, { message: "Power is required" }),
-  inverterVolt: z.number().min(1, { message: "Volt is required" }),
-  image: z.instanceof(File),
-  description: z.string(),
+  watt: z.string().min(1, { message: "Power is required" }),
+  inverterVolt: z.string().min(1, { message: "Volt is required" }),
   redirect_to_list: z.boolean(),
 });
 
@@ -48,22 +46,15 @@ const EditInverterPage = () => {
 
     const parsedValues = {
       ...formValues,
-      inverterPrice: Number(formValues.inverterPrice),
-      inverterVolt: Number(formValues.inverterVolt),
-      watt: Number(formValues.watt),
-      brandId: Number(formValues.brandId),
-      inverterType: Number(formValues.inverterType),
-      image: formValues.image as File,
       redirect_to_list: formValues.redirect_to_list ? true : false,
     };
     const result = formSchema.safeParse(parsedValues);
-    if (result.success) {
-      setErrors(undefined);
-      console.log(result);
-    } else if (!result.success) {
+    if (!result.success) {
       setErrors(result.error.format());
+      return;
     }
-    if (result.success && result.data.redirect_to_list) {
+    setErrors(undefined);
+    if (result.data.redirect_to_list) {
       navigate("../inverter");
     }
   };
@@ -103,9 +94,9 @@ const EditInverterPage = () => {
             Model
           </label>
           <Input
-            type="model"
+            type="text"
             id="model"
-            placeholder="model"
+            placeholder="Enter model"
             name="model"
             defaultValue={currentInverter?.model || ""}
           />
@@ -144,9 +135,9 @@ const EditInverterPage = () => {
             Price
           </label>
           <Input
-            type="number"
+            type="text"
             id="price"
-            placeholder="price"
+            placeholder="Enter price"
             name="inverterPrice"
             defaultValue={currentInverter?.inverterPrice?.toString() || ""}
           />
@@ -180,7 +171,7 @@ const EditInverterPage = () => {
             Compatible Battery
           </label>
           <Input
-            type="compatibleBattery"
+            type="text"
             id="compatibleBattery"
             placeholder="eg. Lithium-Ion Battery"
             name="compatibleBattery"
@@ -201,9 +192,9 @@ const EditInverterPage = () => {
             Power
           </label>
           <Input
-            type="number"
+            type="text"
             id="watt"
-            placeholder="2000 watt"
+            placeholder="Enter watt"
             name="watt"
             defaultValue={currentInverter?.watt?.toString() || ""}
           />
@@ -221,9 +212,9 @@ const EditInverterPage = () => {
             Volt
           </label>
           <Input
-            type="number"
+            type="text"
             id="inverterVolt"
-            placeholder="inverterVolt"
+            placeholder="Enter volt"
             name="inverterVolt"
             defaultValue={currentInverter?.inverterVolt?.toString() || ""}
           />
@@ -245,12 +236,12 @@ const EditInverterPage = () => {
             name="image"
           />
         </div>
-        <div className="row-start-6 col-span-6 grid gap-2">
+        <div className="row-start-1 col-span-6 gap-2 row-span-2 flex flex-col">
           <label className="text-xs text-gray-600" htmlFor="description">
             Description
           </label>
           <textarea
-            className="text-sm"
+            className="text-sm flex-1 p-3 border rounded-lg"
             id="description"
             placeholder="eg. eco-friendly inverter "
             name="description"
@@ -273,17 +264,17 @@ const EditInverterPage = () => {
           </label>
         </div>
         <Button
-          className="row-start-8 col-span-2 py-2 bg-electric-400 text-white rounded-lg hover:bg-electric-500"
-          type="submit"
-        >
-          Edit
-        </Button>
-        <Button
           className="row-start-8 text-black col-span-2 py-2 bg-white border border-black rounded-lg hover:bg-gray-100"
           type="button"
           onClick={previousPage}
         >
           Cancel
+        </Button>
+        <Button
+          className="row-start-8 col-span-2 py-2 bg-electric-400 text-white rounded-lg hover:bg-electric-500"
+          type="submit"
+        >
+          Edit
         </Button>
       </form>
     </>
