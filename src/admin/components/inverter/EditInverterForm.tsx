@@ -1,14 +1,20 @@
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { inverters, inverterTypes } from "../../data/inverters";
 import { DialogCloseButton } from "./Dialog";
-import { brands } from "../../data/brands";
 import { waveTypes } from "../../data/inverters";
 import { Combobox } from "@/admin/components/inverter/ComboBox";
 import SelectEl from "./SelectEl";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
+import {
+  getInverterByIdOption,
+  useUpdateInverterOption,
+} from "@/query/inverterQueryOption";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getAllInverterTypeOption } from "@/query/inverterTypeQueryOption";
+import { getAllBrandOption } from "@/query/brandQueryOption";
+import { Inverters } from "@/types/inverters";
 
 const formSchema = z.object({
   inverterType: z.string().min(1, { message: "Inverter type is required" }),
@@ -21,6 +27,8 @@ const formSchema = z.object({
     .min(1, { message: "Compatible battery is required" }),
   watt: z.string().min(1, { message: "Power is required" }),
   inverterVolt: z.string().min(1, { message: "Volt is required" }),
+  description: z.string().nonempty({ message: "description is required" }),
+  image: z.instanceof(File),
   redirect_to_list: z.boolean(),
 });
 
@@ -29,31 +37,46 @@ const EditInverterPage = () => {
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
   const { id } = useParams();
-  const currentInverter = inverters.find(
-    (inverter) => inverter.id === Number(id)
+  const { data: inverterData } = useQuery(getInverterByIdOption(String(id)));
+  const { data: inverterTypes } = useQuery(getAllInverterTypeOption());
+  const { data: brandsData } = useQuery(getAllBrandOption());
+  const { mutateAsync: updateInverterMutation } = useMutation(
+    useUpdateInverterOption()
   );
-  const currentBrand = brands.find(
-    (brand) => brand.id === currentInverter?.brandId
-  );
-
   const previousPage = () => {
     navigate(-1);
   };
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const formData = new FormData(e.currentTarget);
     const formValues = Object.fromEntries(formData);
-
     const parsedValues = {
       ...formValues,
       redirect_to_list: formValues.redirect_to_list ? true : false,
     };
     const result = formSchema.safeParse(parsedValues);
+
     if (!result.success) {
       setErrors(result.error.format());
       return;
     }
+
     setErrors(undefined);
+
+    const payload: Partial<Inverters> = {
+      _id: id || null,
+      inverterType: result.data.inverterType,
+      waveType: result.data.waveType,
+      model: result.data.model,
+      brandId: result.data.brandId,
+      compatibleBattery: result.data.compatibleBattery,
+      inverterVolt: Number(result.data.inverterVolt),
+      inverterPrice: Number(result.data.inverterPrice),
+      description: result.data.description,
+      watt: Number(result.data.watt),
+    };
+    updateInverterMutation({ payload });
     if (result.data.redirect_to_list) {
       navigate("../inverter");
     }
@@ -74,9 +97,9 @@ const EditInverterPage = () => {
           </label>
           <div className="flex items-center gap-2">
             <Combobox
-              data={inverterTypes}
+              data={inverterTypes ? inverterTypes : []}
               name="inverterType"
-              defaultValue={currentInverter?.inverterType?.toString() || ""}
+              defaultValue={inverterData?.inverterType?._id?.toString() || ""}
             />
             <DialogCloseButton isBrand={false} />
           </div>
@@ -98,7 +121,7 @@ const EditInverterPage = () => {
             id="model"
             placeholder="Enter model"
             name="model"
-            defaultValue={currentInverter?.model || ""}
+            defaultValue={inverterData?.model || ""}
           />
           {errors?.model && errors.model._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -115,9 +138,9 @@ const EditInverterPage = () => {
           </label>
           <div className="flex items-center gap-2">
             <Combobox
-              data={brands}
+              data={brandsData ? brandsData : []}
               name="brandId"
-              defaultValue={currentBrand?.id.toString() || ""}
+              defaultValue={inverterData?.brandId?._id?.toString() || ""}
             />
             <DialogCloseButton isBrand={true} />
           </div>
@@ -139,7 +162,7 @@ const EditInverterPage = () => {
             id="price"
             placeholder="Enter price"
             name="inverterPrice"
-            defaultValue={currentInverter?.inverterPrice?.toString() || ""}
+            defaultValue={inverterData?.inverterPrice?.toString() || ""}
           />
           {errors?.inverterPrice &&
             errors.inverterPrice._errors?.length > 0 && (
@@ -158,7 +181,7 @@ const EditInverterPage = () => {
           <SelectEl
             data={waveTypes}
             name="waveType"
-            defaultValue={currentInverter?.waveType || ""}
+            defaultValue={inverterData?.waveType || ""}
           />
           {errors?.waveType && errors.waveType._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -175,7 +198,7 @@ const EditInverterPage = () => {
             id="compatibleBattery"
             placeholder="eg. Lithium-Ion Battery"
             name="compatibleBattery"
-            defaultValue={currentInverter?.compatibleBattery || ""}
+            defaultValue={inverterData?.compatibleBattery || ""}
           />
           {errors?.compatibleBattery &&
             errors.compatibleBattery._errors?.length > 0 && (
@@ -196,7 +219,7 @@ const EditInverterPage = () => {
             id="watt"
             placeholder="Enter watt"
             name="watt"
-            defaultValue={currentInverter?.watt?.toString() || ""}
+            defaultValue={inverterData?.watt?.toString() || ""}
           />
           {errors?.watt && errors.watt._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -216,7 +239,7 @@ const EditInverterPage = () => {
             id="inverterVolt"
             placeholder="Enter volt"
             name="inverterVolt"
-            defaultValue={currentInverter?.inverterVolt?.toString() || ""}
+            defaultValue={inverterData?.inverterVolt?.toString() || ""}
           />
           {errors?.inverterVolt && errors.inverterVolt._errors?.length > 0 && (
             <p className="text-red-700 text-xs absolute -bottom-4 left-0">
@@ -245,7 +268,7 @@ const EditInverterPage = () => {
             id="description"
             placeholder="eg. eco-friendly inverter "
             name="description"
-            defaultValue={currentInverter?.description || ""}
+            defaultValue={inverterData?.description || ""}
           />
         </div>
         <div className="row-start-7 col-span-6 flex items-center gap-4">

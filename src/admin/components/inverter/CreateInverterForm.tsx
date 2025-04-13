@@ -1,13 +1,18 @@
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
-import { brands } from "../../data/brands";
-import { inverterTypes, waveTypes } from "../../data/inverters";
 import { DialogCloseButton } from "./Dialog";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/admin/components/inverter/ComboBox";
 import SelectEl from "@/admin/components/inverter/SelectEl";
 import { z } from "zod";
 import { useState } from "react";
+import { waveTypes } from "@/admin/data/inverters";
+import { useCreateInverterOption } from "@/query/inverterQueryOption";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getAllInverterTypeOption } from "@/query/inverterTypeQueryOption";
+import { getAllBrandOption } from "@/query/brandQueryOption";
+import { Inverters } from "@/types/inverters";
+
 const formSchema = z.object({
   inverterType: z.string().min(1, { message: "Inverter type is required" }),
   model: z.string().min(1, { message: "Model is required" }),
@@ -19,16 +24,24 @@ const formSchema = z.object({
     .min(1, { message: "Compatible battery is required" }),
   watt: z.string().min(1, { message: "Power is required" }),
   inverterVolt: z.string().min(1, { message: "Volt is required" }),
+  description: z.string().nonempty({ message: "description is required" }),
+  image: z.instanceof(File),
   redirect_to_list: z.boolean(),
 });
 
 const CreateInverterPage = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] =
     useState<z.ZodFormattedError<(typeof formSchema)["_output"]>>();
   const previousPage = () => {
     navigate(-1);
   };
+  const { data: inverterTypes } = useQuery(getAllInverterTypeOption());
+  const { data: brands } = useQuery(getAllBrandOption());
+  const { mutateAsync: createInverterMutation } = useMutation(
+    useCreateInverterOption(setIsLoading)
+  );
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -44,6 +57,19 @@ const CreateInverterPage = () => {
       return;
     }
     setErrors(undefined);
+    const payload: Partial<Inverters> = {
+      _id: null,
+      inverterType: result.data.inverterType,
+      waveType: result.data.waveType,
+      model: result.data.model,
+      brandId: result.data.brandId,
+      compatibleBattery: result.data.compatibleBattery,
+      inverterVolt: Number(result.data.inverterVolt),
+      inverterPrice: Number(result.data.inverterPrice),
+      description: result.data.description,
+      watt: Number(result.data.watt),
+    };
+    createInverterMutation({ payload });
     e.currentTarget.reset();
     if (result.data.redirect_to_list) {
       navigate("../inverter");
@@ -64,7 +90,7 @@ const CreateInverterPage = () => {
           </label>
           <div className="flex items-center gap-2">
             <Combobox
-              data={inverterTypes}
+              data={inverterTypes || []}
               name="inverterType"
               defaultValue=""
             />
@@ -103,7 +129,7 @@ const CreateInverterPage = () => {
             Brand
           </label>
           <div className="flex items-center gap-2">
-            <Combobox data={brands} name="brandId" defaultValue="" />
+            <Combobox data={brands || []} name="brandId" defaultValue="" />
             <DialogCloseButton isBrand={true} />
           </div>
           {errors?.brandId && errors.brandId._errors?.length > 0 && (
@@ -244,6 +270,7 @@ const CreateInverterPage = () => {
           Cancel
         </Button>
         <Button
+          disabled={isLoading}
           className="row-start-8 col-span-2 py-2 bg-electric-400 text-white rounded-lg hover:bg-electric-500"
           type="submit"
         >

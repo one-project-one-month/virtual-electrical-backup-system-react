@@ -21,7 +21,7 @@ import {
 import { useEffect } from "react";
 
 export function Combobox<
-  T extends { id: number; name: string } & { name: string }
+  T extends { _id: string; name: string } & { name: string }
 >({
   data,
   name,
@@ -50,7 +50,7 @@ export function Combobox<
             className=" flex-1 justify-between text-gray-600 text-sm font-normal"
           >
             {value
-              ? data.find((data) => data.id === Number(value))?.name
+              ? data.find((data) => data._id === String(value))?.name
               : "Select ..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -63,8 +63,8 @@ export function Combobox<
               <CommandGroup>
                 {data.map((data) => (
                   <CommandItem
-                    key={data.id}
-                    value={data.id.toString()}
+                    key={data._id}
+                    value={data?._id?.toString()}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
@@ -73,7 +73,7 @@ export function Combobox<
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === String(data.id) ? "opacity-100" : "opacity-0"
+                        value === String(data._id) ? "opacity-100" : "opacity-0"
                       )}
                     />
                     {data.name}

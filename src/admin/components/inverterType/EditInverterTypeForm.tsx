@@ -50,7 +50,7 @@ const EditInverterTypePage = () => {
       name: result.data.name,
       efficiency: Number(result.data.efficiency),
     };
-    editInverterTypeMutation(payload);
+    editInverterTypeMutation({ payload });
     setErrors(undefined);
     if (result.success && result.data.redirect_to_list) {
       navigate("../inverterType");

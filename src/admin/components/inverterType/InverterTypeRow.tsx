@@ -18,7 +18,7 @@ const InverterRow = ({
     useDeleteInverterTypeOption()
   );
   const handleDelete = (_id: string) => {
-    deleteInverterTypeMutation(_id);
+    deleteInverterTypeMutation({ id: _id });
   };
   return (
     <>

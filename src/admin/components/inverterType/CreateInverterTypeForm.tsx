@@ -49,7 +49,7 @@ const CreateInverterTypePage = () => {
       efficiency: Number(result.data.efficiency),
     };
     console.log(payload);
-    createInverterTypeMutation(payload);
+    createInverterTypeMutation({ payload });
     setErrors(undefined);
     e.currentTarget.reset();
     if (result.data.redirect_to_list) {
